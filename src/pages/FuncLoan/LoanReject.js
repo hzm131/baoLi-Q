@@ -43,7 +43,7 @@ class LoanReject extends PureComponent {
       }
 
       const en = {
-        fee:values.fee?Number(values.fee.toFixed(2)):null
+        fee:values.fee?Number(values.fee).toFixed(2):null
       }
       const obj = {
         reqData:{
