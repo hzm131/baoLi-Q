@@ -38,19 +38,21 @@ class CreditReject extends PureComponent {
       if(err){
         return
       }
+
+      const en = {
+        customerId:1,
+        loanLimitQuota:values.loanLimitQuota
+      }
+
       const obj = {
         reqData:{
           ...values,
-          endDate:(values.endDate).format('YYYY-MM-DD'),
-          startDate:(values.startDate).format('YYYY-MM-DD'),
-          eventTime:(values.eventTime).format('YYYY-MM-DD'),
-          failReason:{
-            code:values.code,
-            message:values.message,
-          },
-          extendInfo:{
-            loanLimitQuota:values.loanLimitQuota
-          }
+          endDate:values.endDate?(values.endDate).format('YYYY-MM-DD HH:mm:ss'):null,
+          startDate:values.startDate?(values.startDate).format('YYYY-MM-DD HH:mm:ss'):null,
+          eventTime:values.eventTime?(values.eventTime).format('YYYY-MM-DD HH:mm:ss'):null,
+          failReasonCode:values.code?values.code:null,
+          failReasonMessage:values.message?values.message:null,
+          extendInfo:JSON.stringify(en)
         }
 
       };
@@ -96,7 +98,7 @@ class CreditReject extends PureComponent {
 
     return (
       <Modal
-        title={"拒绝"}
+        title={"授信"}
         visible={visible}
         width='80%'
         destroyOnClose
@@ -134,7 +136,7 @@ class CreditReject extends PureComponent {
                   required: true,
                   message:'事件发生时间'
                 }]
-              })( <DatePicker style={{width:'100%'}} />)}
+              })( <DatePicker showTime style={{width:'100%'}} />)}
             </Form.Item>
           </Col>
         </Row>
@@ -180,13 +182,13 @@ class CreditReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="授信有效期开始日">
               {getFieldDecorator('startDate',{
-              })( <DatePicker style={{width:'100%'}} />)}
+              })( <DatePicker showTime style={{width:'100%'}} />)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="授信有效期结束日">
               {getFieldDecorator('endDate',{
-              })(<DatePicker style={{width:'100%'}} />)}
+              })(<DatePicker showTime  style={{width:'100%'}} />)}
             </Form.Item>
           </Col>
         </Row>
@@ -204,14 +206,24 @@ class CreditReject extends PureComponent {
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+            <Form.Item label='阿里授信申请单号'>
+              {getFieldDecorator('creditApplyNo',{
+                rules: [{
+                  required: true,
+                  message:'阿里授信申请单号'
+                }]
+              })(
+                <Input placeholder="请输入阿里授信申请单号"/>
+              )}
+            </Form.Item>
+          </Col>
+          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label='拒绝原因码'>
               {getFieldDecorator('code',{
               })(
                 <Input placeholder="请输入拒绝原因码"/>
               )}
             </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
           </Col>
         </Row>
         <Row gutter={16}>

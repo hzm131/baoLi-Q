@@ -19,8 +19,21 @@ export async function fetchBL(params) {
 }
 export async function addcre(params) {
   const str = JSON.stringify(params);
-  console.log('请求',str)
   return request(`${baseUrl}/baoLi/personal`,{
+    method:'POST',
+    body: str,
+  });
+}
+export async function reject(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/baoLi/personal`,{
+    method:'POST',
+    body: str,
+  });
+}
+export async function findList(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/oss`,{
     method:'POST',
     body: str,
   });

@@ -1,7 +1,11 @@
 import {
   addBL,
   fetchBL,
+  reject,
 } from '@/services/loan';
+import {
+  findList,
+} from '@/services/Cre';
 
 export default {
   namespace: 'loan',
@@ -16,7 +20,6 @@ export default {
   effects: {
     *fetch({ payload,callback }, { call, put }) {
       const response = yield call(fetchBL, payload);
-      console.log('=-response--',response)
       let { pageIndex = 0 } = payload;
       let obj = [];
       if(response.resData){
@@ -40,6 +43,14 @@ export default {
     *add({ payload,callback }, { call, put }) {
       const response = yield call(addBL, payload);
       if (callback) callback();
+    },
+    *reject({ payload,callback }, { call, put }) {
+      const response = yield call(reject, payload);
+      if (callback) callback(response);
+    },
+    *findList({ payload,callback }, { call, put }) {
+      const response = yield call(findList, payload);
+      if (callback) callback(response);
     },
   },
   //reducers方法处理同步

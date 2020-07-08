@@ -1,6 +1,8 @@
 import {
   addcre,
   fetchBL,
+  reject,
+  findList,
 } from '@/services/Cre';
 
 export default {
@@ -16,7 +18,6 @@ export default {
   effects: {
     *fetch({ payload,callback }, { call, put }) {
       const response = yield call(fetchBL, payload);
-      console.log('=-response--',response)
       let { pageIndex = 0 } = payload;
       let obj = [];
       if(response.resData){
@@ -39,6 +40,14 @@ export default {
     },
     *addcre({ payload,callback }, { call, put }) {
       const response = yield call(addcre, payload);
+      if (callback) callback(response);
+    },
+    *reject({ payload,callback }, { call, put }) {
+      const response = yield call(reject, payload);
+      if (callback) callback(response);
+    },
+    *findList({ payload,callback }, { call, put }) {
+      const response = yield call(findList, payload);
       if (callback) callback(response);
     },
   },

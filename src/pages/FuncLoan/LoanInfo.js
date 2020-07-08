@@ -47,10 +47,11 @@ class CreditInfo extends PureComponent {
     initDate:{},
     agreeVisible:false,
     rejectVisible:false,
+    fileName:'',
   };
 
   backClick = ()=>{
-    router.push('/credit');
+    router.push('/loan/list');
   }
 
   componentDidMount(){
@@ -65,26 +66,15 @@ class CreditInfo extends PureComponent {
 
   filemodal = ()=>{
     const { dispatch } = this.props;
-    const { initDate } = this.state;
     dispatch({
-      type:'AG/fetchList',
-      payload:{
-        reqData:{
-          bill_id:initDate.id,
-          type:'contract'
-        }
-      },
+      type:'loan/findList',
+      payload:{},
       callback:(res)=>{
-        console.log("附件列表",res)
-        if(res.resData && res.resData.length){
-          this.setState({
-            attachmentList:res.resData
-          })
-        }
+        this.setState({
+          fileName:res.resData,
+          fileShow: true
+        })
       }
-    });
-    this.setState({
-      fileShow: true
     })
   }
 
@@ -223,24 +213,19 @@ class CreditInfo extends PureComponent {
     const OnAddReject = {
       onSave:(obj,clear)=>{
         console.log('---obj',obj)
-        // dispatch({
-        //   type:'MManage/addstock',
-        //   payload:obj,
-        //   callback:(res)=>{
-        //     if(res.errMsg === "成功"){
-        //       message.success("新建成功",1,()=>{
-        //         this.setState({addVisible:false})
-        //         clear()
-        //         dispatch({
-        //           type:'MManage/fetchstock',
-        //           payload:{
-        //             ...page
-        //           }
-        //         })
-        //       })
-        //     }
-        //   }
-        // })
+        dispatch({
+          type:'loan/reject',
+          payload:obj,
+          callback:(res)=>{
+            console.log('---返回',res)
+            alert(res.resData)
+            clear()
+            this.setState({
+              rejectVisible:false
+
+            })
+          }
+        })
       },
       onCancel:(clear)=>{
         clear();
@@ -268,11 +253,11 @@ class CreditInfo extends PureComponent {
         onTabChange={this.onOperationTabChange}
       >
         <Card title=''>
-         <span>
+        {/* <span>
                 <Button type="primary" loading={ loading } onClick={()=>this.agree()}>同意</Button>
-              </span>
+              </span>*/}
           <span style={{marginLeft:14}}>
-                <Button  style={{backgroundColor:'red',color:'#fff'}} loading={ loading } onClick={()=>this.reject()}>拒绝</Button>
+                <Button  style={{backgroundColor:'red',color:'#fff'}} loading={ loading } onClick={()=>this.reject()}>确定</Button>
               </span>
           <span style={{marginLeft:14}}>
                 <Button  onClick={this.backClick}>取消</Button>
@@ -285,12 +270,7 @@ class CreditInfo extends PureComponent {
           width={"70%"}
           footer={null}
         >
-          <NormalTable
-            columns={columns}
-            data={{list:this.state.attachmentList}}
-            loading={loading}
-            pagination={false}
-          />
+          <p>{this.state.fileName}</p>
         </Modal>
         <LoanAgree on={OnAddAgree} data={OnAgreeData} />
         <LoanReject on={OnAddReject} data={OnRejectData} />

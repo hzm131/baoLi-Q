@@ -17,6 +17,13 @@ export async function fetchBL(params) {
     body: str,
   });
 }
+export async function reject(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/baoLi/loan`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 

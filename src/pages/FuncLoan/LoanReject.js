@@ -41,18 +41,18 @@ class LoanReject extends PureComponent {
       if(err){
         return
       }
+
+      const en = {
+        fee:values.fee?Number(values.fee.toFixed(2)):null
+      }
       const obj = {
         reqData:{
           ...values,
-          eventTime:(values.eventTime).format('YYYY-MM-DD'),
-          loanAmount:Number(values.loanAmount),
-          failReason:{
-            code:values.code,
-            message:values.message,
-          },
-          extendInfo:{
-            fee:Number(values.fee)
-          }
+          eventTime:(values.eventTime).format('YYYY-MM-DD HH:mm:ss'),
+          loanAmount:values.loanAmount,
+          failReasonCode:values.code?values.code:null,
+          failReasonMessage:values.message?values.message:null,
+          extendInfo:values.fee?JSON.stringify(en):null
         }
 
       };
@@ -98,7 +98,7 @@ class LoanReject extends PureComponent {
 
     return (
       <Modal
-        title={"拒绝"}
+        title={"支用"}
         visible={visible}
         width='80%'
         destroyOnClose
@@ -136,7 +136,7 @@ class LoanReject extends PureComponent {
                   required: true,
                   message:'事件发生时间'
                 }]
-              })( <DatePicker style={{width:'100%'}} />)}
+              })( <DatePicker showTime style={{width:'100%'}} />)}
             </Form.Item>
           </Col>
         </Row>
@@ -172,13 +172,20 @@ class LoanReject extends PureComponent {
         </Row>
         <Row gutter={16}>
           <Col lg={6} md={12} sm={24}>
+            <Form.Item label="阿里支用申请单号">
+              {getFieldDecorator('loanApplyId',{
+                rules: [{
+                  required: true,
+                  message:'阿里支用申请单号'
+                }]
+              })(<Input placeholder="请输入阿里支用申请单号"/>)}
+            </Form.Item>
+          </Col>
+          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="拒绝原因码">
               {getFieldDecorator('code',{
               })(<Input placeholder="请输入拒绝原因码"/>)}
             </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
 
