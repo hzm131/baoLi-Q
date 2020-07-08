@@ -40,7 +40,7 @@ class CreditReject extends PureComponent {
       }
 
       const en = {
-        customerId:1,
+        customerId:values.customerId,
         loanLimitQuota:values.loanLimitQuota
       }
 
@@ -192,6 +192,7 @@ class CreditReject extends PureComponent {
             </Form.Item>
           </Col>
         </Row>
+
         <Row gutter={16}>
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='单笔支用限额（单位：元）'>
@@ -218,12 +219,32 @@ class CreditReject extends PureComponent {
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+            <Form.Item label='阿里客户'>
+              {getFieldDecorator('customerId',{
+                rules: [{
+                  required: true,
+                  message:'阿里客户'
+                }]
+              })(
+                <Input placeholder="请输入阿里客户"/>
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col lg={6} md={12} sm={24}>
             <Form.Item label='拒绝原因码'>
               {getFieldDecorator('code',{
               })(
                 <Input placeholder="请输入拒绝原因码"/>
               )}
             </Form.Item>
+          </Col>
+          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+
+          </Col>
+          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+
           </Col>
         </Row>
         <Row gutter={16}>
