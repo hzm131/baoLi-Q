@@ -159,7 +159,7 @@ export default function request(url, option) {
       .then(res => {
         console.log('退出',res)
         // 服务器返回错误信息处理
-        const hasError = res.errCode !== 200;
+        const hasError = res.errCode < 200 || res.errCode > 400;
         if (hasError) {
           // 错误信息提示
           if(!status){

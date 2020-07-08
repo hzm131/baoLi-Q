@@ -126,7 +126,10 @@ class CreditReject extends PureComponent {
                   required: true,
                   message:'授信状态'
                 }]
-              })( <Input placeholder="请输入授信状态" />)}
+              })(<Select  style={{ width: '100%' }} placeholder={'请选择状态'}>
+                  <Option value="QUALIFIED">授信成功</Option>
+                  <Option value="REJECTED">授信拒绝</Option>
+              </Select>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
@@ -166,7 +169,7 @@ class CreditReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="授信期限">
               {getFieldDecorator('creditTerm',{
-              })(<Input placeholder="请输入授信期限" />)}
+              })( <Input placeholder="请输入授信期限" type={'number'}/>)}
             </Form.Item>
           </Col>
         </Row>
@@ -175,7 +178,11 @@ class CreditReject extends PureComponent {
             <Form.Item label='授信期限单位'>
               {getFieldDecorator('creditTermUnit',{
               })(
-                <Input placeholder="请输入授信期限单位"/>
+                <Select  style={{ width: '100%' }} placeholder={'请选择授信期限单位'}>
+                <Option value="Y">年</Option>
+                <Option value="M">月</Option>
+                <Option value="D">日</Option>
+                </Select>
               )}
             </Form.Item>
           </Col>
