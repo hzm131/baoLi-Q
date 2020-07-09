@@ -106,11 +106,12 @@ class CreditInfo extends PureComponent {
     } = this.props;
     const description = (
       <DescriptionList >
-        <Description term="产品编号">
+       {/* <Description term="产品编号">
           <Tooltip title={this.state.initDate?this.state.initDate.productCode:''}>
             <p style={{width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>{this.state.initDate?this.state.initDate.productCode:''}</p>
           </Tooltip>
-        </Description>
+        </Description>*/}
+        <Description term="产品编号"><b>{this.state.initDate?this.state.initDate.productCode:''}</b></Description>
         <Description term="授信申请单号"><b>{this.state.initDate?this.state.initDate.creditApplyNo:''}</b></Description>
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
@@ -139,8 +140,17 @@ class CreditInfo extends PureComponent {
         <Description term="平台注册时间"><b>{this.state.initDate?this.state.initDate.platformRegisteredTime:''}</b></Description>
 
         <Description term="年交易金额">{this.state.initDate?this.state.initDate.platformTransactionAmount1Year:''}</Description>
-        <Description term="建议额度(单位：元)"><b>{this.state.initDate?this.state.initDate.adviceQuota:''}</b></Description>
-        <Description term="建议单笔最高额度(单位：元)"><b>{this.state.initDate?this.state.initDate.loanLimitQuota:''}</b></Description>
+        <Description term="建议额度(单位:元)"><b>{this.state.initDate?this.state.initDate.adviceQuota:''}</b></Description>
+        <Description term="建议单笔最高额度(单位:元)"><b>{this.state.initDate?this.state.initDate.loanLimitQuota:''}</b></Description>
+
+        <Description term="平台累计回款金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformTotalPaymentCollectionAmount:''}</b></Description>
+        <Description term="平台年订单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformOrderAmount1Year:''}</b></Description>
+        <Description term="平台年结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformSettlementAmount1Year:''}</b></Description>
+
+        <Description term="平台年结算单笔数"><b>{this.state.initDate?this.state.initDate.platformSettlementNumber1Year:''}</b></Description>
+        <Description term="建议额度(单位:元)"><b>{this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany:''}</b></Description>
+        <Description term="与核心企业的平台累计结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.adviceQuota:''}</b></Description>
+
 
       </DescriptionList>
     );
@@ -148,6 +158,8 @@ class CreditInfo extends PureComponent {
       <Fragment>
         {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>
         <Button type="primary" onClick={()=>this.onStatus()}>查看当前状态</Button>*/}
+        <Button type="primary" onClick={this.reject}>审核</Button>
+        <Button type="primary" onClick={this.backClick}>返回</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
@@ -222,7 +234,6 @@ class CreditInfo extends PureComponent {
          type:'Cre/reject',
          payload:obj,
          callback:(res)=>{
-           console.log('---返回',res)
            alert(res.resData)
            clear()
            this.setState({
@@ -257,17 +268,17 @@ class CreditInfo extends PureComponent {
         /*extraContent={}*/
         onTabChange={this.onOperationTabChange}
       >
-        <Card title=''>
-        {/* <span>
+        {/*  <Card title=''>
+        <span>
                 <Button type="primary" loading={ loading } onClick={()=>this.agree()}>同意</Button>
-              </span>*/}
-          <span style={{marginLeft:14}}>
-                <Button  style={{backgroundColor:'red',color:'#fff'}} loading={ loading } onClick={()=>this.reject()}>确定</Button>
               </span>
           <span style={{marginLeft:14}}>
-                <Button  onClick={this.backClick}>取消</Button>
+                <Button  style={{backgroundColor:'red',color:'#fff'}} loading={ loading } onClick={()=>this.reject()}>审核</Button>
               </span>
-        </Card>
+          <span style={{marginLeft:14}}>
+                <Button  onClick={this.backClick}>返回</Button>
+              </span>
+        </Card>*/}
         <Modal
           title="点击下载"
           visible={this.state.fileShow}

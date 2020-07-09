@@ -87,7 +87,7 @@ class Login extends PureComponent {
 
   render() {
     return (
-      <DocumentTitle title="项目管理系统">
+      <DocumentTitle title="">
         <div className={styles.login} style={{ background: `url(${backgroundImg}) 0/100% 58% no-repeat`,backgroundPosition:'left top',backgroundColor:'#eeeeee' }}>
             <WrappedLoginCard className={styles.loginCardPosition} onSubmit={this.handleSubmit} />
             <SideBanner className={styles.sideBannerPosition}/>

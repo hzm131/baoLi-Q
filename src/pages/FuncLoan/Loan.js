@@ -71,7 +71,7 @@ class Loan extends PureComponent {
 
         if (loanApplyNo) {
           codeObj = {
-            code: 'loanApplyNo',
+            code: 'loan_apply_no',
             exp: 'like',
             value: loanApplyNo
           };
@@ -79,7 +79,7 @@ class Loan extends PureComponent {
         }
         if (loanNo) {
           nameObj = {
-            code: 'loanNo',
+            code: 'loan_no',
             exp: 'like',
             value: loanNo
           };
@@ -106,6 +106,24 @@ class Loan extends PureComponent {
             pageSize:10
           }
         })
+      }
+    })
+  }
+
+  //取消
+  handleFormReset = ()=>{
+    const { dispatch,form} = this.props;
+    //清空输入框
+    form.resetFields();
+    this.setState({
+      conditions:[],
+    })
+    //清空后获取列表
+    dispatch({
+      type:'loan/fetch',
+      payload:{
+        pageIndex:0,
+        pageSize:10
       }
     })
   }
@@ -267,15 +285,6 @@ class Loan extends PureComponent {
           </Fragment>
       },
     ];
-    const dataSource = [
-      {
-        id:1,
-        key:1,
-        loanApplyNo:'090809',
-        loanNo:'98797hiuh',
-        customerId:'王总',
-      }
-    ]
     return (
       <PageHeaderWrapper>
         <Card>

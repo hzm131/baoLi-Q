@@ -98,7 +98,7 @@ class CreditReject extends PureComponent {
 
     return (
       <Modal
-        title={"授信"}
+        title={"审核"}
         visible={visible}
         width='80%'
         destroyOnClose

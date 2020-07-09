@@ -141,6 +141,8 @@ class CreditInfo extends PureComponent {
       <Fragment>
         {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>
         <Button type="primary" onClick={()=>this.onStatus()}>查看当前状态</Button>*/}
+        <Button type="primary" onClick={this.reject}>审核</Button>
+        <Button type="primary" onClick={this.backClick}>返回</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
@@ -252,17 +254,7 @@ class CreditInfo extends PureComponent {
         /*extraContent={}*/
         onTabChange={this.onOperationTabChange}
       >
-        <Card title=''>
-        {/* <span>
-                <Button type="primary" loading={ loading } onClick={()=>this.agree()}>同意</Button>
-              </span>*/}
-          <span style={{marginLeft:14}}>
-                <Button  style={{backgroundColor:'red',color:'#fff'}} loading={ loading } onClick={()=>this.reject()}>确定</Button>
-              </span>
-          <span style={{marginLeft:14}}>
-                <Button  onClick={this.backClick}>取消</Button>
-              </span>
-        </Card>
+
         <Modal
           title="点击下载"
           visible={this.state.fileShow}

@@ -153,7 +153,7 @@ class BasicLayout extends React.PureComponent {
     const currRouterData = this.matchParamsPath(pathname, breadcrumbNameMap);
 
     if (!currRouterData) {
-      return '项目管理系统';
+      return '';
     }
     const pageName = formatMessage({
       id: currRouterData.locale || currRouterData.name,
@@ -161,7 +161,7 @@ class BasicLayout extends React.PureComponent {
     });
 
 
-    return `${pageName} - 项目管理系统`;
+    return `${pageName}`;
   };
 
   getLayoutStyle = () => {

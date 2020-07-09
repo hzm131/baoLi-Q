@@ -12,6 +12,7 @@ export async function fetchCA(params) {
 
 export async function fetchBL(params) {
   const str = JSON.stringify(params);
+  console.log('---列表',str)
   return request(`${baseUrl}/getCredit`,{
     method:'POST',
     body: str,

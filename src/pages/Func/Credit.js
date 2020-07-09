@@ -53,7 +53,6 @@ class Credit extends PureComponent {
       }
     })
   }
-
   //查询
   findList = (e) => {
     const { dispatch, form } = this.props;
@@ -67,7 +66,7 @@ class Credit extends PureComponent {
 
         if (productCode) {
           codeObj = {
-            code: 'productCode',
+            code: 'product_code',
             exp: 'like',
             value: productCode
           };
@@ -75,7 +74,7 @@ class Credit extends PureComponent {
         }
         if (creditApplyNo) {
           nameObj = {
-            code: 'creditApplyNo',
+            code: 'credit_apply_no',
             exp: 'like',
             value: creditApplyNo
           };
@@ -176,6 +175,24 @@ class Credit extends PureComponent {
     router.push('/credit/creditInfo',{record})
   }
 
+//取消
+  handleFormReset = ()=>{
+    const { dispatch,form} = this.props;
+    //清空输入框
+    form.resetFields();
+    this.setState({
+      conditions:[],
+    })
+    //清空后获取列表
+    dispatch({
+      type:'Cre/fetch',
+      payload:{
+        pageIndex:0,
+        pageSize:10
+      }
+    })
+  }
+
 
   render() {
     const {
@@ -243,6 +260,7 @@ class Credit extends PureComponent {
         dataIndex: 'legalPersonMateName',
         key: 'legalPersonMateName',
       },
+
       {
         title: '操作',
         fixed:'right',
