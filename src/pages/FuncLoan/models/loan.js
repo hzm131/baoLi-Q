@@ -55,7 +55,7 @@ export default {
         let env = '';
         switch (process.env.API_ENV) {
           case 'test': //测试环境
-            env = 'https://49.234.209.104:8080';
+            env = 'http://49.234.209.104:8080';
             break;
           case 'dev': //开发环境
             env = 'http://192.168.2.166:8080';
