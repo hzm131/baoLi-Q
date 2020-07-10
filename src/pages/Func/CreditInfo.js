@@ -43,7 +43,7 @@ class CreditInfo extends PureComponent {
     initDate:{},
     agreeVisible:false,
     rejectVisible:false,
-    fileName:'',
+    fileName:{},
   };
 
   backClick = ()=>{
@@ -66,8 +66,9 @@ class CreditInfo extends PureComponent {
       type:'Cre/findList',
       payload:{},
       callback:(res)=>{
+        console.log('----res',res)
         this.setState({
-          fileName:res.resData,
+          fileName:res,
           fileShow: true
         })
       }
@@ -104,6 +105,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
+    const { fileName } = this.state
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -164,38 +166,6 @@ class CreditInfo extends PureComponent {
         {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
     );
-
-    const columns = [
-      {
-        title: '附件名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '附件大小',
-        dataIndex: 'size',
-      },
-      {
-        title: '上传时间',
-        dataIndex: 'uptime',
-      },
-      {
-        title: '上传人',
-        dataIndex: 'upuser',
-      },
-      {
-        title:'附件备注',
-        dataIndex:'memo',
-      },
-      {
-        title: '操作',
-        dataIndex:'operation',
-        render: (text, record) => (
-          <a target="_blank" href={`${ process.env.API_ENV === 'test'?'https://49.234.209.104/nien-0.0.1-SNAPSHOT':'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'
-            }${record.path}/${record.name}`} download>查看</a>        ),
-      },
-
-    ];
-
     const OnAddAgree = {
       onSave:(obj,clear)=>{
         console.log('---obj',obj)
@@ -292,7 +262,7 @@ class CreditInfo extends PureComponent {
             loading={loading}
             pagination={false}
           />*/}
-          <p>{this.state.fileName}</p>
+          <a target="_blank" href={fileName.url} download>{fileName.name}</a>
         </Modal>
         <CreditAgree on={OnAddAgree} data={OnAgreeData} />
         <CreditReject on={OnAddReject} data={OnRejectData} />

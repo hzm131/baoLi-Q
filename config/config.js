@@ -86,7 +86,6 @@ export default {
    // https:ant.design/docs/react/customize-theme-cn,
   //
   theme: {
-
      // 'primary-color': defaultSettings.primaryColor,
      'primary-color': '#ff0006',
     // 'primary-color': '#1DA57A',
@@ -101,7 +100,6 @@ export default {
     //   pathRewrite: { '^/server': '' },
     // },
     '/wookong': {
-
 
                   // target: 'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT',
 

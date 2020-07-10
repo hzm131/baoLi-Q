@@ -47,7 +47,7 @@ class CreditInfo extends PureComponent {
     initDate:{},
     agreeVisible:false,
     rejectVisible:false,
-    fileName:'',
+    fileName:{},
   };
 
   backClick = ()=>{
@@ -71,7 +71,7 @@ class CreditInfo extends PureComponent {
       payload:{},
       callback:(res)=>{
         this.setState({
-          fileName:res.resData,
+          fileName:res,
           fileShow: true
         })
       }
@@ -108,6 +108,8 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
+    const { fileName } = this.state
+
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -262,7 +264,7 @@ class CreditInfo extends PureComponent {
           width={"70%"}
           footer={null}
         >
-          <p>{this.state.fileName}</p>
+          <a target="_blank" href={fileName.url} download>{fileName.name}</a>
         </Modal>
         <LoanAgree on={OnAddAgree} data={OnAgreeData} />
         <LoanReject on={OnAddReject} data={OnRejectData} />

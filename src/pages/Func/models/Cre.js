@@ -48,7 +48,36 @@ export default {
     },
     *findList({ payload,callback }, { call, put }) {
       const response = yield call(findList, payload);
-      if (callback) callback(response);
+      let obj = {}
+      if(response.resData){
+        let env = '';
+        switch (process.env.API_ENV) {
+          case 'test': //测试环境
+            env = 'https://49.234.209.104/nienboot-0.0.1-SNAPSHOT';
+            break;
+          case 'dev': //开发环境
+            env = 'http://192.168.2.166:8080';
+            break;
+          case 'produce': //生产环境
+            env = 'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT';
+            break;
+        }
+        response.resData.key = response.resData.id
+        response.resData.uid = response.resData.id
+        response.resData.url = env+response.resData.path;
+        response.resData.thumbUrl = env+response.resData.path;
+
+       /* response.resData.map(item =>{
+          item.key = item.id;
+          item.uid = item.id;
+          //https://www.leapingtech.net/nien-0.0.1-SNAPSHOT
+          item.url = 'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'+item.path+'/'+item.name;
+          item.thumbUrl = 'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'+item.path+'/'+item.name;
+          return item
+        });*/
+        obj = response.resData
+      }
+      if (callback) callback(obj);
     },
   },
   //reducers方法处理同步
