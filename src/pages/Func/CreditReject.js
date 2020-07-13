@@ -93,7 +93,7 @@ class CreditReject extends PureComponent {
       on
     } = this.props;
 
-    const { visible } = data;
+    const { visible,record } = data;
     const { onSave,onCancel } = on;
 
     return (
@@ -216,12 +216,13 @@ class CreditReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label='阿里授信申请单号'>
               {getFieldDecorator('creditApplyNo',{
+                initialValue:record,
                 rules: [{
                   required: true,
                   message:'阿里授信申请单号'
                 }]
               })(
-                <Input placeholder="请输入阿里授信申请单号"/>
+                <Input placeholder="请输入阿里授信申请单号" disabled/>
               )}
             </Form.Item>
           </Col>

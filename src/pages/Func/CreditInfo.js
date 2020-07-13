@@ -44,6 +44,7 @@ class CreditInfo extends PureComponent {
     agreeVisible:false,
     rejectVisible:false,
     fileName:{},
+    creditApplyNo:'',
   };
 
   backClick = ()=>{
@@ -54,7 +55,8 @@ class CreditInfo extends PureComponent {
     const { record } = this.props.location.state;
     const { dispatch } = this.props
     this.setState({
-      initDate:record
+      initDate:record,
+      creditApplyNo:record.creditApplyNo
     })
 
     //this.onRecord(record)
@@ -114,7 +116,14 @@ class CreditInfo extends PureComponent {
           </Tooltip>
         </Description>*/}
         <Description term="产品编号"><b>{this.state.initDate?this.state.initDate.productCode:''}</b></Description>
-        <Description term="授信申请单号"><b>{this.state.initDate?this.state.initDate.creditApplyNo:''}</b></Description>
+        <Description term="授信申请单号">
+          <Tooltip title={this.state.initDate?this.state.initDate.creditApplyNo:''}>
+            <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.creditApplyNo:''}
+            </p>
+          </Tooltip>
+
+        </Description>
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
         <Description term="公司名称"><b>{this.state.initDate?this.state.initDate.companyName:''}</b></Description>
@@ -125,23 +134,35 @@ class CreditInfo extends PureComponent {
         <Description term="法人证件类型"><b>{this.state.initDate?this.state.initDate.legalPersonLicenseType:''}</b></Description>
         <Description term="法人证件号码"><b>{this.state.initDate?this.state.initDate.legalPersonLicenseNo:''}</b></Description>
 
-        <Description term="法人手机号">{this.state.initDate?this.state.initDate.legalPersonPhoneNo:''}</Description>
+        <Description term="法人手机号"><b>{this.state.initDate?this.state.initDate.legalPersonPhoneNo:''}</b></Description>
         <Description term="法人婚姻状态"><b>{this.state.initDate?this.state.initDate.legalPersonMaritalStatus:''}</b></Description>
         <Description term="法人配偶姓名"><b>{this.state.initDate?this.state.initDate.legalPersonMateName:''}</b></Description>
 
-        <Description term="法人证件类型">{this.state.initDate?this.state.initDate.legalPersonMateLicenseType:''}</Description>
+        <Description term="法人证件类型"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseType:''}</b></Description>
         <Description term="法人配偶证件号码"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}</b></Description>
         <Description term="联系人姓名"><b>{this.state.initDate?this.state.initDate.contactPersonName:''}</b></Description>
 
-        <Description term="联系人手机号码">{this.state.initDate?this.state.initDate.contactPersonPhoneNo:''}</Description>
+        <Description term="联系人手机号码"><b>{this.state.initDate?this.state.initDate.contactPersonPhoneNo:''}</b></Description>
         <Description term="对公账户户名"><b>{this.state.initDate?this.state.initDate.publicAccountsName:''}</b></Description>
-        <Description term="对公账户银行名字"><b>{this.state.initDate?this.state.initDate.publicAccountsBank:''}</b></Description>
+        <Description term="对公账户银行名字">
+          <Tooltip title={this.state.initDate?this.state.initDate.publicAccountsBank:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.publicAccountsBank:''}
+            </p>
+          </Tooltip>
+        </Description>
 
-        <Description term="对公账户开户支行">{this.state.initDate?this.state.initDate.publicAccountsBranchBank:''}</Description>
+        <Description term="对公账户开户支行">
+          <Tooltip title={this.state.initDate?this.state.initDate.publicAccountsBranchBank:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.publicAccountsBranchBank:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="对公账户账号"><b>{this.state.initDate?this.state.initDate.publicAccountsNo:''}</b></Description>
         <Description term="平台注册时间"><b>{this.state.initDate?this.state.initDate.platformRegisteredTime:''}</b></Description>
 
-        <Description term="年交易金额">{this.state.initDate?this.state.initDate.platformTransactionAmount1Year:''}</Description>
+        <Description term="年交易金额"><b>{this.state.initDate?this.state.initDate.platformTransactionAmount1Year:''}</b></Description>
         <Description term="建议额度(单位:元)"><b>{this.state.initDate?this.state.initDate.adviceQuota:''}</b></Description>
         <Description term="建议单笔最高额度(单位:元)"><b>{this.state.initDate?this.state.initDate.loanLimitQuota:''}</b></Description>
 
@@ -150,9 +171,10 @@ class CreditInfo extends PureComponent {
         <Description term="平台年结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformSettlementAmount1Year:''}</b></Description>
 
         <Description term="平台年结算单笔数"><b>{this.state.initDate?this.state.initDate.platformSettlementNumber1Year:''}</b></Description>
-        <Description term="建议额度(单位:元)"><b>{this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany:''}</b></Description>
         <Description term="与核心企业的平台累计结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}</b></Description>
+        <Description term="与核企（准入买家）的年回款金额"><b>{this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}</b></Description>
 
+        <Description term="与核企（准入买家）的年结算单笔数"><b>{this.state.initDate?this.state.initDate.platformSettlementNumberWithCoreCompany1Year:''}</b></Description>
       </DescriptionList>
     );
     const action = (
@@ -199,6 +221,7 @@ class CreditInfo extends PureComponent {
 
     const OnAddReject = {
       onSave:(obj,clear)=>{
+       console.log('提交数据',obj)
        dispatch({
          type:'Cre/reject',
          payload:obj,
@@ -207,7 +230,6 @@ class CreditInfo extends PureComponent {
            clear()
            this.setState({
              rejectVisible:false
-
            })
          }
        })
@@ -222,7 +244,8 @@ class CreditInfo extends PureComponent {
       }
     }
     const OnRejectData = {
-      visible:this.state.rejectVisible
+      visible:this.state.rejectVisible,
+      record:this.state.creditApplyNo,
     }
 
 

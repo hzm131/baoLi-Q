@@ -129,11 +129,11 @@ class CreditInfo extends PureComponent {
         <Description term="结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.statementAmount:''}</b></Description>
         <Description term="订单付款日期"><b>{this.state.initDate?this.state.initDate.orderPaymentTime:''}</b></Description>
 
-        <Description term="物流单号">{this.state.initDate?this.state.initDate.logisticsNumber:''}</Description>
+        <Description term="物流单号"><b>{this.state.initDate?this.state.initDate.logisticsNumber:''}</b></Description>
         <Description term="结算单付款日期"><b>{this.state.initDate?this.state.initDate.statementPaymentTime:''}</b></Description>
         <Description term="申请放款时间"><b>{this.state.initDate?this.state.initDate.loanApplyTime:''}</b></Description>
 
-        <Description term="申请放款金额(单位:元)">{this.state.initDate?this.state.initDate.loanAmount:''}</Description>
+        <Description term="申请放款金额(单位:元)"><b>{this.state.initDate?this.state.initDate.loanAmount:''}</b></Description>
         <Description term="法人配偶证件号码"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}</b></Description>
         <Description term="执行年化费率"><b>{this.state.initDate?this.state.initDate.rate:''}</b></Description>
 
@@ -243,7 +243,6 @@ class CreditInfo extends PureComponent {
     const OnRejectData = {
       visible:this.state.rejectVisible
     }
-
 
     return (
       <PageHeaderWrapper
