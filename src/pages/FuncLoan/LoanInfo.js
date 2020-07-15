@@ -48,6 +48,7 @@ class CreditInfo extends PureComponent {
     agreeVisible:false,
     rejectVisible:false,
     fileName:{},
+    loanApplyNo:'',
   };
 
   backClick = ()=>{
@@ -59,7 +60,9 @@ class CreditInfo extends PureComponent {
     const { record } = this.props.location.state;
     console.log("record",record)
     this.setState({
-      initDate:record
+      initDate:record,
+      loanApplyNo:record.loanApplyNo
+
     })
     //this.onRecord(record)
   }
@@ -108,7 +111,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName } = this.state
+    const { fileName,loanApplyNo } = this.state
 
     const description = (
       <DescriptionList >
@@ -117,11 +120,29 @@ class CreditInfo extends PureComponent {
             <p style={{width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>{this.state.initDate?this.state.initDate.productCode:''}</p>
           </Tooltip>
         </Description>*/}
-        <Description term="贷款申请编号"><b>{this.state.initDate?this.state.initDate.loanApplyNo:''}</b></Description>
-        <Description term="贷款合同编号"><b>{this.state.initDate?this.state.initDate.loanNo:''}</b></Description>
+        <Description term="贷款申请编号">
+          <Tooltip title={this.state.initDate?this.state.initDate.loanApplyNo:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.loanApplyNo:''}
+            </p>
+          </Tooltip>
+        </Description>
+        <Description term="贷款合同编号">
+          <Tooltip title={this.state.initDate?this.state.initDate.loanNo:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.loanNo:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
-        <Description term="贷款产品编号"><b>{this.state.initDate?this.state.initDate.loanProductCode:''}</b></Description>
+        <Description term="贷款产品编号">
+          <Tooltip title={this.state.initDate?this.state.initDate.loanProductCode:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.loanProductCode:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="交易货品名称"><b>{this.state.initDate?this.state.initDate.saleProductName:''}</b></Description>
         <Description term="收货时间"><b>{this.state.initDate?this.state.initDate.productReceiveTime:''}</b></Description>
 
@@ -129,7 +150,13 @@ class CreditInfo extends PureComponent {
         <Description term="结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.statementAmount:''}</b></Description>
         <Description term="订单付款日期"><b>{this.state.initDate?this.state.initDate.orderPaymentTime:''}</b></Description>
 
-        <Description term="物流单号"><b>{this.state.initDate?this.state.initDate.logisticsNumber:''}</b></Description>
+        <Description term="物流单号">
+          <Tooltip title={this.state.initDate?this.state.initDate.logisticsNumber:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.logisticsNumber:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="结算单付款日期"><b>{this.state.initDate?this.state.initDate.statementPaymentTime:''}</b></Description>
         <Description term="申请放款时间"><b>{this.state.initDate?this.state.initDate.loanApplyTime:''}</b></Description>
 
@@ -241,7 +268,8 @@ class CreditInfo extends PureComponent {
       }
     }
     const OnRejectData = {
-      visible:this.state.rejectVisible
+      visible:this.state.rejectVisible,
+      record:loanApplyNo,
     }
 
     return (

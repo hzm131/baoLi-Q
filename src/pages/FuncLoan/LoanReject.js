@@ -93,7 +93,7 @@ class LoanReject extends PureComponent {
       on
     } = this.props;
 
-    const { visible } = data;
+    const { visible,record } = data;
     const { onSave,onCancel } = on;
 
     return (
@@ -178,11 +178,12 @@ class LoanReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label="阿里支用申请单号">
               {getFieldDecorator('loanApplyId',{
+                initialValue:record,
                 rules: [{
                   required: true,
                   message:'阿里支用申请单号'
                 }]
-              })(<Input placeholder="请输入阿里支用申请单号"/>)}
+              })(<Input placeholder="请输入阿里支用申请单号" disabled/>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
