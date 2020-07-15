@@ -47,7 +47,7 @@ class CreditInfo extends PureComponent {
     creditApplyNo:'',
     tableList:[],
     attachmentsList:[],
-    attaType:['.jpg','.png','.jpeg']
+    attaType:['jpg','png','jpeg']
   };
 
   backClick = ()=>{
@@ -70,7 +70,7 @@ class CreditInfo extends PureComponent {
 
   filemodal = ()=>{
     const { dispatch } = this.props;
-    dispatch({
+  /*  dispatch({
       type:'Cre/findList',
       payload:{},
       callback:(res)=>{
@@ -80,6 +80,9 @@ class CreditInfo extends PureComponent {
           fileShow: true
         })
       }
+    })*/
+    this.setState({
+      fileShow: true
     })
   }
 
