@@ -55,9 +55,9 @@ class CreditInfo extends PureComponent {
 
   componentDidMount(){
     const { record } = this.props.location.state;
-    const { attachments } = record;
+    const { attas } = record;
     const { dispatch } = this.props
-    const attachmentsList = JSON.parse(attachments)
+    const attachmentsList = JSON.parse(attas)
     this.setState({
       initDate:record,
       creditApplyNo:record.creditApplyNo,
