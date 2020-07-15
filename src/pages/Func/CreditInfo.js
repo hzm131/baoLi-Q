@@ -47,7 +47,7 @@ class CreditInfo extends PureComponent {
     creditApplyNo:'',
     tableList:[],
     attachmentsList:[],
-    attaType:['.jpg','.png',]
+    attaType:['.jpg','.png','.jpeg']
   };
 
   backClick = ()=>{
