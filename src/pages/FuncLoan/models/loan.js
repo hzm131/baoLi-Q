@@ -2,9 +2,10 @@ import {
   addBL,
   fetchBL,
   reject,
+  lookLoan,
 } from '@/services/loan';
 import {
-  findList,
+  findList, lookTable,
 } from '@/services/Cre';
 
 export default {
@@ -39,6 +40,26 @@ export default {
         type: 'save',
         payload: obj,
       });
+    },
+    *lookLoan({ payload,callback }, { call, put }) {
+      const response = yield call(lookLoan, payload);
+      console.log('-----response',response)
+      let { pageIndex = 0 } = payload;
+      let obj = [];
+      if(response.resData){
+        response.resData.map(item=>{
+          item.key = item.id
+        })
+        obj = {
+          list: response.resData,
+          pagination:{
+            total: response.total,
+            current:pageIndex + 1
+          }
+        };
+      }
+
+      if (callback) callback(obj);
     },
     *add({ payload,callback }, { call, put }) {
       const response = yield call(addBL, payload);

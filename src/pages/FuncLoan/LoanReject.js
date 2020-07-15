@@ -32,7 +32,14 @@ class LoanReject extends PureComponent {
   };
 
   onSave = (onSave)=>{
-    const { form } = this.props;
+    const {
+      form: { getFieldDecorator },
+      dispatch,
+      data,
+      form,
+    } = this.props;
+    const { visible,record } = data;
+    console.log('---record',record)
     const { BStatus, } = this.state;
     if(BStatus){
       return
@@ -49,10 +56,11 @@ class LoanReject extends PureComponent {
         reqData:{
           ...values,
           eventTime:(values.eventTime).format('YYYY-MM-DD HH:mm:ss'),
-          loanAmount:values.loanAmount,
           failReasonCode:values.code?values.code:null,
           failReasonMessage:values.message?values.message:null,
-          extendInfo:values.fee?JSON.stringify(en):null
+          loanAmount:(Number(values.loanAmount).toFixed(2)).toString(),
+          extendInfo:values.fee?JSON.stringify(en):null,
+          loanId:record.id,
         }
 
       };
@@ -178,7 +186,7 @@ class LoanReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label="阿里支用申请单号">
               {getFieldDecorator('loanApplyId',{
-                initialValue:record,
+                initialValue:record.loanApplyNo,
                 rules: [{
                   required: true,
                   message:'阿里支用申请单号'

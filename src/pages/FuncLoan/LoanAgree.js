@@ -13,9 +13,7 @@ import {
   TreeSelect,
 } from 'antd';
 
-import ModelTable from '@/pages/tool/ModelTable/ModelTable';
-import TreeTable from '@/pages/tool/TreeTable/TreeTable';
-import { toTree } from '@/pages/tool/ToTree';
+import NormalTable from '@/components/NormalTable';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -32,33 +30,9 @@ class LoanAgree extends PureComponent {
   };
 
   onSave = (onSave)=>{
-    const { form } = this.props;
-    const { BStatus, } = this.state;
-    if(BStatus){
-      return
+    if(typeof onSave === 'function'){
+      onSave(this.clear);
     }
-    form.validateFields((err,values)=>{
-      if(err){
-        return
-      }
-     const obj = {
-        reqData:{
-          ...values,
-          eventTime:(values.eventTime).format('YYYY-MM-DD'),
-          loanAmount:Number(values.loanAmount),
-          extendInfo:{
-            fee:Number(values.fee)
-          }
-        }
-
-      };
-        this.setState({
-         BStatus:true
-       })
-       if(typeof onSave === 'function'){
-         onSave(obj,this.clear);
-       }
-    })
   };
 
   handleCancel = (onCancel)=>{
@@ -89,12 +63,82 @@ class LoanAgree extends PureComponent {
       on
     } = this.props;
 
-    const { visible } = data;
+    const { visible,record } = data;
     const { onSave,onCancel } = on;
 
+    const columns = [
+      {
+        title: '机构借据号',
+        dataIndex: 'institutionLoanNo',
+        key: 'institutionLoanNo',
+      },
+      {
+        title: '支用放款状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'SUCCESS'){
+            return '放款成功'
+          }else if(text === 'REJECTED'){
+            return '放款拒绝'
+          }else if(text === 'FAILED'){
+            return '放款失败'
+          }
+        })
+      },
+      {
+        title: '事件发生时间',
+        dataIndex: 'eventTime',
+        key: 'eventTime',
+      },
+      {
+        title: '对接渠道',
+        dataIndex: 'channel',
+        key: 'channel',
+      },
+      {
+        title: '放款金额(单位：元)',
+        dataIndex: 'loanAmount',
+        key: 'loanAmount',
+      },
+      {
+        title: '服务费用',
+        dataIndex: 'fee',
+        key: 'fee',
+      },
+      {
+        title: '阿里支用申请单号',
+        dataIndex: 'loanApplyId',
+        key: 'loanApplyId',
+      },
+      {
+        title: '拒绝原因码',
+        dataIndex: 'code',
+        key: 'code',
+      },
+      {
+        title: '拒绝原因描述',
+        dataIndex: 'message',
+        key: 'message',
+      },
+      {
+        title: '结果',
+        dataIndex: 'resBody',
+        key: 'resBody',
+      },
+      {
+        title: '操作',
+        fixed:'right',
+        dataIndex: 'operation',
+        render: (text, record) =>
+          <Fragment>
+            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+          </Fragment>
+      },
+    ];
     return (
       <Modal
-        title={"同意"}
+        title={"查看"}
         visible={visible}
         width='80%'
         destroyOnClose
@@ -102,81 +146,11 @@ class LoanAgree extends PureComponent {
         onOk={()=>this.onSave(onSave)}
         onCancel={()=>this.handleCancel(onCancel)}
       >
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='机构借据号'>
-              {getFieldDecorator('institutionLoanNo',{
-                rules: [{
-                  required: true,
-                  message:'机构借据号'
-                }]
-              })(
-                <Input placeholder="请输入机构借据号"/>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="支用放款状态">
-              {getFieldDecorator('status',{
-                rules: [{
-                  required: true,
-                  message:'支用放款状态'
-                }]
-              })( <Input placeholder="请输入支用放款状态" />)}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="事件发生时间">
-              {getFieldDecorator('eventTime',{
-                rules: [{
-                  required: true,
-                  message:'事件发生时间'
-                }]
-              })( <DatePicker style={{width:'100%'}} />)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='对接渠道'>
-              {getFieldDecorator('channel',{
-                rules: [{
-                  required: true,
-                  message:'对接渠道'
-                }]
-              })(
-                <Input placeholder="请输入对接渠道"/>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="放款金额(单位：元)">
-              {getFieldDecorator('loanAmount',{
-                rules: [{
-                  required: true,
-                  message:'放款金额'
-                }]
-              })( <Input placeholder="请输入放款金额"  type={'number'}/>)}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="服务费用">
-              {getFieldDecorator('fee',{
-              })(<Input placeholder="请输入服务费用" type={'number'}/>)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
-          </Col>
-        </Row>
+        <NormalTable
+          columns={columns}
+          dataSource={record}
+          pagination={false}
+        />
       </Modal>
     );
   }

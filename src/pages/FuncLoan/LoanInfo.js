@@ -42,6 +42,7 @@ const { Step } = Steps;
 class CreditInfo extends PureComponent {
   state = {
     fileList:[],
+    tableList:[],
     fileShow:false,
     finaceok:true,
     initDate:{},
@@ -105,13 +106,42 @@ class CreditInfo extends PureComponent {
     })
   }
 
+  onLook = ()=>{
+    const { dispatch } = this.props
+    const { initDate } = this.state
+    this.setState({
+      agreeVisible:true
+    })
+    dispatch({
+      type:'loan/lookLoan',
+      payload:{
+        conditions:[{
+          code:'loan_id',
+          exp:'=',
+          value:initDate.id
+        }],
+        pageIndex:0,
+        pageSize:100000,
+      },
+      callback:(res)=>{
+        console.log('返回',res)
+        if(res.list){
+          this.setState({
+            tableList:res.list
+          })
+        }
+      }
+    })
+
+  }
+
   render() {
     const {
       loading,
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,loanApplyNo } = this.state
+    const { fileName,loanApplyNo,initDate,tableList } = this.state
 
     const description = (
       <DescriptionList >
@@ -168,8 +198,7 @@ class CreditInfo extends PureComponent {
     );
     const action = (
       <Fragment>
-        {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>
-        <Button type="primary" onClick={()=>this.onStatus()}>查看当前状态</Button>*/}
+        <Button type="primary" onClick={this.onLook}>查看</Button>
         <Button type="primary" onClick={this.reject}>审核</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
@@ -209,26 +238,11 @@ class CreditInfo extends PureComponent {
     ];
 
     const OnAddAgree = {
-      onSave:(obj,clear)=>{
-        console.log('---obj',obj)
-        // dispatch({
-        //   type:'MManage/addstock',
-        //   payload:obj,
-        //   callback:(res)=>{
-        //     if(res.errMsg === "成功"){
-        //       message.success("新建成功",1,()=>{
-        //         this.setState({addVisible:false})
-        //         clear()
-        //         dispatch({
-        //           type:'MManage/fetchstock',
-        //           payload:{
-        //             ...page
-        //           }
-        //         })
-        //       })
-        //     }
-        //   }
-        // })
+      onSave:(clear)=>{
+        clear();
+        this.setState({
+          agreeVisible:false
+        })
       },
       onCancel:(clear)=>{
         clear();
@@ -238,7 +252,8 @@ class CreditInfo extends PureComponent {
       }
     }
     const OnAgreeData = {
-      visible:this.state.agreeVisible
+      visible:this.state.agreeVisible,
+      record:tableList,
     }
 
     const OnAddReject = {
@@ -269,7 +284,7 @@ class CreditInfo extends PureComponent {
     }
     const OnRejectData = {
       visible:this.state.rejectVisible,
-      record:loanApplyNo,
+      record:initDate,
     }
 
     return (

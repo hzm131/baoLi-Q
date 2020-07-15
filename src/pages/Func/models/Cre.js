@@ -3,6 +3,7 @@ import {
   fetchBL,
   reject,
   findList,
+  lookTable,
 } from '@/services/Cre';
 
 export default {
@@ -37,6 +38,25 @@ export default {
         type: 'save',
         payload: obj,
       });
+    },
+    *lookTable({ payload,callback }, { call, put }) {
+      const response = yield call(lookTable, payload);
+      let { pageIndex = 0 } = payload;
+      let obj = [];
+      if(response.resData){
+        response.resData.map(item=>{
+          item.key = item.id
+        })
+        obj = {
+          list: response.resData,
+          pagination:{
+            total: response.total,
+            current:pageIndex + 1
+          }
+        };
+      }
+
+      if (callback) callback(obj);
     },
     *addcre({ payload,callback }, { call, put }) {
       const response = yield call(addcre, payload);

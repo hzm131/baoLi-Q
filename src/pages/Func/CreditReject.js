@@ -29,7 +29,14 @@ class CreditReject extends PureComponent {
   };
 
   onSave = (onSave)=>{
-    const { form } = this.props;
+    const {
+      form: { getFieldDecorator },
+      dispatch,
+      data,
+      form,
+    } = this.props;
+    const { visible,record } = data;
+    console.log('---record',record)
     const { BStatus, } = this.state;
     if(BStatus){
       return
@@ -51,8 +58,10 @@ class CreditReject extends PureComponent {
           startDate:values.startDate?(values.startDate).format('YYYY-MM-DD HH:mm:ss'):null,
           eventTime:values.eventTime?(values.eventTime).format('YYYY-MM-DD HH:mm:ss'):null,
           failReasonCode:values.code?values.code:null,
+          quotaAmount:(Number(values.quotaAmount).toFixed(2)).toString(),
           failReasonMessage:values.message?values.message:null,
-          extendInfo:JSON.stringify(en)
+          extendInfo:JSON.stringify(en),
+          creditId:record.id,
         }
 
       };
@@ -216,7 +225,7 @@ class CreditReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label='阿里授信申请单号'>
               {getFieldDecorator('creditApplyNo',{
-                initialValue:record,
+                initialValue:record.creditApplyNo,
                 rules: [{
                   required: true,
                   message:'阿里授信申请单号'

@@ -45,6 +45,7 @@ class CreditInfo extends PureComponent {
     rejectVisible:false,
     fileName:{},
     creditApplyNo:'',
+    tableList:[],
   };
 
   backClick = ()=>{
@@ -101,13 +102,42 @@ class CreditInfo extends PureComponent {
     })
   }
 
+  onLook = ()=>{
+    const { dispatch } = this.props
+    const { initDate } = this.state
+    this.setState({
+      agreeVisible:true
+    })
+    dispatch({
+      type:'Cre/lookTable',
+      payload:{
+        conditions:[{
+          code:'credit_id',
+          exp:'=',
+          value:initDate.id
+        }],
+        pageIndex:0,
+        pageSize:100000,
+      },
+      callback:(res)=>{
+        console.log('返回',res)
+        if(res.list){
+          this.setState({
+            tableList:res.list
+          })
+        }
+      }
+    })
+
+  }
+
   render() {
     const {
       loading,
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName } = this.state
+    const { fileName,tableList } = this.state
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -179,8 +209,8 @@ class CreditInfo extends PureComponent {
     );
     const action = (
       <Fragment>
-        {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>
-        <Button type="primary" onClick={()=>this.onStatus()}>查看当前状态</Button>*/}
+        {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>*/}
+        <Button type="primary" onClick={this.onLook}>查看</Button>
         <Button type="primary" onClick={this.reject}>审核</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
@@ -188,24 +218,10 @@ class CreditInfo extends PureComponent {
       </Fragment>
     );
     const OnAddAgree = {
-      onSave:(obj,clear)=>{
-        console.log('---obj',obj)
-        /*if(obj.uploadFile){
-          const formData = new FormData();
-          if(obj.uploadFile.fileList){
-            obj.uploadFile.fileList.forEach((file)=>{
-              formData.append('files[]', file.originFileObj?file.originFileObj:file);
-              formData.append('type', 'business');
-              formData.append('parentpath', 'invoice');
-            })
-          }
-        }*/
-        dispatch({
-          type:'Cre/addcre',
-          payload:obj,
-          callback:(res)=>{
-            console.log('000',res)
-          }
+      onSave:(clear)=>{
+        clear();
+        this.setState({
+          agreeVisible:false
         })
       },
       onCancel:(clear)=>{
@@ -216,7 +232,8 @@ class CreditInfo extends PureComponent {
       }
     }
     const OnAgreeData = {
-      visible:this.state.agreeVisible
+      visible:this.state.agreeVisible,
+      record:tableList
     }
 
     const OnAddReject = {
@@ -245,7 +262,7 @@ class CreditInfo extends PureComponent {
     }
     const OnRejectData = {
       visible:this.state.rejectVisible,
-      record:this.state.creditApplyNo,
+      record:this.state.initDate,
     }
 
 
@@ -260,17 +277,6 @@ class CreditInfo extends PureComponent {
         /*extraContent={}*/
         onTabChange={this.onOperationTabChange}
       >
-        {/*  <Card title=''>
-        <span>
-                <Button type="primary" loading={ loading } onClick={()=>this.agree()}>同意</Button>
-              </span>
-          <span style={{marginLeft:14}}>
-                <Button  style={{backgroundColor:'red',color:'#fff'}} loading={ loading } onClick={()=>this.reject()}>审核</Button>
-              </span>
-          <span style={{marginLeft:14}}>
-                <Button  onClick={this.backClick}>返回</Button>
-              </span>
-        </Card>*/}
         <Modal
           title="点击下载"
           visible={this.state.fileShow}

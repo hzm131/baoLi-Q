@@ -39,6 +39,13 @@ export async function findList(params) {
     body: str,
   });
 }
+export async function lookTable(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getCreditResult`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 

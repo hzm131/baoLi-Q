@@ -14,6 +14,7 @@ import {
   Upload,
   TreeSelect,
 } from 'antd';
+import NormalTable from '@/components/NormalTable';
 
 
 @connect(({ Cre,loading }) => ({
@@ -30,37 +31,9 @@ class CreditAgree extends PureComponent {
   };
 
   onSave = (onSave)=>{
-    const { form } = this.props;
-    const { BStatus, } = this.state;
-    if(BStatus){
-      return
+    if(typeof onSave === 'function'){
+      onSave(this.clear);
     }
-    form.validateFields((err,values)=>{
-      if(err){
-        return
-      }
-     const obj = {
-        reqData:{
-          ...values,
-          status: 'QUALIFIED',
-          channel: 'SHNF',
-          endDate:values.endDate?(values.endDate).format('YYYY-MM-DD'):null,
-          startDate:values.startDate?(values.startDate).format('YYYY-MM-DD'):null,
-          eventTime:values.eventTime?(values.eventTime).format('YYYY-MM-DD'):null,
-          creditTerm:values.creditTerm?Number(values.creditTerm):null,
-          extendInfo:{
-            loanLimitQuota:values.loanLimitQuota,
-            customerId:2,
-          }
-        }
-      };
-      this.setState({
-         BStatus:true
-       })
-       if(typeof onSave === 'function'){
-         onSave(obj,this.clear);
-       }
-    })
   };
 
   handleCancel = (onCancel)=>{
@@ -91,7 +64,7 @@ class CreditAgree extends PureComponent {
       on
     } = this.props;
     const { deleteFile,fileList } = this.state
-    const { visible } = data;
+    const { visible,record } = data;
     const { onSave,onCancel } = on;
     const props = {
       onRemove: file => {
@@ -117,9 +90,105 @@ class CreditAgree extends PureComponent {
       },
       fileList,
     };
+
+    const columns = [
+      {
+        title: '机构授信编号',
+        dataIndex: 'institutionCreditNo',
+        key: 'institutionCreditNo',
+      },
+      {
+        title: '授信状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'QUALIFIED'){
+            return '授信成功'
+          }else if(text === 'REJECTED'){
+            return '授信拒绝'
+          }else if(text === 'QUALIFIED'){
+            return '默认值'
+          }
+        })
+      },
+      {
+        title: '事件发生时间',
+        dataIndex: 'eventTime',
+        key: 'eventTime',
+      },
+      {
+        title: '对接渠道',
+        dataIndex: 'channel',
+        key: 'channel',
+      },
+      {
+        title: '授信额度金额(单位：元)',
+        dataIndex: 'quotaAmount',
+        key: 'quotaAmount',
+      },
+      {
+        title: '授信期限',
+        dataIndex: 'creditTerm',
+        key: 'creditTerm',
+      },
+      {
+        title: '授信期限单位',
+        dataIndex: 'creditTermUnit',
+        key: 'creditTermUnit',
+      },
+      {
+        title: '授信有效期开始日',
+        dataIndex: 'startDate',
+        key: 'startDate',
+      },
+      {
+        title: '授信有效期结束日',
+        dataIndex: 'endDate',
+        key: 'endDate',
+      },
+      {
+        title: '单笔支用限额（单位：元）',
+        dataIndex: 'loanLimitQuota',
+        key: 'loanLimitQuota',
+      },
+      {
+        title: '阿里授信申请单号',
+        dataIndex: 'creditApplyNo',
+        key: 'creditApplyNo',
+      },
+      {
+        title: '阿里客户',
+        dataIndex: 'customerId',
+        key: 'customerId',
+      },
+      {
+        title: '拒绝原因码',
+        dataIndex: 'code',
+        key: 'code',
+      },
+      {
+        title: '拒绝原因描述',
+        dataIndex: 'message',
+        key: 'message',
+      },
+      {
+        title: '结果',
+        dataIndex: 'resBody',
+        key: 'resBody',
+      },
+      {
+        title: '操作',
+        fixed:'right',
+        dataIndex: 'operation',
+        render: (text, record) =>
+          <Fragment>
+            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+          </Fragment>
+      },
+    ];
     return (
       <Modal
-        title={"同意"}
+        title={"查看"}
         visible={visible}
         width='80%'
         destroyOnClose
@@ -127,127 +196,11 @@ class CreditAgree extends PureComponent {
         onOk={()=>this.onSave(onSave)}
         onCancel={()=>this.handleCancel(onCancel)}
       >
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='机构授信编号'>
-              {getFieldDecorator('institutionCreditNo',{
-                rules: [{
-                  required: true,
-                  message:'机构授信编号'
-                }]
-              })(
-                <Input placeholder="请输入机构授信编号"/>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="授信状态">
-              {getFieldDecorator('status',{
-                rules: [{
-                  required: true,
-                  message:'授信状态'
-                }]
-              })( <Input placeholder="请输入授信状态" />)}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="事件发生时间">
-              {getFieldDecorator('eventTime',{
-                rules: [{
-                  required: true,
-                  message:'事件发生时间'
-                }]
-              })( <DatePicker style={{width:'100%'}} />)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='对接渠道'>
-              {getFieldDecorator('channel',{
-                rules: [{
-                  required: true,
-                  message:'对接渠道'
-                }]
-              })(
-                <Input placeholder="请输入对接渠道"/>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="授信额度金额(单位：元)">
-              {getFieldDecorator('quotaAmount',{
-                rules: [{
-                  required: true,
-                  message:'授信额度金额'
-                }]
-              })( <Input placeholder="请输入授信额度金额" />)}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="授信期限">
-              {getFieldDecorator('creditTerm',{
-              })(<Input placeholder="请输入授信期限" type={'number'}/>)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='授信期限单位'>
-              {getFieldDecorator('creditTermUnit',{
-              })(
-                <Input placeholder="请输入授信期限单位"/>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="授信有效期开始日">
-              {getFieldDecorator('startDate',{
-              })( <DatePicker style={{width:'100%'}} />)}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="授信有效期结束日">
-              {getFieldDecorator('endDate',{
-              })(<DatePicker style={{width:'100%'}} />)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='单笔支用限额（单位：元）'>
-              {getFieldDecorator('loanLimitQuota',{
-                rules: [{
-                  required: true,
-                  message:'单笔支用限额'
-                }]
-              })(
-                <Input placeholder="请输入单笔支用限额"/>
-              )}
-            </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
-          </Col>
-        </Row>
-        {/*<Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
-            <Form.Item label='文件'>
-              {getFieldDecorator('uploadFile',{
-              })(
-                <Upload {...props}>
-                  <Button>
-                    <Icon type="upload" /> 选择文件
-                  </Button>
-                </Upload>
-              )}
-            </Form.Item>
-          </Col>
-
-        </Row>*/}
+        <NormalTable
+          columns={columns}
+          dataSource={record}
+          pagination={false}
+        />
       </Modal>
     );
   }

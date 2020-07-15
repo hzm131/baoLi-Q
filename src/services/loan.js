@@ -24,6 +24,13 @@ export async function reject(params) {
     body: str,
   });
 }
+export async function lookLoan(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getLoanResult`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 
