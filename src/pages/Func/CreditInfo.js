@@ -46,6 +46,7 @@ class CreditInfo extends PureComponent {
     fileName:{},
     creditApplyNo:'',
     tableList:[],
+    attachmentsList:[],
   };
 
   backClick = ()=>{
@@ -54,10 +55,13 @@ class CreditInfo extends PureComponent {
 
   componentDidMount(){
     const { record } = this.props.location.state;
+    const { attachments } = record;
     const { dispatch } = this.props
+    const attachmentsList = JSON.parse(attachments)
     this.setState({
       initDate:record,
-      creditApplyNo:record.creditApplyNo
+      creditApplyNo:record.creditApplyNo,
+      attachmentsList,
     })
 
     //this.onRecord(record)
@@ -137,7 +141,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,tableList } = this.state
+    const { fileName,tableList,attachmentsList } = this.state
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -202,7 +206,13 @@ class CreditInfo extends PureComponent {
 
         <Description term="平台年结算单笔数"><b>{this.state.initDate?this.state.initDate.platformSettlementNumber1Year:''}</b></Description>
         <Description term="与核心企业的平台累计结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}</b></Description>
-        <Description term="与核企（准入买家）的年回款金额"><b>{this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}</b></Description>
+        <Description term="与核企（准入买家）的年回款金额">
+          <Tooltip title={this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}>
+            <p style={{fontWeight:'900',width:'100px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}
+            </p>
+          </Tooltip>
+        </Description>
 
         <Description term="与核企（准入买家）的年结算单笔数"><b>{this.state.initDate?this.state.initDate.platformSettlementNumberWithCoreCompany1Year:''}</b></Description>
       </DescriptionList>
@@ -264,8 +274,20 @@ class CreditInfo extends PureComponent {
       visible:this.state.rejectVisible,
       record:this.state.initDate,
     }
-
-
+    let env = '';
+    switch (process.env.API_ENV) {
+      case 'test': //测试环境
+        env = 'http://49.234.209.104:8080';
+        break;
+      case 'dev': //开发环境
+        //env = 'http://127.0.0.1:8080';
+        env = 'http://192.168.2.166:8080';
+        break;
+      case 'produce': //生产环境
+        env = 'https://www.leapingtech.com/nienboot-0.0.1-SNAPSHOT';
+        break;
+    }
+    console.log('attachmentsList',attachmentsList);
     return (
       <PageHeaderWrapper
         title='详情'
@@ -290,7 +312,12 @@ class CreditInfo extends PureComponent {
             loading={loading}
             pagination={false}
           />*/}
-          <a target="_blank" href={fileName.url} download>{fileName.name}</a>
+        {/*  <a target="_blank" href={fileName.url} download>{fileName.name}</a>*/}
+          {
+            attachmentsList.map(item=>{
+              return <image src={`${env}/static/${item.name}`}/>
+            })
+          }
         </Modal>
         <CreditAgree on={OnAddAgree} data={OnAgreeData} />
         <CreditReject on={OnAddReject} data={OnRejectData} />

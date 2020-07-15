@@ -24,6 +24,7 @@ export default {
       if(response.resData){
         response.resData.map(item=>{
           item.key = item.id
+         // item.fee = JSON.parse(item.extendInfo).fee
         })
          obj = {
           list: response.resData,
@@ -46,6 +47,9 @@ export default {
       if(response.resData){
         response.resData.map(item=>{
           item.key = item.id
+          let obj = JSON.parse(item.extendInfo);
+          item.customerId = obj.customerId?obj.customerId:null
+          item.loanLimitQuota = obj.loanLimitQuota?obj.loanLimitQuota:null
         })
         obj = {
           list: response.resData,

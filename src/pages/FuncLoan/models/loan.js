@@ -49,6 +49,8 @@ export default {
       if(response.resData){
         response.resData.map(item=>{
           item.key = item.id
+          let obj = JSON.parse(item.extendInfo);
+          item.fee = obj.fee?obj.fee:null
         })
         obj = {
           list: response.resData,
