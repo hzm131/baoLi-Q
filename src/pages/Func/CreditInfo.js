@@ -47,6 +47,7 @@ class CreditInfo extends PureComponent {
     creditApplyNo:'',
     tableList:[],
     attachmentsList:[],
+    attaType:['.jpg','.png',]
   };
 
   backClick = ()=>{
@@ -141,7 +142,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,tableList,attachmentsList } = this.state
+    const { fileName,tableList,attachmentsList,attaType } = this.state
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -288,6 +289,7 @@ class CreditInfo extends PureComponent {
         break;
     }
     console.log('attachmentsList',attachmentsList);
+
     return (
       <PageHeaderWrapper
         title='详情'
@@ -315,7 +317,12 @@ class CreditInfo extends PureComponent {
         {/*  <a target="_blank" href={fileName.url} download>{fileName.name}</a>*/}
           {
             attachmentsList.map(item=>{
-              return <image src={`${env}/static/${item.name}`}/>
+              if(attaType.indexOf(item.suffix) !== -1){
+                return <img src={`${env}/static/${item.name}`}/>
+              }else {
+                return <a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
+              }
+
             })
           }
         </Modal>
