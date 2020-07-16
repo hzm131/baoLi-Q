@@ -176,14 +176,26 @@ class CreditInfo extends PureComponent {
 
         <Description term="法人姓名"><b>{this.state.initDate?this.state.initDate.legalPersonName:''}</b></Description>
         <Description term="法人证件类型"><b>{this.state.initDate?this.state.initDate.legalPersonLicenseType:''}</b></Description>
-        <Description term="法人证件号码"><b>{this.state.initDate?this.state.initDate.legalPersonLicenseNo:''}</b></Description>
+        <Description term="法人证件号码"><b>
+          <Tooltip title={this.state.initDate?this.state.initDate.legalPersonLicenseNo:''}>
+            <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.legalPersonLicenseNo:''}
+            </p>
+          </Tooltip>
+        </b></Description>
 
         <Description term="法人手机号"><b>{this.state.initDate?this.state.initDate.legalPersonPhoneNo:''}</b></Description>
         <Description term="法人婚姻状态"><b>{this.state.initDate?this.state.initDate.legalPersonMaritalStatus:''}</b></Description>
         <Description term="法人配偶姓名"><b>{this.state.initDate?this.state.initDate.legalPersonMateName:''}</b></Description>
 
         <Description term="法人证件类型"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseType:''}</b></Description>
-        <Description term="法人配偶证件号码"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}</b></Description>
+        <Description term="法人配偶证件号码">
+          <Tooltip title={this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}>
+            <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="联系人姓名"><b>{this.state.initDate?this.state.initDate.contactPersonName:''}</b></Description>
 
         <Description term="联系人手机号码"><b>{this.state.initDate?this.state.initDate.contactPersonPhoneNo:''}</b></Description>
@@ -203,7 +215,13 @@ class CreditInfo extends PureComponent {
             </p>
           </Tooltip>
         </Description>
-        <Description term="对公账户账号"><b>{this.state.initDate?this.state.initDate.publicAccountsNo:''}</b></Description>
+        <Description term="对公账户账号">
+          <Tooltip title={this.state.initDate?this.state.initDate.publicAccountsNo:''}>
+            <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.publicAccountsNo:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="平台注册时间"><b>{this.state.initDate?this.state.initDate.platformRegisteredTime:''}</b></Description>
 
         <Description term="年交易金额"><b>{this.state.initDate?this.state.initDate.platformTransactionAmount1Year:''}</b></Description>
@@ -236,9 +254,9 @@ class CreditInfo extends PureComponent {
     const action = (
       <Fragment>
         {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>*/}
-        <Button type="primary" onClick={this.onLook}>查看</Button>
         <Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
+        <Button type="primary" onClick={this.onLook}>查看结果</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
       </Fragment>
     );
@@ -271,7 +289,8 @@ class CreditInfo extends PureComponent {
            alert(res.resData)
            clear()
            this.setState({
-             rejectVisible:false
+             rejectVisible:false,
+             checkStatus:true
            })
          }
        })
@@ -332,7 +351,6 @@ class CreditInfo extends PureComponent {
             })
           }*/}
           <List
-            // grid={{ gutter: 8, column: 1 }}
             size='small'
             style={{marginTop:'20px'}}
             dataSource={attachmentsList}
@@ -351,9 +369,8 @@ class CreditInfo extends PureComponent {
                   <Card>
                     <div>
                       {
-
+                        attaType.indexOf(item.suffix) !== -1?<img src={`${env}/static/${item.name}`}/>:<a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
                       }
-                      <img src={`${env}/static/${item.name}`}/>
                     </div>
                   </Card>
                 </List.Item>

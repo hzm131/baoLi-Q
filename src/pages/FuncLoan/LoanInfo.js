@@ -20,7 +20,7 @@ import {
   Tooltip,
   Modal,
   message,
-  Transfer, Badge, Dropdown, Steps,
+  Transfer, Badge, Dropdown, Steps, List,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import router from 'umi/router';
@@ -52,7 +52,8 @@ class CreditInfo extends PureComponent {
     rejectVisible:false,
     fileName:{},
     loanApplyNo:'',
-    attaType:['jpg','png','jpeg']
+    attaType:['jpg','png','jpeg'],
+    checkStatus:false
   };
 
   backClick = ()=>{
@@ -69,8 +70,12 @@ class CreditInfo extends PureComponent {
       initDate:record,
       loanApplyNo:record.loanApplyNo,
       attachmentsList
-
     })
+    if(record.status){
+      this.setState({
+        checkStatus:true
+      })
+    }
     //this.onRecord(record)
   }
 
@@ -216,9 +221,10 @@ class CreditInfo extends PureComponent {
     );
     const action = (
       <Fragment>
-        <Button type="primary" onClick={this.onLook}>查看</Button>
+
         <Button type="primary" onClick={this.reject}>审核</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
+        <Button type="primary" onClick={this.onLook}>查看结果</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
         {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
@@ -254,8 +260,8 @@ class CreditInfo extends PureComponent {
             alert(res.resData)
             clear()
             this.setState({
-              rejectVisible:false
-
+              rejectVisible:false,
+              checkStatus:true
             })
           }
         })
@@ -306,17 +312,32 @@ class CreditInfo extends PureComponent {
           width={"70%"}
           footer={null}
         >
-          {
-            attachmentsList.map(item=>{
-              if(attaType.indexOf(item.suffix) !== -1){
-                return <img src={`${env}/static/${item.name}`}/>
-              }else {
-                return <a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
-              }
-
-            })
-          }
-          {/*<a  href={fileName.url} download>{fileName.name}</a>*/}
+          <List
+            size='small'
+            style={{marginTop:'20px'}}
+            dataSource={attachmentsList}
+            pagination={{
+              onChange: page => {
+                this.setState({
+                  current:page
+                })
+              },
+              pageSize:1,
+              current:this.state.current ,
+              total:attachmentsList.length
+            }}
+            renderItem={item => {
+              return <List.Item>
+                <Card>
+                  <div>
+                    {
+                      attaType.indexOf(item.suffix) !== -1?<img src={`${env}/static/${item.name}`}/>:<a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
+                    }
+                  </div>
+                </Card>
+              </List.Item>
+            }}
+          />
         </Modal>
         <LoanAgree on={OnAddAgree} data={OnAgreeData} />
         <LoanReject on={OnAddReject} data={OnRejectData} />

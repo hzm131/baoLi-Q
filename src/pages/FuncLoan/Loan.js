@@ -206,6 +206,11 @@ class Loan extends PureComponent {
     } = this.props;
     const columns = [
       {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
         title: '贷款申请编号',
         dataIndex: 'loanApplyNo',
         key: 'loanApplyNo',
@@ -214,11 +219,6 @@ class Loan extends PureComponent {
         title: '贷款合同编号',
         dataIndex: 'loanNo',
         key: 'loanNo',
-      },
-      {
-        title: '接收时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
       },
       {
         title: '阿里客户',
@@ -285,9 +285,16 @@ class Loan extends PureComponent {
         fixed:'right',
         dataIndex: 'operation',
         render: (text, record) =>
-          <Fragment>
-            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
-          </Fragment>
+        {
+          if(record.type === 1){
+            return <Fragment>
+              <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+            </Fragment>
+          }else{
+            return <span style={{color:'#ccc'}}>查看</span>
+          }
+        }
+
       },
     ];
     return (

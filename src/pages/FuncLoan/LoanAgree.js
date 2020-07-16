@@ -127,13 +127,9 @@ class LoanAgree extends PureComponent {
         key: 'resBody',
       },
       {
-        title: '操作',
-        fixed:'right',
-        dataIndex: 'operation',
-        render: (text, record) =>
-          <Fragment>
-            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
-          </Fragment>
+        title:'',
+        dataIndex:'caozuo',
+        width:1
       },
     ];
     return (
