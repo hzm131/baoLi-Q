@@ -178,7 +178,11 @@ class LoanReject extends PureComponent {
                   required: true,
                   message:'放款金额'
                 }]
-              })( <InputNumber min={0} max={record.loanAmount?Number(record.loanAmount):0}  onChange={this.changeAmount} style={{width:'100%'}}/>)}
+              })( <InputNumber
+                placeholder={'请输入放款金额'}
+                min={0}
+                max={record.loanAmount?Number(record.loanAmount):0}
+                onChange={this.changeAmount} style={{width:'100%'}}/>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
