@@ -211,6 +211,23 @@ class Credit extends PureComponent {
         key: 'creditApplyNo',
       },
       {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'QUALIFIED'){
+            return '授信成功'
+          }else if(text === 'REJECTED'){
+            return '授信拒绝'
+          }
+        })
+      },
+      {
         title: '阿里客户',
         dataIndex: 'customerId',
         key: 'customerId',

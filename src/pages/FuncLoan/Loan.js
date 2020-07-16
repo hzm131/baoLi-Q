@@ -216,6 +216,11 @@ class Loan extends PureComponent {
         key: 'loanNo',
       },
       {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
         title: '阿里客户',
         dataIndex: 'customerId',
         key: 'customerId',

@@ -43,13 +43,16 @@ class CreditInfo extends PureComponent {
   state = {
     fileList:[],
     tableList:[],
+    attachmentsList:[],
     fileShow:false,
     finaceok:true,
     initDate:{},
+    current:1,
     agreeVisible:false,
     rejectVisible:false,
     fileName:{},
     loanApplyNo:'',
+    attaType:['jpg','png','jpeg']
   };
 
   backClick = ()=>{
@@ -57,12 +60,15 @@ class CreditInfo extends PureComponent {
   }
 
   componentDidMount(){
-    console.log('----',this.props)
     const { record } = this.props.location.state;
+    const { attas } = record;
+    const { dispatch } = this.props
+    const attachmentsList = JSON.parse(attas)
     console.log("record",record)
     this.setState({
       initDate:record,
-      loanApplyNo:record.loanApplyNo
+      loanApplyNo:record.loanApplyNo,
+      attachmentsList
 
     })
     //this.onRecord(record)
@@ -141,7 +147,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,loanApplyNo,initDate,tableList } = this.state
+    const { fileName,loanApplyNo,attaType,initDate,tableList,attachmentsList } = this.state
 
     const description = (
       <DescriptionList >
@@ -200,8 +206,8 @@ class CreditInfo extends PureComponent {
       <Fragment>
         <Button type="primary" onClick={this.onLook}>查看</Button>
         <Button type="primary" onClick={this.reject}>审核</Button>
-        <Button type="primary" onClick={this.backClick}>返回</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
+        <Button type="primary" onClick={this.backClick}>返回</Button>
         {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
     );
@@ -287,6 +293,19 @@ class CreditInfo extends PureComponent {
       record:initDate,
     }
 
+    let env = '';
+    switch (process.env.API_ENV) {
+      case 'test': //测试环境
+        env = 'http://49.234.209.104:8080';
+        break;
+      case 'dev': //开发环境
+        //env = 'http://127.0.0.1:8080';
+        env = 'http://192.168.2.166:8080';
+        break;
+      case 'produce': //生产环境
+        env = 'https://www.leapingtech.com/nienboot-0.0.1-SNAPSHOT';
+        break;
+    }
     return (
       <PageHeaderWrapper
         title='详情'
@@ -300,13 +319,23 @@ class CreditInfo extends PureComponent {
       >
 
         <Modal
-          title="点击下载"
+          title="附件"
           visible={this.state.fileShow}
           onCancel={this.fileCancel}
           width={"70%"}
           footer={null}
         >
-          <a  href={fileName.url} download>{fileName.name}</a>
+          {
+            attachmentsList.map(item=>{
+              if(attaType.indexOf(item.suffix) !== -1){
+                return <img src={`${env}/static/${item.name}`}/>
+              }else {
+                return <a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
+              }
+
+            })
+          }
+          {/*<a  href={fileName.url} download>{fileName.name}</a>*/}
         </Modal>
         <LoanAgree on={OnAddAgree} data={OnAgreeData} />
         <LoanReject on={OnAddReject} data={OnRejectData} />

@@ -6,6 +6,7 @@ import storage from '@/utils/storage'
 import {
   Row,
   Col,
+  List,
   Form,
   Input,
   DatePicker,
@@ -46,6 +47,7 @@ class CreditInfo extends PureComponent {
     fileName:{},
     creditApplyNo:'',
     tableList:[],
+    current:1,
     attachmentsList:[],
     attaType:['jpg','png','jpeg']
   };
@@ -128,7 +130,6 @@ class CreditInfo extends PureComponent {
         pageSize:100000,
       },
       callback:(res)=>{
-        console.log('返回',res)
         if(res.list){
           this.setState({
             tableList:res.list
@@ -209,7 +210,13 @@ class CreditInfo extends PureComponent {
         <Description term="平台年结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformSettlementAmount1Year:''}</b></Description>
 
         <Description term="平台年结算单笔数"><b>{this.state.initDate?this.state.initDate.platformSettlementNumber1Year:''}</b></Description>
-        <Description term="与核心企业的平台累计结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}</b></Description>
+        <Description term="与核心企业的平台累计结算单金额(单位:元)">
+          <Tooltip title={this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}>
+            <p style={{fontWeight:'900',width:'60px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="与核企（准入买家）的年回款金额">
           <Tooltip title={this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}>
             <p style={{fontWeight:'900',width:'100px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
@@ -226,9 +233,8 @@ class CreditInfo extends PureComponent {
         {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>*/}
         <Button type="primary" onClick={this.onLook}>查看</Button>
         <Button type="primary" onClick={this.reject}>审核</Button>
-        <Button type="primary" onClick={this.backClick}>返回</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
-        {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
+        <Button type="primary" onClick={this.backClick}>返回</Button>
       </Fragment>
     );
     const OnAddAgree = {
@@ -291,7 +297,6 @@ class CreditInfo extends PureComponent {
         env = 'https://www.leapingtech.com/nienboot-0.0.1-SNAPSHOT';
         break;
     }
-    console.log('attachmentsList',attachmentsList);
 
     return (
       <PageHeaderWrapper
@@ -305,20 +310,13 @@ class CreditInfo extends PureComponent {
         onTabChange={this.onOperationTabChange}
       >
         <Modal
-          title="点击下载"
+          title="附件"
           visible={this.state.fileShow}
           onCancel={this.fileCancel}
           width={"70%"}
           footer={null}
         >
-          {/*<NormalTable
-            columns={columns}
-            data={{list:this.state.attachmentList}}
-            loading={loading}
-            pagination={false}
-          />*/}
-        {/*  <a target="_blank" href={fileName.url} download>{fileName.name}</a>*/}
-          {
+          {/*{
             attachmentsList.map(item=>{
               if(attaType.indexOf(item.suffix) !== -1){
                 return <img src={`${env}/static/${item.name}`}/>
@@ -327,7 +325,35 @@ class CreditInfo extends PureComponent {
               }
 
             })
-          }
+          }*/}
+          <List
+            // grid={{ gutter: 8, column: 1 }}
+            size='small'
+            style={{marginTop:'20px'}}
+            dataSource={attachmentsList}
+            pagination={{
+              onChange: page => {
+                this.setState({
+                  current:page
+                })
+              },
+              pageSize:1,
+              current:this.state.current ,
+              total:attachmentsList.length
+            }}
+            renderItem={item => {
+                return <List.Item>
+                  <Card>
+                    <div>
+                      {
+
+                      }
+                      <img src={`${env}/static/${item.name}`}/>
+                    </div>
+                  </Card>
+                </List.Item>
+            }}
+          />
         </Modal>
         <CreditAgree on={OnAddAgree} data={OnAgreeData} />
         <CreditReject on={OnAddReject} data={OnRejectData} />
