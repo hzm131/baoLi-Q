@@ -94,6 +94,11 @@ class CreditAgree extends PureComponent {
 
     const columns = [
       {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
         title: '机构授信编号',
         dataIndex: 'institutionCreditNo',
         key: 'institutionCreditNo',

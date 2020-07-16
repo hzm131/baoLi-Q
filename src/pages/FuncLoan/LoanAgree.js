@@ -68,6 +68,11 @@ class LoanAgree extends PureComponent {
 
     const columns = [
       {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
         title: '机构借据号',
         dataIndex: 'institutionLoanNo',
         key: 'institutionLoanNo',
