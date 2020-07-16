@@ -135,7 +135,7 @@ class LoanReject extends PureComponent {
                   message:'支用放款状态'
                 }]
               })( <Select  style={{ width: '100%' }} placeholder={'请选择状态'}>
-                <Option value="REJECTED">放款拒绝</Option>
+                {/*<Option value="FAILED">放款拒绝</Option>*/}
                 <Option value="SUCCESS">放款成功</Option>
                 <Option value="FAILED">放款失败</Option>
               </Select>)}

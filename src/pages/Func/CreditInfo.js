@@ -49,7 +49,8 @@ class CreditInfo extends PureComponent {
     tableList:[],
     current:1,
     attachmentsList:[],
-    attaType:['jpg','png','jpeg']
+    attaType:['jpg','png','jpeg'],
+    checkStatus:false,
   };
 
   backClick = ()=>{
@@ -66,7 +67,11 @@ class CreditInfo extends PureComponent {
       creditApplyNo:record.creditApplyNo,
       attachmentsList,
     })
-
+    if(record.status){
+      this.setState({
+        checkStatus:true
+      })
+    }
     //this.onRecord(record)
   }
 
@@ -146,7 +151,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,tableList,attachmentsList,attaType } = this.state
+    const { fileName,tableList,attachmentsList,attaType,checkStatus } = this.state
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -232,7 +237,7 @@ class CreditInfo extends PureComponent {
       <Fragment>
         {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>*/}
         <Button type="primary" onClick={this.onLook}>查看</Button>
-        <Button type="primary" onClick={this.reject}>审核</Button>
+        <Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
       </Fragment>
