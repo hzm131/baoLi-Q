@@ -179,7 +179,13 @@ class CreditInfo extends PureComponent {
             </p>
           </Tooltip>
         </Description>
-        <Description term="交易货品名称"><b>{this.state.initDate?this.state.initDate.saleProductName:''}</b></Description>
+        <Description term="交易货品名称">
+          <Tooltip title={this.state.initDate?this.state.initDate.saleProductName:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.saleProductName:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="收货时间"><b>{this.state.initDate?this.state.initDate.productReceiveTime:''}</b></Description>
 
         <Description term="订单生成时间"><b>{this.state.initDate?this.state.initDate.orderCreateTime:''}</b></Description>
@@ -197,7 +203,13 @@ class CreditInfo extends PureComponent {
         <Description term="申请放款时间"><b>{this.state.initDate?this.state.initDate.loanApplyTime:''}</b></Description>
 
         <Description term="申请放款金额(单位:元)"><b>{this.state.initDate?this.state.initDate.loanAmount:''}</b></Description>
-        <Description term="法人配偶证件号码"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}</b></Description>
+        <Description term="法人配偶证件号码">
+          <Tooltip title={this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="执行年化费率"><b>{this.state.initDate?this.state.initDate.rate:''}</b></Description>
 
       </DescriptionList>
@@ -211,37 +223,6 @@ class CreditInfo extends PureComponent {
         {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
     );
-
-    const columns = [
-      {
-        title: '附件名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '附件大小',
-        dataIndex: 'size',
-      },
-      {
-        title: '上传时间',
-        dataIndex: 'uptime',
-      },
-      {
-        title: '上传人',
-        dataIndex: 'upuser',
-      },
-      {
-        title:'附件备注',
-        dataIndex:'memo',
-      },
-      {
-        title: '操作',
-        dataIndex:'operation',
-        render: (text, record) => (
-          <a target="_blank" href={`${ process.env.API_ENV === 'test'?'https://49.234.209.104/nien-0.0.1-SNAPSHOT':'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'
-            }${record.path}/${record.name}`} download>查看</a>        ),
-      },
-
-    ];
 
     const OnAddAgree = {
       onSave:(clear)=>{

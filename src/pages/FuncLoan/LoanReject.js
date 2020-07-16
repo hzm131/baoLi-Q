@@ -9,7 +9,7 @@ import {
   DatePicker,
   Form,
   Input,
-  Checkbox,
+  InputNumber,
   TreeSelect,
 } from 'antd';
 
@@ -93,6 +93,15 @@ class LoanReject extends PureComponent {
     })
   }
 
+  changeAmount = (value)=>{
+    const { form } = this.props;
+    const loanAmountApple = form.getFieldValue("loanAmountApple")
+    const fee = Number(loanAmountApple) - Number(value)
+    form.setFieldsValue({
+      fee
+    })
+  }
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -154,14 +163,11 @@ class LoanReject extends PureComponent {
         </Row>
         <Row gutter={16}>
           <Col lg={6} md={12} sm={24}>
-            <Form.Item label='对接渠道'>
-              {getFieldDecorator('channel',{
-                rules: [{
-                  required: true,
-                  message:'对接渠道'
-                }]
+            <Form.Item label='申请放款金额'>
+              {getFieldDecorator('loanAmountApple',{
+               initialValue:record.loanAmount
               })(
-                <Input placeholder="请输入对接渠道"/>
+                <Input placeholder="请输入申请放款金额" disabled/>
               )}
             </Form.Item>
           </Col>
@@ -172,13 +178,13 @@ class LoanReject extends PureComponent {
                   required: true,
                   message:'放款金额'
                 }]
-              })( <Input placeholder="请输入放款金额"  type={'number'}/>)}
+              })( <InputNumber min={0} max={record.loanAmount?Number(record.loanAmount):0}  onChange={this.changeAmount} style={{width:'100%'}}/>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="服务费用">
               {getFieldDecorator('fee',{
-              })(<Input placeholder="请输入服务费用" type={'number'}/>)}
+              })(<Input placeholder="请输入服务费用" type={'number'} disabled/>)}
             </Form.Item>
           </Col>
         </Row>
@@ -195,13 +201,22 @@ class LoanReject extends PureComponent {
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+            <Form.Item label='对接渠道'>
+              {getFieldDecorator('channel',{
+                rules: [{
+                  required: true,
+                  message:'对接渠道'
+                }]
+              })(
+                <Input placeholder="请输入对接渠道"/>
+              )}
+            </Form.Item>
+          </Col>
+          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="拒绝原因码">
               {getFieldDecorator('code',{
               })(<Input placeholder="请输入拒绝原因码"/>)}
             </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
           </Col>
         </Row>
         <Row gutter={16}>
