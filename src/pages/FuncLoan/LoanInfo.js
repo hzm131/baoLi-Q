@@ -63,7 +63,6 @@ class CreditInfo extends PureComponent {
   componentDidMount(){
     const { record } = this.props.location.state;
     const { attas } = record;
-    const { dispatch } = this.props
     const attachmentsList = JSON.parse(attas)
     console.log("record",record)
     this.setState({
@@ -76,7 +75,6 @@ class CreditInfo extends PureComponent {
         checkStatus:true
       })
     }
-    //this.onRecord(record)
   }
 
   filemodal = ()=>{
