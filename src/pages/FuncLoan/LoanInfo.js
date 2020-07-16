@@ -328,7 +328,7 @@ class CreditInfo extends PureComponent {
             }}
             renderItem={item => {
               return <List.Item>
-                <Card>
+                <Card bordered={false}>
                   <div>
                     {
                       attaType.indexOf(item.suffix) !== -1?<img src={`${env}/static/${item.name}`}/>:<a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
