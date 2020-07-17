@@ -10,6 +10,8 @@ export default {
   'menu.credit.creditList.creditList': '授信详情',
   'menu.loan.loanList.detail': '支用详情',
   'menu.credit': '授信管理',
+  'menu.organ': '机构管理',
+  'menu.organ.organList.organList': '机构',
   'menu.loan.loanList.loanList': '支用',
   'menu.loan': '支用管理',
   'menu.creditList': '授信',
