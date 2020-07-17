@@ -34,11 +34,27 @@ const { TextArea } = Input;
 @Form.create()
 class Organ extends PureComponent {
   state ={
-
+    loanApplyNo:'',
+    isDis:true,
   }
 
   componentDidMount() {
-
+    const { dispatch } = this.props;
+    dispatch({
+      type:'organ/findLoan',
+      payload:{
+         reqData:{
+           appId:1
+         }
+      },
+      callback:(res)=>{
+        if(res.resData){
+          this.setState({
+            loanApplyNo:res.resData.serial
+          })
+        }
+      }
+    })
   }
 
 //查询
@@ -46,8 +62,28 @@ class Organ extends PureComponent {
     const { dispatch, form } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err,values)=>{
-      const {loanApplyNo,loanNo} = values;
-      console.log('-values-',values)
+      const { serial } = values;
+      if(serial){
+        dispatch({
+          type:'organ/updateOrgan',
+          payload:{
+            reqData:{
+              appId:1,
+              serial:serial
+            }
+          },
+          callback:(res)=>{
+            if(res.errCode === 200){
+              message.success('成功',1.5,()=>{
+                this.setState({
+                  isDis:true,
+                })
+              })
+            }
+            console.log('结果',res)
+          }
+        })
+      }
     })
   }
 
@@ -56,39 +92,32 @@ class Organ extends PureComponent {
     const { dispatch,form} = this.props;
     //清空输入框
     form.resetFields();
-  }
-  renderForm() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
-    return (
-      <Form onSubmit={this.findList} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={16}>
-            <FormItem label='贷款申请编号'>
-              {getFieldDecorator('loanApplyNo')(<Input placeholder='请输入贷款申请编号' />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={16}>
-            <FormItem label='贷款合同编号'>
-              {getFieldDecorator('loanNo')(<Input placeholder='请输入贷款合同编号' />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={16}>
-            <span>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-               取消
-              </Button>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
+    this,this.setState({
+      isDis:true,
+    })
+    dispatch({
+      type:'organ/findLoan',
+      payload:{
+        reqData:{
+          appId:1
+        }
+      },
+      callback:(res)=>{
+        if(res.resData){
+          this.setState({
+            loanApplyNo:res.resData.serial
+          })
+        }
+      }
+    })
   }
 
+  update = ()=>{
+    const { isDis } = this.state
+    this.setState({
+      isDis:false
+    })
+  }
 
 
 
@@ -102,18 +131,18 @@ class Organ extends PureComponent {
           <Form onSubmit={this.findList} layout="inline">
             <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
               <Col md={8} sm={16}>
-                <FormItem label='贷款申请编号'>
-                  {getFieldDecorator('loanApplyNo')(<Input placeholder='请输入贷款申请编号' />)}
-                </FormItem>
-              </Col>
-              <Col md={8} sm={16}>
-                <FormItem label='贷款合同编号'>
-                  {getFieldDecorator('loanNo')(<Input placeholder='请输入贷款合同编号' />)}
+                <FormItem label='机构授信编号'>
+                  {getFieldDecorator('serial',{
+                    initialValue:this.state.loanApplyNo
+                  })(<Input placeholder='请输入机构授信编号' disabled={this.state.isDis}/>)}
                 </FormItem>
               </Col>
               <Col md={8} sm={16}>
             <span>
-              <Button type="primary" htmlType="submit">
+               <Button type="primary" onClick={this.update} >
+                编辑
+              </Button>
+              <Button type="primary" htmlType="submit" style={{ marginLeft: 8 }}>
                 确定
               </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>

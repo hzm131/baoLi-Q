@@ -1,11 +1,12 @@
 import {
   addBL,
-
+  findLoan,
+  updateOrgan,
 } from '@/services/organ';
 
 
 export default {
-  namespace: 'loan',
+  namespace: 'organ',
   state: {
     fetchData: {
       list: [],
@@ -40,6 +41,14 @@ export default {
     *add({ payload,callback }, { call, put }) {
       const response = yield call(addBL, payload);
       if (callback) callback();
+    },
+    *findLoan({ payload,callback }, { call, put }) {
+      const response = yield call(findLoan, payload);
+      if (callback) callback(response);
+    },
+    *updateOrgan({ payload,callback }, { call, put }) {
+      const response = yield call(updateOrgan, payload);
+      if (callback) callback(response);
     },
     *reject({ payload,callback }, { call, put }) {
       const response = yield call(reject, payload);
