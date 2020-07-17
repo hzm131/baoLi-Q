@@ -78,7 +78,24 @@ class Organ extends PureComponent {
                 this.setState({
                   isDis:true,
                 })
+                dispatch({
+                  type:'organ/findLoan',
+                  payload:{
+                    reqData:{
+                      appId:1
+                    }
+                  },
+                  callback:(res)=>{
+                    if(res.resData){
+                      this.setState({
+                        loanApplyNo:res.resData.serial
+                      })
+                    }
+                  }
+                })
               })
+            }else{
+              message.error('失败')
             }
             console.log('结果',res)
           }
