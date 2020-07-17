@@ -150,7 +150,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,loanApplyNo,attaType,initDate,tableList,attachmentsList } = this.state
+    const { fileName,loanApplyNo,attaType,initDate,tableList,attachmentsList,checkStatus } = this.state
 
     const description = (
       <DescriptionList >
@@ -219,8 +219,7 @@ class CreditInfo extends PureComponent {
     );
     const action = (
       <Fragment>
-
-        <Button type="primary" onClick={this.reject}>审核</Button>
+        <Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         <Button type="primary" onClick={this.onLook}>查看结果</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
