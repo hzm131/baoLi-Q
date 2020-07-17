@@ -109,10 +109,17 @@ class LoanReject extends PureComponent {
     const day = getDaysBetween(eventTime, statementPaymentTime); //相差天数
     const loanAmountApple = form.getFieldValue("loanAmountApple"); //申请放款金额
     const rate = form.getFieldValue("rate"); //年收益
-    const dr = Number(rate || 0) / 360; //日利率
+    /*const dr = Number(rate || 0) / 360; //日利率
     const dd = getFloat(dr, 8); //日利率四舍五入
     console.log(Number(loanAmountApple) * dd * day);
     const jieguo = Number(loanAmountApple || 0) * dd * day;
+    const fee = getFloat(jieguo, 2);
+    const loanAmount = Number(loanAmountApple) - fee;
+    form.setFieldsValue({
+      fee:fee.toFixed(2),
+      loanAmount:loanAmount.toFixed(2)
+    })*/
+    const jieguo = (Number(loanAmountApple || 0) * Number(rate || 0) * day) / 360;
     const fee = getFloat(jieguo, 2);
     const loanAmount = Number(loanAmountApple) - fee;
     form.setFieldsValue({

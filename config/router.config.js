@@ -18,36 +18,41 @@ const routesConfig = [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
-      // { path: '/', redirect: '/credit' },
-      // dashboard
-      // { path: '/', redirect: '/dashboard/analysis' },
-      // {
-      //   path: '/dashboard',
-      //   name: 'dashboard',
-      //   icon: 'dashboard',
-      //   routes: [
-      //     {
-      //       path: '/dashboard/analysis',
-      //       name: 'analysis',
-      //       component: './Dashboard/Analysis',
-      //     },
-      //     {
-      //       path: '/dashboard/monitor',
-      //       name: 'monitor',
-      //       component: './Dashboard/Monitor',
-      //     },
-      //     {
-      //       path: '/dashboard/workplace',
-      //       name: 'workplace',
-      //       component: './Dashboard/Workplace',
-      //     },
-      //   ],
-      // },
-
       // 管理员 dashboard
       {
         path: '/credit',
         component: './Func/Credit',
+      },
+      //机构
+      {
+        path: '/organ',
+        icon: 'export',
+        name: 'organ',
+        hideChildrenInMenu: true,
+        routes:[
+          {
+            path: '/organ',
+            name: 'organList',
+            hideChildrenInMenu: true,
+            routes: [
+              {
+                path: '/organ',
+                redirect: '/organ/list',
+              },
+              {
+                path: '/organ/list',
+                name: 'organList',
+                component: './Organ/Organ',
+              },
+              /*{
+                path: '/credit/creditInfo',
+                name: 'detail',
+                component: './Func/CreditInfo',
+              },*/
+            ],
+          },
+        ]
+
       },
       //授信
       {
