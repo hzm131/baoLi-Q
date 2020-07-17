@@ -212,7 +212,7 @@ class LoanReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label='申请放款金额'>
               {getFieldDecorator('loanAmountApple',{
-                initialValue:666.35
+                initialValue:record.loanAmount
               })(
                 <Input placeholder="请输入申请放款金额" disabled/>
               )}
