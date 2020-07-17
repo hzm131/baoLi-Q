@@ -253,7 +253,7 @@ class CreditReject extends PureComponent {
             <Form.Item label='拒绝原因码'>
               {getFieldDecorator('code',{
               })(
-                <Input placeholder="请输入拒绝原因码"/>
+                <Input placeholder="请输入拒绝原因码" maxLength={64}/>
               )}
             </Form.Item>
           </Col>
@@ -268,7 +268,7 @@ class CreditReject extends PureComponent {
           <Col lg={24} md={24} sm={24}>
             <Form.Item label="拒绝原因描述">
               {getFieldDecorator('message', {
-              })(<TextArea rows={4} />)}
+              })(<TextArea rows={4} maxLength={256}/>)}
             </Form.Item>
           </Col>
         </Row>
