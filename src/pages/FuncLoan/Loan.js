@@ -221,6 +221,18 @@ class Loan extends PureComponent {
         key: 'loanNo',
       },
       {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'SUCCESS'){
+            return '放款成功'
+          }else if(text === 'FAILED'){
+            return '放款失败'
+          }
+        })
+      },
+      {
         title: '阿里客户',
         dataIndex: 'customerId',
         key: 'customerId',
