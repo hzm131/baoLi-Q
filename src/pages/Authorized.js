@@ -15,14 +15,14 @@ const IndexPage = ({ children, location }) => {
     return <Redirect to='/user/login' />;
   }
 
-  let indexpage = "/organ";
+  let indexpage = "/credit";
   if(userinfo.roleList && userinfo.roleList.length){
     indexpage = userinfo.roleList[0].indexpage;
   }
 
   console.log('location:',location)
   if (location.pathname === '/') {
-    let indexPage = '/organ'; // 默认管理员统计页面
+    let indexPage = '/credit'; // 默认管理员统计页面
     // 查看角色是否配置 index, 并且设置 index 页面
 /*    getAuthority().forEach(item => {
       console.log('item:00000:',item);
@@ -36,7 +36,7 @@ const IndexPage = ({ children, location }) => {
     });*/
     if(getAuthority().length){
       if(!indexpage){
-        indexPage = '/organ';
+        indexPage = '/credit';
       }else{
         indexPage = indexpage;
       }

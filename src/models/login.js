@@ -8,8 +8,6 @@ import { reloadAuthorized } from '@/utils/Authorized';
 import { requestLogin, requestLogout } from '@/services/user';
 import storage from '@/utils/storage';
 
-
-
 export default {
   namespace: 'login',
 

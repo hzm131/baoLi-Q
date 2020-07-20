@@ -20,11 +20,11 @@ const routesConfig = [
     routes: [
       // 管理员 dashboard
       {
-        path: '/organ',
-        component: './Organ/Organ',
+        path: '/credit',
+        component: './Func/Credit',
       },
       //机构
-      {
+    /*  {
         path: '/organ',
         icon: 'export',
         name: 'organ',
@@ -44,16 +44,16 @@ const routesConfig = [
                 name: 'organList',
                 component: './Organ/Organ',
               },
-              /*{
+              /!*{
                 path: '/credit/creditInfo',
                 name: 'detail',
                 component: './Func/CreditInfo',
-              },*/
+              },*!/
             ],
           },
         ]
 
-      },
+      },*/
       //授信
       {
         path: '/credit',
