@@ -76,18 +76,6 @@ class CreditInfo extends PureComponent {
   }
 
   filemodal = ()=>{
-    const { dispatch } = this.props;
-  /*  dispatch({
-      type:'Cre/findList',
-      payload:{},
-      callback:(res)=>{
-        console.log('----res',res)
-        this.setState({
-          fileName:res,
-          fileShow: true
-        })
-      }
-    })*/
     this.setState({
       fileShow: true
     })
