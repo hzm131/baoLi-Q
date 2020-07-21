@@ -25,10 +25,8 @@ class NormalTable extends PureComponent {
             }}>{text}</div>
           </Tooltip>
         }
-        return item
-      });
-      coplyColumns = [...columns];
-      columns = columns.map((item,index) => {
+
+        item.check = false;
         if(index === columns.length -1){
           item = {
             ...item,
@@ -60,14 +58,26 @@ class NormalTable extends PureComponent {
               }
             }
           }
+        }else{
+          item = {
+            ...item,
+            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+              return <div style={{padding:12}}>
+                <Checkbox onChange={(e)=>this.onChangeCheck(e,item,coplyColumns[index])} checked={item.check}>锁定</Checkbox>
+              </div>
+            },
+
+          }
         }
         return item
-      })
+      });
+      coplyColumns = [...columns];
     }
     this.state = {
       selectedRowKeys: [],
       columns,
-      open:false
+      open:false,
+      check:{}
     };
   }
 
@@ -77,7 +87,6 @@ class NormalTable extends PureComponent {
       onChange(pagination, filters, sorter);
     }
   };
-
 
   onChange = (e,item)=>{
     const { columns } = this.state;
@@ -101,16 +110,43 @@ class NormalTable extends PureComponent {
       columns:[...columns]
     })
   };
+
   onFocus = ()=>{
     this.setState({
       open:true
     })
   };
+
   onBlur = ()=>{
     this.setState({
       open:false
     })
   };
+
+  onChangeCheck = (e,data,cdata)=>{
+    const { columns } = this.state;
+    columns.map((item) =>{
+      if(item.dataIndex === data.dataIndex){
+        if(e.target.checked === true){
+          item.fixed = 'left';
+          item.check = true;
+          item.sort = - (columns.length - item.sort);
+        }else{
+          item.fixed = '';
+          item.check = false;
+          item.sort = columns.length - Math.abs(item.sort)
+        }
+      }
+    })
+
+    columns.sort((a,b)=>{
+      return a.sort - b.sort
+    });
+
+    this.setState({
+      columns:[...columns]
+    })
+  }
 
   render() {
     const { selectedRowKeys, needTotalList,columns } = this.state;
