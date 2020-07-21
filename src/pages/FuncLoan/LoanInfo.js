@@ -247,11 +247,22 @@ class CreditInfo extends PureComponent {
           payload:obj,
           callback:(res)=>{
             alert(res.resData)
-            clear()
-            this.setState({
-              rejectVisible:false,
-              checkStatus:true
-            })
+            if(res.errCode === 200){
+              message.success('成功',1.5,()=>{
+                clear()
+                this.setState({
+                  checkStatus:true,
+                  rejectVisible:false
+                })
+              })
+            }else{
+              message.error(`失败-${res.errMsg}`,1.5,()=>{
+                clear(1)
+                this.setState({
+                  checkStatus:false
+                })
+              })
+            }
           }
         })
       },
