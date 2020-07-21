@@ -62,6 +62,18 @@ class CreditInfo extends PureComponent {
     const { attas } = record;
     const { dispatch } = this.props
     const attachmentsList = JSON.parse(attas)
+    switch(record.legalPersonMaritalStatus){
+      case 'UNMARRIED': record.legalPersonMaritalStatus = '未婚'
+        break;
+      case 'MARRIED': record.legalPersonMaritalStatus = '已婚'
+        break;
+      case 'DIVORCE': record.legalPersonMaritalStatus = '离异'
+        break;
+      case 'WIDOWED': record.legalPersonMaritalStatus = '丧偶'
+        break;
+      default :record.legalPersonMaritalStatus = '未知'
+
+    }
     this.setState({
       initDate:record,
       creditApplyNo:record.creditApplyNo,
@@ -173,7 +185,9 @@ class CreditInfo extends PureComponent {
         </b></Description>
 
         <Description term="法人手机号"><b>{this.state.initDate?this.state.initDate.legalPersonPhoneNo:''}</b></Description>
-        <Description term="法人婚姻状态"><b>{this.state.initDate?this.state.initDate.legalPersonMaritalStatus:''}</b></Description>
+        <Description term="法人婚姻状态">
+          <b>{this.state.initDate?this.state.initDate.legalPersonMaritalStatus:''}</b>
+        </Description>
         <Description term="法人配偶姓名"><b>{this.state.initDate?this.state.initDate.legalPersonMateName:''}</b></Description>
 
         <Description term="法人证件类型"><b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseType:''}</b></Description>

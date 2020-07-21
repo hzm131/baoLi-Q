@@ -272,6 +272,17 @@ class Credit extends PureComponent {
         title: '法人婚姻状态',
         dataIndex: 'legalPersonMaritalStatus',
         key: 'legalPersonMaritalStatus',
+        render:((text,record)=>{
+          if(text === 'UNMARRIED'){
+            return '未婚'
+          }else if(text === 'MARRIED'){
+            return '已婚'
+          }else if(text === 'DIVORCE'){
+            return '离异'
+          }else if(text === 'WIDOWED'){
+            return '丧偶'
+          }
+        })
       },
       {
         title: '法人配偶姓名',

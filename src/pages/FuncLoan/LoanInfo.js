@@ -294,7 +294,6 @@ class CreditInfo extends PureComponent {
         default :
           str = '未知类型'
       }
-
       return str
     }
 
@@ -311,6 +310,7 @@ class CreditInfo extends PureComponent {
         env = 'https://www.leapingtech.com/nienboot-0.0.1-SNAPSHOT';
         break;
     }
+
     return (
       <PageHeaderWrapper
         title='详情'
@@ -346,7 +346,7 @@ class CreditInfo extends PureComponent {
             }}
             renderItem={item => {
               return <List.Item>
-                <Card bordered={false}>
+                <Card bordered={false} bodyStyle={{padding:0}}>
                   <div>
                     <h1 style={{margin:'12px 0'}}>{funcType(item.type)}</h1>
                     {
