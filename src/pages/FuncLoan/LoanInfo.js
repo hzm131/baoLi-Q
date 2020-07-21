@@ -246,9 +246,8 @@ class CreditInfo extends PureComponent {
           type:'loan/reject',
           payload:obj,
           callback:(res)=>{
-            alert(res.resData)
             if(res.errCode === 200){
-              message.success('成功',1.5,()=>{
+              message.success(`成功-${res.resData}`,1.5,()=>{
                 clear()
                 this.setState({
                   checkStatus:true,
