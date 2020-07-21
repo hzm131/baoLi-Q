@@ -118,13 +118,13 @@ class LoanAgree extends PureComponent {
       },
       {
         title: '拒绝原因码',
-        dataIndex: 'code',
-        key: 'code',
+        dataIndex: 'failReasonCode',
+        key: 'failReasonCode',
       },
       {
         title: '拒绝原因描述',
-        dataIndex: 'message',
-        key: 'message',
+        dataIndex: 'failReasonMessage',
+        key: 'failReasonMessage',
       },
       {
         title: '结果',

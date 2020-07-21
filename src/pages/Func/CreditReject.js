@@ -45,7 +45,6 @@ class CreditReject extends PureComponent {
       if(err){
         return
       }
-
       const en = {
         customerId:values.customerId,
         loanLimitQuota:values.loanLimitQuota
