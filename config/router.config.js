@@ -20,7 +20,7 @@ const routesConfig = [
     routes: [
       // 管理员 dashboard
       {
-        path: '/credit',
+        path: '/credit/list',
         component: './Func/Credit',
       },
       //机构

@@ -7,7 +7,7 @@ export default {
   'menu.system': '系统管理',
   'menu.系统管理': '系统管理',
   'menu.credit.creditList.detail': '授信详情',
-  'menu.credit.creditList.creditList': '授信详情',
+  'menu.credit.creditList.creditList': '授信',
   'menu.loan.loanList.detail': '支用详情',
   'menu.credit': '授信管理',
   'menu.organ': '机构管理',
