@@ -194,6 +194,6 @@ export default {
   manifest: {
     basePath: '/',
   },
-
+  history: 'browser',
   chainWebpack: webpackPlugin,
 };
