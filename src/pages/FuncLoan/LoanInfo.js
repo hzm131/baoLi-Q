@@ -291,6 +291,7 @@ class CreditInfo extends PureComponent {
         case 'LEGAL_PERSON_SINGLE_CERTIFICATE' :
           str = '单身证明书'
           break ;
+
         default :
           str = '未知类型'
       }
