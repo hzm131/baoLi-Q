@@ -125,7 +125,6 @@ class CreditInfo extends PureComponent {
         pageSize:100000,
       },
       callback:(res)=>{
-        console.log('返回',res)
         if(res.list){
           this.setState({
             tableList:res.list
@@ -174,6 +173,7 @@ class CreditInfo extends PureComponent {
             </p>
           </Tooltip>
         </Description>
+
         <Description term="交易货品名称">
           <Tooltip title={this.state.initDate?this.state.initDate.saleProductName:''}>
             <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
@@ -181,6 +181,7 @@ class CreditInfo extends PureComponent {
             </p>
           </Tooltip>
         </Description>
+
         <Description term="收货时间"><b>{this.state.initDate?this.state.initDate.productReceiveTime:''}</b></Description>
 
         <Description term="订单生成时间"><b>{this.state.initDate?this.state.initDate.orderCreateTime:''}</b></Description>
@@ -233,6 +234,7 @@ class CreditInfo extends PureComponent {
         })
       }
     }
+
     const OnAgreeData = {
       visible:this.state.agreeVisible,
       record:tableList,
@@ -240,12 +242,10 @@ class CreditInfo extends PureComponent {
 
     const OnAddReject = {
       onSave:(obj,clear)=>{
-        console.log('---obj',obj)
         dispatch({
           type:'loan/reject',
           payload:obj,
           callback:(res)=>{
-            console.log('---返回',res)
             alert(res.resData)
             clear()
             this.setState({
@@ -264,6 +264,7 @@ class CreditInfo extends PureComponent {
         })
       }
     }
+
     const OnRejectData = {
       visible:this.state.rejectVisible,
       record:initDate,

@@ -198,7 +198,6 @@ class Loan extends PureComponent {
     router.push('/loan/loanInfo',{record})
   }
 
-
   render() {
     const {
       form:{getFieldDecorator},

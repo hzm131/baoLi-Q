@@ -310,6 +310,34 @@ class CreditInfo extends PureComponent {
         break;
     }
 
+    const funcType = (type)=>{
+      let str = ""
+      switch (type) {
+        case 'BUSINESS_LICENSE_PICTURE' :
+          str = '营业执照'
+          break ;
+        case 'LEGAL_PERSON_ID_CARD_FRONT' :
+          str = '身份证（正面）'
+          break ;
+        case 'LEGAL_PERSON_ID_CARD_BACK' :
+          str = '身份证（反面）'
+          break ;
+        case 'LEGAL_PERSON_MARRIAGE_CERTIFICATE' :
+          str = '结婚证照片'
+          break ;
+        case 'LEGAL_PERSON_DIVORCE_CERTIFICATE' :
+          str = '离婚证'
+          break ;
+        case 'LEGAL_PERSON_SINGLE_CERTIFICATE' :
+          str = '单身证明书'
+          break ;
+        default :
+          str = '未知类型'
+      }
+
+      return str
+    }
+
     return (
       <PageHeaderWrapper
         title='详情'
@@ -340,7 +368,6 @@ class CreditInfo extends PureComponent {
           }*/}
           <List
             size='small'
-            style={{marginTop:'20px'}}
             dataSource={attachmentsList}
             pagination={{
               onChange: page => {
@@ -354,8 +381,9 @@ class CreditInfo extends PureComponent {
             }}
             renderItem={item => {
                 return <List.Item>
-                  <Card bordered={false}>
+                  <Card bordered={false} bodyStyle={{padding:0}}>
                     <div>
+                      <p style={{margin:'12px 0'}}>{funcType(item.type)}</p>
                       {
                         attaType.indexOf(item.suffix) !== -1?<img src={`${env}/static/${item.name}`}/>:<a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
                       }
