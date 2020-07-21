@@ -62,6 +62,7 @@ class CreditReject extends PureComponent {
           failReasonMessage:values.message?values.message:null,
           extendInfo:JSON.stringify(en),
           creditId:record.id,
+          channel:'SHNF',
         }
 
       };
@@ -156,12 +157,13 @@ class CreditReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='对接渠道'>
               {getFieldDecorator('channel',{
-                rules: [{
-                  required: true,
-                  message:'对接渠道'
-                }]
+                initialValue:'上海国立商业保理'
+                // rules: [{
+                //   required: true,
+                //   message:'对接渠道'
+                // }]
               })(
-                <Input placeholder="请输入对接渠道"/>
+                <Input placeholder="请输入对接渠道" disabled/>
               )}
             </Form.Item>
           </Col>

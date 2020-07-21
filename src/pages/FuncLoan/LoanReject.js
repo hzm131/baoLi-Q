@@ -61,6 +61,7 @@ class LoanReject extends PureComponent {
           loanAmount:(Number(values.loanAmount).toFixed(2)).toString(),
           extendInfo:values.fee?JSON.stringify(en):null,
           loanId:record.id,
+          channel:'SHNF',
         }
 
       };
@@ -252,12 +253,13 @@ class LoanReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='对接渠道'>
               {getFieldDecorator('channel',{
-                rules: [{
-                  required: true,
-                  message:'对接渠道'
-                }]
+                initialValue:'上海国立商业保理'
+                // rules: [{
+                //   required: true,
+                //   message:'对接渠道'
+                // }]
               })(
-                <Input placeholder="请输入对接渠道"/>
+                <Input placeholder="请输入对接渠道" disabled/>
               )}
             </Form.Item>
           </Col>
