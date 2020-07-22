@@ -28,7 +28,7 @@ import FooterToolbar from '@/components/FooterToolbar';
 import NormalTable from '@/components/NormalTable';
 import CreditAgree from './CreditAgree';
 import CreditReject from './CreditReject';
-
+import env from '@/pages/tool/env';
 const { Description } = DescriptionList;
 
 @connect(({ Cre, loading }) => ({
@@ -355,56 +355,14 @@ class CreditInfo extends PureComponent {
       visible:this.state.rejectVisible,
       record:this.state.initDate,
     }
-    let env = '';
-    switch (process.env.API_ENV) {
-      case 'test': //测试环境
-        env = 'http://49.234.209.104:8080';
-        break;
-      case 'dev': //开发环境
-        //env = 'http://127.0.0.1:8080';
-        env = 'http://192.168.2.166:8080';
-        break;
-      case 'produce': //生产环境
-        env = 'https://www.leapingtech.com/nienboot-0.0.1-SNAPSHOT';
-        break;
-    }
-
-    const funcType = (type)=>{
-      let str = ""
-      switch (type) {
-        case 'BUSINESS_LICENSE_PICTURE' :
-          str = '营业执照'
-          break ;
-        case 'LEGAL_PERSON_ID_CARD_FRONT' :
-          str = '身份证（正面）'
-          break ;
-        case 'LEGAL_PERSON_ID_CARD_BACK' :
-          str = '身份证（反面）'
-          break ;
-        case 'LEGAL_PERSON_MARRIAGE_CERTIFICATE' :
-          str = '结婚证照片'
-          break ;
-        case 'LEGAL_PERSON_DIVORCE_CERTIFICATE' :
-          str = '离婚证'
-          break ;
-        case 'LEGAL_PERSON_SINGLE_CERTIFICATE' :
-          str = '单身证明书'
-          break ;
-        default :
-          str = '未知类型'
-      }
-
-      return str
-    }
 
     const columns = [
       {
         title: '序号',
         dataIndex: 'key',
-      },
-      {
-        title: '附件名称',
-        dataIndex: 'name',
+        render: (text)=>{
+          return text + 1
+        }
       },
       {
         title: '附件类型',
@@ -422,13 +380,16 @@ class CreditInfo extends PureComponent {
         })
       },
       {
-        title: '操作',
+        title: '附件名称',
         dataIndex:'operation',
         render: (text, record) => (
-          <a target="_blank" href={`${ process.env.API_ENV === 'test'?'https://49.234.209.104/nien-0.0.1-SNAPSHOT':'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'
-          }${record.path}`} download>查看</a>        ),
+          <a target="_blank" href={`${env}/static/file/${record.name}`} download>{record.name}</a>        ),
       },
-
+      {
+        title: '',
+        dataIndex:'caozuo',
+        width:1
+      }
     ];
 
     return (

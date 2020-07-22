@@ -4,6 +4,7 @@ import pageRoutes from './router.config';
 import webpackPlugin from './plugin.config';
 import defaultSettings from '../src/defaultSettings';
 import slash from 'slash2';
+import env from '@/pages/tool/env'
 
 const plugins = [
   [
@@ -53,19 +54,6 @@ if (process.env.APP_TYPE === 'site') {
 }
 console.log("环境",process.env.API_ENV);
 
-let env = '';
-switch (process.env.API_ENV) {
-  case 'test': //测试环境
-    env = 'http://49.234.209.104:8080';
-    break;
-  case 'dev': //开发环境
-    //env = 'http://127.0.0.1:8080';
-    env = 'http://192.168.2.166:8080';
-    break;
-  case 'produce': //生产环境
-    env = 'https://www.leapingtech.com/nienboot-0.0.1-SNAPSHOT';
-    break;
-}
 console.log("env",env);
 export default {
   // add for transfer to umi
@@ -119,41 +107,6 @@ export default {
       secure: false,
       pathRewrite: {
         '^/wookong/': '',
-      },
-    },
-    '/aa': {
-      target: 'https://api.huobi.pro',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/aa/': '',
-      },
-    },
-    '/xiazai': {
-      target: 'https://49.234.209.104/nienboot-0.0.1-SNAPSHOT',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/xiazai/': '',
-      },
-    },
-    '/bb': {
-      target: 'https://pro-api.coinmarketcap.com',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/bb/': '',
-      },
-    },
-    '/cc': {
-      target: 'https://api.binance.com',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/cc/': '',
-      },
-    },
-    '/dd': {
-      target: 'https://www.okex.com',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/dd/': '',
       },
     },
     // '/mycomputer/': {
