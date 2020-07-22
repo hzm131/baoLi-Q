@@ -242,6 +242,13 @@ class Credit extends PureComponent {
         title: '枚举类型',
         dataIndex: 'companyLicenseType',
         key: 'companyLicenseType',
+        render:((text,record)=>{
+          if(text === 'UNITY'){
+            return '企业的统一社会信用代码'
+          }else if(text === 'GENERAL'){
+            return '传统工商注册类型'
+          }
+        })
       },
       {
         title: '法人姓名',
@@ -257,6 +264,13 @@ class Credit extends PureComponent {
         title: '法人证件类型',
         dataIndex: 'legalPersonLicenseType',
         key: 'legalPersonLicenseType',
+        render:((text,record)=>{
+          if(text === 'IDENTITY_CARD'){
+            return '身份证'
+          }else {
+            return '其他'
+          }
+        })
       },
       {
         title: '法人证件号码',

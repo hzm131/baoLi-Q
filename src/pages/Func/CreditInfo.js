@@ -72,7 +72,25 @@ class CreditInfo extends PureComponent {
       case 'WIDOWED': record.legalPersonMaritalStatus = '丧偶'
         break;
       default :record.legalPersonMaritalStatus = '未知'
+    }
+    switch(record.companyLicenseType){
+      case 'UNITY': record.companyLicenseType = '企业的统一社会信用代码'
+        break;
+      case 'GENERAL': record.companyLicenseType = '传统工商注册类型'
+        break;
+      default :record.companyLicenseType = '未知'
+    }
 
+    switch(record.legalPersonLicenseType){
+      case 'IDENTITY_CARD': record.legalPersonLicenseType = '身份证'
+        break;
+      default :record.legalPersonLicenseType = '其他'
+    }
+
+    switch(record.legalPersonMateLicenseType){
+      case 'IDENTITY_CARD': record.legalPersonMateLicenseType = '身份证'
+        break;
+      default :record.legalPersonMateLicenseType = '其他'
     }
     this.setState({
       initDate:record,
@@ -171,7 +189,9 @@ class CreditInfo extends PureComponent {
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
         <Description term="公司名称"><b>{this.state.initDate?this.state.initDate.companyName:''}</b></Description>
-        <Description term="枚举类型"><b>{this.state.initDate?this.state.initDate.companyLicenseType:''}</b></Description>
+        <Description term="枚举类型">
+          <b>{this.state.initDate?this.state.initDate.companyLicenseType:''}</b>
+        </Description>
         <Description term="企业身份标识号码"><b>{this.state.initDate?this.state.initDate.companyLicenseNo:''}</b></Description>
 
         <Description term="法人姓名"><b>{this.state.initDate?this.state.initDate.legalPersonName:''}</b></Description>
