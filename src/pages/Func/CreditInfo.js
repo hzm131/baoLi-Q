@@ -62,6 +62,9 @@ class CreditInfo extends PureComponent {
     const { attas } = record;
     const { dispatch } = this.props
     const attachmentsList = JSON.parse(attas)
+    attachmentsList.map((item,index)=>{
+      item.key = index
+    })
     switch(record.legalPersonMaritalStatus){
       case 'UNMARRIED': record.legalPersonMaritalStatus = '未婚'
         break;
@@ -188,7 +191,13 @@ class CreditInfo extends PureComponent {
         </Description>
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
-        <Description term="公司名称"><b>{this.state.initDate?this.state.initDate.companyName:''}</b></Description>
+        <Description term="公司名称">
+          <Tooltip title={this.state.initDate?this.state.initDate.companyName:''}>
+            <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.companyName:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="枚举类型">
           <b>{this.state.initDate?this.state.initDate.companyLicenseType:''}</b>
         </Description>
@@ -221,7 +230,13 @@ class CreditInfo extends PureComponent {
         <Description term="联系人姓名"><b>{this.state.initDate?this.state.initDate.contactPersonName:''}</b></Description>
 
         <Description term="联系人手机号码"><b>{this.state.initDate?this.state.initDate.contactPersonPhoneNo:''}</b></Description>
-        <Description term="对公账户户名"><b>{this.state.initDate?this.state.initDate.publicAccountsName:''}</b></Description>
+        <Description term="对公账户户名">
+          <Tooltip title={this.state.initDate?this.state.initDate.publicAccountsName:''}>
+            <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {this.state.initDate?this.state.initDate.publicAccountsName:''}
+            </p>
+          </Tooltip>
+        </Description>
         <Description term="对公账户银行名字">
           <Tooltip title={this.state.initDate?this.state.initDate.publicAccountsBank:''}>
             <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
@@ -382,6 +397,40 @@ class CreditInfo extends PureComponent {
       return str
     }
 
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'key',
+      },
+      {
+        title: '附件名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '附件类型',
+        dataIndex: 'type',
+        render:((text,record)=>{
+          if(text === 'COMPANY_LICENSE'){
+            return '营业执照'
+          }else if(text === 'PERSON_ID_CARD_FRONT'){
+            return '身份证'
+          }else if(text === 'MARRIAGE_CERTIFICATE'){
+            return '结婚证照片'
+          }else {
+            return '未知类型'
+          }
+        })
+      },
+      {
+        title: '操作',
+        dataIndex:'operation',
+        render: (text, record) => (
+          <a target="_blank" href={`${ process.env.API_ENV === 'test'?'https://49.234.209.104/nien-0.0.1-SNAPSHOT':'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'
+          }${record.path}`} download>查看</a>        ),
+      },
+
+    ];
+
     return (
       <PageHeaderWrapper
         title='详情'
@@ -400,41 +449,11 @@ class CreditInfo extends PureComponent {
           width={"70%"}
           footer={null}
         >
-          {/*{
-            attachmentsList.map(item=>{
-              if(attaType.indexOf(item.suffix) !== -1){
-                return <img src={`${env}/static/${item.name}`}/>
-              }else {
-                return <a target="_blank" href={`${env}/static/${item.name}`} download>{item.name}</a>
-              }
-
-            })
-          }*/}
-          <List
-            size='small'
+          <NormalTable
+            columns={columns}
             dataSource={attachmentsList}
-            pagination={{
-              onChange: page => {
-                this.setState({
-                  current:page
-                })
-              },
-              pageSize:1,
-              current:this.state.current ,
-              total:attachmentsList.length
-            }}
-            renderItem={item => {
-                return <List.Item>
-                  <Card bordered={false} bodyStyle={{padding:0}}>
-                    <div>
-                      <h2 style={{marginTop:'-13px'}}>{funcType(item.type)}</h2>
-                      {
-                        attaType.indexOf(item.suffix) !== -1?<img src={`${env}/static/file/${item.name}`}/>:<a target="_blank" href={`${env}/static/file/${item.name}`} download>{item.name}</a>
-                      }
-                    </div>
-                  </Card>
-                </List.Item>
-            }}
+            loading={loading}
+            pagination={false}
           />
         </Modal>
         <CreditAgree on={OnAddAgree} data={OnAgreeData} />

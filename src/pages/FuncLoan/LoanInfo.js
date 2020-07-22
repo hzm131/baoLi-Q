@@ -64,7 +64,10 @@ class CreditInfo extends PureComponent {
     const { record } = this.props.location.state;
     const { attas } = record;
     const attachmentsList = JSON.parse(attas)
-    console.log("record",record)
+    attachmentsList.map((item,index)=>{
+      item.key = index
+    })
+
     this.setState({
       initDate:record,
       loanApplyNo:record.loanApplyNo,
@@ -308,6 +311,40 @@ class CreditInfo extends PureComponent {
       return str
     }
 
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'key',
+      },
+      {
+        title: '附件名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '附件类型',
+        dataIndex: 'type',
+        render:((text,record)=>{
+          if(text === 'COMPANY_LICENSE'){
+            return '营业执照'
+          }else if(text === 'PERSON_ID_CARD_FRONT'){
+            return '身份证'
+          }else if(text === 'MARRIAGE_CERTIFICATE'){
+            return '结婚证照片'
+          }else {
+            return '未知类型'
+          }
+        })
+      },
+      {
+        title: '操作',
+        dataIndex:'operation',
+        render: (text, record) => (
+          <a target="_blank" href={`${ process.env.API_ENV === 'test'?'https://49.234.209.104/nien-0.0.1-SNAPSHOT':'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT'
+          }${record.path}`} download>查看</a>        ),
+      },
+
+    ];
+
     let env = '';
     switch (process.env.API_ENV) {
       case 'test': //测试环境
@@ -341,32 +378,11 @@ class CreditInfo extends PureComponent {
           width={"70%"}
           footer={null}
         >
-          <List
-            size='small'
-            style={{marginTop:'20px'}}
+          <NormalTable
+            columns={columns}
             dataSource={attachmentsList}
-            pagination={{
-              onChange: page => {
-                this.setState({
-                  current:page
-                })
-              },
-              pageSize:1,
-              current:this.state.current ,
-              total:attachmentsList.length
-            }}
-            renderItem={item => {
-              return <List.Item>
-                <Card bordered={false} bodyStyle={{padding:0}}>
-                  <div>
-                    <h2 style={{marginTop:'-13px'}}>{funcType(item.type)}</h2>
-                    {
-                      attaType.indexOf(item.suffix) !== -1?<img src={`${env}/static/file/${item.name}`}/>:<a target="_blank" href={`${env}/static/file/${item.name}`} download>{item.name}</a>
-                    }
-                  </div>
-                </Card>
-              </List.Item>
-            }}
+            loading={loading}
+            pagination={false}
           />
         </Modal>
         <LoanAgree on={OnAddAgree} data={OnAgreeData} />
