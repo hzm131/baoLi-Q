@@ -111,6 +111,11 @@ class CreditReject extends PureComponent {
         dataStatus:false
       })
     }else{
+      const { form } = this.props;
+      form.setFieldsValue({
+        code:null,
+        message:null
+      })
       this.setState({
         dataStatus:true
       })
@@ -294,7 +299,7 @@ class CreditReject extends PureComponent {
             <Form.Item label='拒绝原因码'>
               {getFieldDecorator('code',{
               })(
-                <Input placeholder="拒绝原因码(字数限制:64位)" maxLength={64}/>
+                <Input placeholder="拒绝原因码(字数限制:64位)" maxLength={64} disabled={dataStatus}/>
               )}
             </Form.Item>
           </Col>
@@ -306,7 +311,7 @@ class CreditReject extends PureComponent {
           <Col lg={24} md={24} sm={24}>
             <Form.Item label="拒绝原因描述">
               {getFieldDecorator('message', {
-              })(<TextArea rows={4} placeholder={'拒绝原因描述(字数限制:256位)'} maxLength={256}/>)}
+              })(<TextArea rows={4} placeholder={'拒绝原因描述(字数限制:256位)'} maxLength={256} disabled={dataStatus}/>)}
             </Form.Item>
           </Col>
         </Row>

@@ -4,7 +4,7 @@ import pageRoutes from './router.config';
 import webpackPlugin from './plugin.config';
 import defaultSettings from '../src/defaultSettings';
 import slash from 'slash2';
-import env from '@/pages/tool/env'
+import env from './env'
 
 const plugins = [
   [

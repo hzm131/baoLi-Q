@@ -28,7 +28,7 @@ const { Option } = Select;
 class LoanReject extends PureComponent {
   state = {
     BStatus:false,
-    pageStore:{},
+    dataStatus:true
   };
 
   onSave = (onSave)=>{
@@ -91,6 +91,7 @@ class LoanReject extends PureComponent {
     form.resetFields();
     this.setState({
       BStatus:false,
+      dataStatus:true
     })
   }
 
@@ -129,6 +130,22 @@ class LoanReject extends PureComponent {
     })
   }
 
+  onSelectStatus = (value)=>{
+    if(value === 'FAILED'){
+      this.setState({
+        dataStatus:false
+      })
+    }else{
+      const { form } = this.props;
+      form.setFieldsValue({
+        code:null,
+        message:null
+      })
+      this.setState({
+        dataStatus:true
+      })
+    }
+  }
 
   render() {
     const {
@@ -140,6 +157,8 @@ class LoanReject extends PureComponent {
 
     const { visible,record } = data;
     const { onSave,onCancel } = on;
+
+    const { dataStatus } = this.state;
 
     return (
       <Modal
@@ -171,7 +190,7 @@ class LoanReject extends PureComponent {
                   required: true,
                   message:'支用放款状态'
                 }]
-              })( <Select  style={{ width: '100%' }} placeholder={'请选择状态'}>
+              })( <Select  style={{ width: '100%' }} placeholder={'请选择状态'} onSelect={this.onSelectStatus}>
                 {/*<Option value="FAILED">放款拒绝</Option>*/}
                 <Option value="SUCCESS">放款成功</Option>
                 <Option value="FAILED">放款失败</Option>
@@ -266,7 +285,7 @@ class LoanReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label="拒绝原因码">
               {getFieldDecorator('code',{
-              })(<Input placeholder="拒绝原因码(字数限制:64位)" maxLength={64}/>)}
+              })(<Input placeholder="拒绝原因码(字数限制:64位)" maxLength={64} disabled={dataStatus}/>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
@@ -277,7 +296,7 @@ class LoanReject extends PureComponent {
           <Col lg={24} md={24} sm={24}>
             <Form.Item label="拒绝原因描述">
               {getFieldDecorator('message', {
-              })(<TextArea rows={4} placeholder={'拒绝原因描述(字数限制:256位)'} maxLength={256}/>)}
+              })(<TextArea rows={4} placeholder={'拒绝原因描述(字数限制:256位)'} maxLength={256} disabled={dataStatus}/>)}
             </Form.Item>
           </Col>
         </Row>

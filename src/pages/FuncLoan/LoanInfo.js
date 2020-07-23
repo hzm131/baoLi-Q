@@ -28,7 +28,7 @@ import FooterToolbar from '@/components/FooterToolbar';
 import NormalTable from '@/components/NormalTable';
 import LoanAgree from './LoanAgree';
 import LoanReject from './LoanReject';
-import env from '@/pages/tool/env';
+import env from '../../../config/env';
 
 const { Description } = DescriptionList;
 

@@ -28,7 +28,7 @@ import FooterToolbar from '@/components/FooterToolbar';
 import NormalTable from '@/components/NormalTable';
 import CreditAgree from './CreditAgree';
 import CreditReject from './CreditReject';
-import env from '@/pages/tool/env';
+import env from '../../../config/env';
 const { Description } = DescriptionList;
 
 @connect(({ Cre, loading }) => ({
