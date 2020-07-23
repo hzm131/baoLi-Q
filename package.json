@@ -3,6 +3,7 @@
   "version": "2.1.1",
   "description": "An out-of-box UI solution for enterprise applications",
   "private": true,
+  "homepage":".",
   "scripts": {
     "presite": "node ./scripts/generateMock.js && cd functions && npm install",
     "start": "cross-env UMI_UI=none API_ENV=produce umi dev",

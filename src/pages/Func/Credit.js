@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import {
   Form,

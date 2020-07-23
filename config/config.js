@@ -109,13 +109,6 @@ export default {
         '^/wookong/': '',
       },
     },
-    // '/mycomputer/': {
-    //     //   target: 'http://127.0.0.1:8080/',
-    //     //   changeOrigin: true,
-    //     //   pathRewrite: {
-    //     //     '^/mycomputer': '',
-    //     //   },
-    //     // },
   },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
@@ -147,6 +140,6 @@ export default {
   manifest: {
     basePath: '/',
   },
-  history: 'browser',
+  //history: 'hash',
   chainWebpack: webpackPlugin,
 };
