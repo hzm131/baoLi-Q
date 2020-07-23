@@ -2,22 +2,12 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 
 import {
-  Select,
-  Row,
   Modal,
-  Col,
-  DatePicker,
   Form,
-  Input,
-  Checkbox,
-  TreeSelect,
 } from 'antd';
 
 import NormalTable from '@/components/NormalTable';
 
-const { TextArea } = Input;
-const { Option } = Select;
-const { TreeNode } = TreeSelect;
 @connect(({ Cre,loading }) => ({
   Cre,
   loading:loading.models.Cre

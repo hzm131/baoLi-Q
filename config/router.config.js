@@ -76,7 +76,7 @@ const routesConfig = [
                 component: './Func/Credit',
               },
               {
-                path: '/credit/creditInfo',
+                path: '/credit/creditInfo/:id',
                 name: 'detail',
                 component: './Func/CreditInfo',
               },
@@ -107,7 +107,7 @@ const routesConfig = [
                 component: './FuncLoan/Loan',
               },
               {
-                path: '/loan/loanInfo',
+                path: '/loan/loanInfo/:id',
                 name: 'detail',
                 component: './FuncLoan/LoanInfo',
               },

@@ -4,6 +4,7 @@ import {
   reject,
   findList,
   lookTable,
+  queryId
 } from '@/services/Cre';
 
 export default {
@@ -39,6 +40,10 @@ export default {
         type: 'save',
         payload: obj,
       });
+    },
+    *queryId({ payload,callback }, { call, put }) {
+      const response = yield call(queryId, payload);
+      if(callback) callback(response)
     },
     *lookTable({ payload,callback }, { call, put }) {
       const response = yield call(lookTable, payload);

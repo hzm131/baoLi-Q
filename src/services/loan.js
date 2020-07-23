@@ -34,3 +34,13 @@ export async function lookLoan(params) {
 
 
 
+export async function queryId(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getLoan`,{
+    method:'POST',
+    body: str,
+  });
+}
+
+
+

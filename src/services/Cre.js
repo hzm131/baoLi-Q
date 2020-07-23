@@ -48,4 +48,13 @@ export async function lookTable(params) {
 }
 
 
+export async function queryId(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getCredit`,{
+    method:'POST',
+    body: str,
+  });
+}
+
+
 

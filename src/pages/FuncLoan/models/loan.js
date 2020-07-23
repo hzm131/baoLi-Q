@@ -3,9 +3,10 @@ import {
   fetchBL,
   reject,
   lookLoan,
+  queryId
 } from '@/services/loan';
 import {
-  findList, lookTable,
+  findList,
 } from '@/services/Cre';
 
 export default {
@@ -40,6 +41,10 @@ export default {
         type: 'save',
         payload: obj,
       });
+    },
+    *queryId({ payload,callback }, { call, put }) {
+      const response = yield call(queryId, payload);
+      if (callback) callback(response);
     },
     *lookLoan({ payload,callback }, { call, put }) {
       const response = yield call(lookLoan, payload);

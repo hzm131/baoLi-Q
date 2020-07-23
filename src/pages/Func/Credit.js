@@ -1,22 +1,13 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import {
   Form,
   Input,
-  DatePicker,
   Select,
   Button,
   Card,
-  Popconfirm,
-  Divider,
-  Icon,
-  Table,
   Row,
-  Modal,
   Col,
-  message,
 } from 'antd';
 import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -24,9 +15,7 @@ import styles from '../System/UserAdmin.less';
 import NormalTable from '@/components/NormalTable';
 const FormItem = Form.Item;
 import './tableBg.less'
-// import styles from './style.less';
-const { Option } = Select;
-const { TextArea } = Input;
+
 
 @connect(({ Cre, loading }) => ({
   Cre,
@@ -173,7 +162,7 @@ class Credit extends PureComponent {
 
   handleLook = (e,record)=>{
     e.preventDefault()
-    router.push('/credit/creditInfo',{record})
+    router.push(`/credit/creditInfo/${record.id}`)
   }
 
 //取消

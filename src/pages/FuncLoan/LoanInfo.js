@@ -1,30 +1,16 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { formatMessage, FormattedMessage } from 'umi/locale';
 import DescriptionList from '@/components/DescriptionList';
-import storage from '@/utils/storage'
 
 import {
-  Row,
-  Col,
   Form,
-  Input,
-  DatePicker,
-  Select,
   Button,
-  Card,
-  Divider,
-  InputNumber,
-  Radio,
-  Icon,
   Tooltip,
   Modal,
   message,
-  Transfer, Badge, Dropdown, Steps, List,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import router from 'umi/router';
-import FooterToolbar from '@/components/FooterToolbar';
 import NormalTable from '@/components/NormalTable';
 import LoanAgree from './LoanAgree';
 import LoanReject from './LoanReject';
@@ -32,9 +18,9 @@ import env from '../../../config/env';
 
 const { Description } = DescriptionList;
 
-@connect(({ Cre, loading }) => ({
-  Cre,
-  loading: loading.models.Cre,
+@connect(({ loan, loading }) => ({
+  loan,
+  loading: loading.models.loan,
 }))
 @Form.create()
 class CreditInfo extends PureComponent {
@@ -59,7 +45,37 @@ class CreditInfo extends PureComponent {
   }
 
   componentDidMount(){
-    const { record } = this.props.location.state;
+    const { dispatch } = this.props;
+    const { id = 0 } = this.props.match.params;
+    dispatch({
+      type:'loan/queryId',
+      payload:{
+        conditions:[{code:'id',exp:"=",value:id}]
+      },
+      callback:(res)=>{
+        console.log("res",res)
+        if(res.errMsg === "成功" && res.resData && res.resData.length){
+          const  record  = res.resData[0];
+          const { attas } = record;
+          const attachmentsList = JSON.parse(attas)
+          attachmentsList.map((item,index)=>{
+            item.key = index
+          })
+
+          this.setState({
+            initDate:record,
+            loanApplyNo:record.loanApplyNo,
+            attachmentsList
+          })
+          if(record.status){
+            this.setState({
+              checkStatus:true
+            })
+          }
+        }
+      }
+    })
+    /*const { record } = this.props.location.state;
     const { attas } = record;
     const attachmentsList = JSON.parse(attas)
     attachmentsList.map((item,index)=>{
@@ -75,7 +91,7 @@ class CreditInfo extends PureComponent {
       this.setState({
         checkStatus:true
       })
-    }
+    }*/
   }
 
   filemodal = ()=>{

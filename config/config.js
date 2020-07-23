@@ -98,7 +98,7 @@ export default {
 
             //target: 'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT',
             //target: process.env.API_ENV === 'test'?'https://49.234.209.104/nien-0.0.1-SNAPSHOT':'https://www.leapingtech.net/nien-0.0.1-SNAPSHOT',
-            target: env,
+            target: env+"/wookong",
            //   target: 'http://192.168.2.180:8080',
 
            //target: 'http://118.24.64.142:8000/',
@@ -106,7 +106,7 @@ export default {
       changeOrigin: true,
       secure: false,
       pathRewrite: {
-        '^/wookong/': '',
+        '^/wookong': '',
       },
     },
   },
@@ -140,6 +140,7 @@ export default {
   manifest: {
     basePath: '/',
   },
-  //history: 'hash',
+  history: 'hash',
   chainWebpack: webpackPlugin,
+  publicPath:'/static/'
 };
