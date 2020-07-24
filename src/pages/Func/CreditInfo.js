@@ -433,22 +433,29 @@ class CreditInfo extends PureComponent {
         title: '附件类型',
         dataIndex: 'type',
         render:((text,record)=>{
-          if(text === 'COMPANY_LICENSE'){
-            return '营业执照'
-          }else if(text === 'PERSON_ID_CARD_FRONT'){
-            return '身份证'
-          }else if(text === 'MARRIAGE_CERTIFICATE'){
-            return '结婚证照片'
-          }else {
-            return '未知类型'
+          switch (text) {
+            case 'BUSINESS_LICENSE_PICTURE':
+              return '营业执照影像件';
+            case 'LEGAL_PERSON_ID_CARD_FRONT':
+              return '法人身份证影像件（正面）';
+            case 'LEGAL_PERSON_ID_CARD_BACK':
+              return '法人身份证影像件（反面）';
+            case 'LEGAL_PERSON_MARRIAGE_CERTIFICATE':
+              return '结婚证照片';
+            case 'LEGAL_PERSON_DIVORCE_CERTIFICATE':
+              return '离婚证';
+            case 'LEGAL_PERSON_SINGLE_CERTIFICATE':
+              return '单身证明书';
+            default :
+              return text;
           }
         })
       },
       {
         title: '附件名称',
-        dataIndex:'operation',
+        dataIndex:'name',
         render: (text, record) => (
-          <a target="_blank" href={`${env}/static/file/${record.name}`} download>{record.name}</a>        ),
+          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>        ),
       },
       {
         title: '',

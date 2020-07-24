@@ -306,29 +306,28 @@ class CreditInfo extends PureComponent {
         }
       },
       {
-        title: '附件名称',
-        dataIndex: 'name',
-      },
-      {
         title: '附件类型',
         dataIndex: 'type',
         render:((text,record)=>{
-          if(text === 'COMPANY_LICENSE'){
-            return '营业执照'
-          }else if(text === 'PERSON_ID_CARD_FRONT'){
-            return '身份证'
-          }else if(text === 'MARRIAGE_CERTIFICATE'){
-            return '结婚证照片'
-          }else {
-            return '未知类型'
+          switch (text) {
+            case 'QCBL_INVISIBLE_FACTOR_CONTRACT_AGREEMENT':
+              return '保理协议（暗保）';
+            case 'QCBL_LEGAL_GUARANTEE_CONTRACT_AGREEMENT':
+              return '法人担保协议';
+            case 'QCBL_SPOUSE_GUARANTEE_CONTRACT_AGREEMENT':
+              return '配偶担保协议';
+            case 'QCBL_LOAN_CONFIRMATION_AGREEMENT':
+              return '放款确认书';
+            default :
+              return text;
           }
         })
       },
       {
         title: '附件名称',
-        dataIndex:'operation',
+        dataIndex:'name',
         render: (text, record) => (
-          <a target="_blank" href={`${env}/static/file/${record.name}`} download>{record.name}</a>        ),
+          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>        ),
       },
       {
         title: '',
