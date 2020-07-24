@@ -8,6 +8,7 @@ import {
   Card,
   Row,
   Col,
+  Icon
 } from 'antd';
 import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -31,6 +32,7 @@ class Credit extends PureComponent {
     record:{},
     rowId:null,
     superId:null,
+    expandForm:false,
   }
 
   componentDidMount() {
@@ -48,11 +50,15 @@ class Credit extends PureComponent {
     const { dispatch, form } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err,values)=>{
-      const {productCode,creditApplyNo} = values;
-      if(productCode || creditApplyNo) {
+      const { productCode,creditApplyNo,customerId,companyName,legalPersonName,legalPersonPhoneNo } = values;
+      if(productCode || creditApplyNo || customerId || companyName||legalPersonName||legalPersonPhoneNo) {
         let conditions = [];
         let codeObj = {};
         let nameObj = {};
+        let customerIdObj = {};
+        let companyNameObj = {};
+        let legalPersonNameObj = {};
+        let legalPersonPhoneNoObj = {};
 
         if (productCode) {
           codeObj = {
@@ -70,7 +76,40 @@ class Credit extends PureComponent {
           };
           conditions.push(nameObj)
         }
+        if (customerId) {
+          customerIdObj = {
+            code: 'customer_id',
+            exp: 'like',
+            value: customerId
+          };
+          conditions.push(customerIdObj)
+        }
+        if (companyName) {
+          companyNameObj = {
+            code: 'company_name',
+            exp: 'like',
+            value: companyName
+          };
+          conditions.push(companyNameObj)
+        }
+        if (legalPersonName) {
+          legalPersonNameObj = {
+            code: 'legal_person_name',
+            exp: 'like',
+            value: legalPersonName
+          };
+          conditions.push(legalPersonNameObj)
+        }
+        if (legalPersonPhoneNo) {
+          legalPersonPhoneNoObj = {
+            code: 'legal_person_phone_no',
+            exp: 'like',
+            value: legalPersonPhoneNo
+          };
+          conditions.push(legalPersonPhoneNoObj)
+        }
         this.setState({conditions})
+        console.log("conditions",conditions)
         const obj = {
           pageIndex:0,
           pageSize:10,
@@ -95,10 +134,16 @@ class Credit extends PureComponent {
     })
   }
 
+  toggleForm = () =>{
+    const { expandForm } = this.state
+    this.setState({expandForm:!expandForm})
+  };
+
   renderForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const { expandForm } = this.state;
     return (
       <Form onSubmit={this.findList} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
@@ -108,7 +153,7 @@ class Credit extends PureComponent {
             </FormItem>
           </Col>
           <Col md={8} sm={16}>
-            <FormItem label='授信申请单号'>
+            <FormItem label='授信单号'>
               {getFieldDecorator('creditApplyNo')(<Input placeholder='请输入授信申请单号' />)}
             </FormItem>
           </Col>
@@ -121,8 +166,43 @@ class Credit extends PureComponent {
                取消
               </Button>
             </span>
+            {
+              expandForm?<a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                收起
+                <Icon type="up" />
+              </a>:<a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                展开
+                <Icon type="down" />
+              </a>
+            }
           </Col>
         </Row>
+        {expandForm? <div>
+          <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+            <Col md={8} sm={16}>
+              <FormItem label='阿里客户'>
+                {getFieldDecorator('customerId')(<Input placeholder='请输入阿里客户' />)}
+              </FormItem>
+            </Col>
+            <Col md={8} sm={16}>
+              <FormItem label='公司名称'>
+                {getFieldDecorator('companyName')(<Input placeholder='请输入公司名称' />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+            <Col md={8} sm={16}>
+              <FormItem label='法人姓名'>
+                {getFieldDecorator('legalPersonName')(<Input placeholder='请输入法人姓名' />)}
+              </FormItem>
+            </Col>
+            <Col md={8} sm={16}>
+              <FormItem label='法人手机'>
+                {getFieldDecorator('legalPersonPhoneNo')(<Input placeholder='请输入法人手机' type={'number'}/>)}
+              </FormItem>
+            </Col>
+          </Row>
+        </div>:''}
       </Form>
     );
   }
@@ -205,7 +285,6 @@ class Credit extends PureComponent {
         dataIndex: 'creditApplyNo',
         key: 'creditApplyNo',
       },
-
       {
         title: '状态',
         dataIndex: 'status',
@@ -316,24 +395,27 @@ class Credit extends PureComponent {
         <Card>
           <div className={styles.userAdmin}>
             <div className={styles.userAdminForm} >{this.renderForm()}</div>
-            <NormalTable
-              columns={columns}
-              data={fetchData}
-              onRow={(record )=>{
-                return {
-                  onClick:()=>{
-                    this.setState({
-                      rowId: record.id,
-                      superId:record.id,
-                      record:record,
-                    })
-                  },
-                  rowKey:record.id
-                }
-              }}
-              rowClassName={this.setRowClassName}
-              onChange={this.handleStandardTableChange}
-            />
+            <div style={{marginTop:'20px'}}>
+              <NormalTable
+                columns={columns}
+                data={fetchData}
+                onRow={(record )=>{
+                  return {
+                    onClick:()=>{
+                      this.setState({
+                        rowId: record.id,
+                        superId:record.id,
+                        record:record,
+                      })
+                    },
+                    rowKey:record.id
+                  }
+                }}
+                rowClassName={this.setRowClassName}
+                onChange={this.handleStandardTableChange}
+              />
+            </div>
+
           </div>
         </Card>
       </PageHeaderWrapper>
