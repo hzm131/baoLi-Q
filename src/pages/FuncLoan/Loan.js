@@ -336,6 +336,11 @@ class Loan extends PureComponent {
         key: 'customerId',
       },
       {
+        title: '公司名称',
+        dataIndex: 'companyName',
+        key: 'companyName',
+      },
+      {
         title: '贷款产品编号',
         dataIndex: 'loanProductCode',
         key: 'loanProductCode',
