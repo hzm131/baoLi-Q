@@ -182,6 +182,13 @@ class CreditInfo extends PureComponent {
           </Tooltip>
         </Description>
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
+        <Description term="公司名称">
+          <Tooltip title={this.state.initDate?this.state.initDate.companyName:''}>
+          <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+            {this.state.initDate?this.state.initDate.companyName:''}
+          </p>
+        </Tooltip>
+        </Description>
 
         <Description term="贷款产品编号">
           <Tooltip title={this.state.initDate?this.state.initDate.loanProductCode:''}>
