@@ -46,7 +46,7 @@ const routesConfig = [
         path: '/credit',
         icon: 'setting',
         name: 'credit',
-        authority: ['admin','creditQuery'],
+        authority: ['admin','creditQuery','creditAudit'],
         hideChildrenInMenu: true,
         routes:[
           {
@@ -57,13 +57,13 @@ const routesConfig = [
             path: '/credit/list',
             name: 'creditList',
             component: './Func/Credit',
-            authority: ['admin','creditQuery'],
+            authority: ['admin','creditQuery','creditAudit'],
           },
           {
             path: '/credit/creditInfo/:id',
             name: 'detail',
             component: './Func/CreditInfo',
-            authority: ['admin','creditQuery'],
+            authority: ['admin','creditQuery','creditAudit'],
           },
         ]
       },
@@ -72,7 +72,7 @@ const routesConfig = [
         path: '/loan',
         icon: 'file-sync',
         name: 'loan',
-        authority: ['admin','loanQuery'],
+        authority: ['admin','loanQuery','loanAudit'],
         hideChildrenInMenu: true,
         routes:[
           {
@@ -82,13 +82,13 @@ const routesConfig = [
           {
             path: '/loan/list',
             name: 'loanList',
-            authority: ['admin','loanQuery'],
+            authority: ['admin','loanQuery','loanAudit'],
             component: './FuncLoan/Loan',
           },
           {
             path: '/loan/loanInfo/:id',
             name: 'detail',
-            authority: ['admin','loanQuery'],
+            authority: ['admin','loanQuery','loanAudit'],
             component: './FuncLoan/LoanInfo',
           },
         ]
