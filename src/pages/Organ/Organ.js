@@ -304,7 +304,7 @@ class Organ extends PureComponent {
               <a href="#javascript:;">删除</a>
             </Popconfirm>
             <Divider type="vertical" />
-            <a href="#javascript:;"  onClick={(e)=>this.updateRoute(e,record)}>编辑</a>
+            <a href="#javascript:;"  onClick={(e)=>this.updateRoute(e,record)}>改密</a>
             <Divider type="vertical" />
             <a href="#javascript:;"  onClick={(e)=>this.updateAuthority(e,record)}>权限</a>
           </Fragment>
