@@ -1,5 +1,3 @@
-import authoritizeRoutes from './routesAuthority.config';
-
 const routesConfig = [
   // user
   {
@@ -24,94 +22,74 @@ const routesConfig = [
         component: './Func/Credit',
       },
       //机构
-    /*  {
+      {
         path: '/organ',
         icon: 'export',
         name: 'organ',
+        authority: ['admin'],
         hideChildrenInMenu: true,
         routes:[
           {
             path: '/organ',
-            name: 'organList',
-            hideChildrenInMenu: true,
-            routes: [
-              {
-                path: '/organ',
-                redirect: '/organ/list',
-              },
-              {
-                path: '/organ/list',
-                name: 'organList',
-                component: './Organ/Organ',
-              },
-              /!*{
-                path: '/credit/creditInfo',
-                name: 'detail',
-                component: './Func/CreditInfo',
-              },*!/
-            ],
+            redirect: '/organ/list',
           },
+          {
+            path: '/organ/list',
+            name: 'organList',
+            component: './Organ/Organ',
+            authority: ['admin'],
+          }
         ]
-
-      },*/
+      },
       //授信
       {
         path: '/credit',
         icon: 'setting',
         name: 'credit',
+        authority: ['admin','creditQuery'],
         hideChildrenInMenu: true,
         routes:[
           {
             path: '/credit',
+            redirect: '/credit/list',
+          },
+          {
+            path: '/credit/list',
             name: 'creditList',
-            hideChildrenInMenu: true,
-            routes: [
-              {
-                path: '/credit',
-                redirect: '/credit/list',
-              },
-              {
-                path: '/credit/list',
-                name: 'creditList',
-                component: './Func/Credit',
-              },
-              {
-                path: '/credit/creditInfo/:id',
-                name: 'detail',
-                component: './Func/CreditInfo',
-              },
-            ],
+            component: './Func/Credit',
+            authority: ['admin','creditQuery'],
+          },
+          {
+            path: '/credit/creditInfo/:id',
+            name: 'detail',
+            component: './Func/CreditInfo',
+            authority: ['admin','creditQuery'],
           },
         ]
-
       },
       //支用
       {
         path: '/loan',
         icon: 'file-sync',
         name: 'loan',
+        authority: ['admin','loanQuery'],
         hideChildrenInMenu: true,
         routes:[
           {
             path: '/loan',
+            redirect: '/loan/list',
+          },
+          {
+            path: '/loan/list',
             name: 'loanList',
-            hideChildrenInMenu: true,
-            routes: [
-              {
-                path: '/loan',
-                redirect: '/loan/list',
-              },
-              {
-                path: '/loan/list',
-                name: 'loanList',
-                component: './FuncLoan/Loan',
-              },
-              {
-                path: '/loan/loanInfo/:id',
-                name: 'detail',
-                component: './FuncLoan/LoanInfo',
-              },
-            ],
+            authority: ['admin','loanQuery'],
+            component: './FuncLoan/Loan',
+          },
+          {
+            path: '/loan/loanInfo/:id',
+            name: 'detail',
+            authority: ['admin','loanQuery'],
+            component: './FuncLoan/LoanInfo',
           },
         ]
       },

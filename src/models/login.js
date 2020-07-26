@@ -28,10 +28,15 @@ export default {
       storage.set('userinfo', userinfo);
 
       // 角色权限设置
-      /*const getAuthority = userData => {
-        if (userData.rootFlag === 1) return ['admin'];
-        return Array.prototype.map.call(userData.roleList, item => item.roleCode);
+      const getAuthority = userData => {
+        if (userData.isAdmin === 1) return ['admin'];
+        if(!userData.authority){
+          userData.authority = "";
+        }
+        return userData.authority.split(",")
       };
+
+      console.log("权限",getAuthority(userinfo))
 
       yield put({
         type: 'changeLoginStatus',
@@ -40,7 +45,7 @@ export default {
           currentAuthority: getAuthority(userinfo),
           userinfo,
         },
-      });*/
+      });
       yield put({
         type: 'user/saveCurrentUser',
         payload: userinfo,
