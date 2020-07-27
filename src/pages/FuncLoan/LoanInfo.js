@@ -15,6 +15,7 @@ import NormalTable from '@/components/NormalTable';
 import LoanAgree from './LoanAgree';
 import LoanReject from './LoanReject';
 import env from '../../../config/env';
+import storage from '@/utils/storage';
 
 const { Description } = DescriptionList;
 
@@ -37,7 +38,8 @@ class CreditInfo extends PureComponent {
     fileName:{},
     loanApplyNo:'',
     attaType:['jpg','png','jpeg'],
-    checkStatus:false
+    checkStatus:false,
+    auth:false
   };
 
   backClick = ()=>{
@@ -47,13 +49,20 @@ class CreditInfo extends PureComponent {
   componentDidMount(){
     const { dispatch } = this.props;
     const { id = 0 } = this.props.match.params;
+
+    const auth = storage.get(`antd-pro-authority`);
+    if(auth.indexOf("admin") !== -1 || auth.indexOf("loanAudit") !== -1){
+      this.setState({
+        auth:true
+      })
+    }
+
     dispatch({
       type:'loan/queryId',
       payload:{
         conditions:[{code:'id',exp:"=",value:id}]
       },
       callback:(res)=>{
-        console.log("res",res)
         if(res.errMsg === "成功" && res.resData && res.resData.length){
           const  record  = res.resData[0];
           const { attas } = record;
@@ -75,23 +84,6 @@ class CreditInfo extends PureComponent {
         }
       }
     })
-    /*const { record } = this.props.location.state;
-    const { attas } = record;
-    const attachmentsList = JSON.parse(attas)
-    attachmentsList.map((item,index)=>{
-      item.key = index
-    })
-
-    this.setState({
-      initDate:record,
-      loanApplyNo:record.loanApplyNo,
-      attachmentsList
-    })
-    if(record.status){
-      this.setState({
-        checkStatus:true
-      })
-    }*/
   }
 
   filemodal = ()=>{
@@ -158,7 +150,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,loanApplyNo,attaType,initDate,tableList,attachmentsList,checkStatus } = this.state
+    const { auth,loanApplyNo,attaType,initDate,tableList,attachmentsList,checkStatus } = this.state
 
     const description = (
       <DescriptionList >
@@ -182,6 +174,13 @@ class CreditInfo extends PureComponent {
           </Tooltip>
         </Description>
         <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
+        <Description term="公司名称">
+          <Tooltip title={this.state.initDate?this.state.initDate.companyName:''}>
+          <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+            {this.state.initDate?this.state.initDate.companyName:''}
+          </p>
+        </Tooltip>
+        </Description>
 
         <Description term="贷款产品编号">
           <Tooltip title={this.state.initDate?this.state.initDate.loanProductCode:''}>
@@ -229,11 +228,12 @@ class CreditInfo extends PureComponent {
     );
     const action = (
       <Fragment>
-        <Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>
+        {
+          auth?<Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>:<Button disabled>无权限</Button>
+        }
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         <Button type="primary" onClick={this.onLook}>查看结果</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
-        {/* <Button type="primary" onClick={this.filemContact}>查看合同详情</Button>*/}
       </Fragment>
     );
 

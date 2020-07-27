@@ -51,6 +51,7 @@ class CreditInfo extends PureComponent {
     attachmentsList:[],
     attaType:['jpg','png','jpeg'],
     checkStatus:false,
+    auth:false
   };
 
   backClick = ()=>{
@@ -60,14 +61,19 @@ class CreditInfo extends PureComponent {
   componentDidMount(){
     const { dispatch } = this.props;
     const { id = 0 } = this.props.match.params;
-    console.log("this",this.props.match.params.id)
+    const auth = storage.get(`antd-pro-authority`);
+    if(auth.indexOf("admin") !== -1 || auth.indexOf("creditAudit") !== -1){
+      console.log("有权限")
+      this.setState({
+        auth:true
+      })
+    }
     dispatch({
       type:'Cre/queryId',
       payload:{
         conditions:[{code:'id',exp:"=",value:id}]
       },
       callback:(res)=>{
-        console.log("res",res)
         if(res.errMsg === "成功" && res.resData && res.resData.length){
           const  record  = res.resData[0];
           const { attas } = record;
@@ -118,59 +124,6 @@ class CreditInfo extends PureComponent {
         }
       }
     })
-
-
-   /* const { record } = this.props.location.state;
-    const { attas } = record;
-    const { dispatch } = this.props
-    const attachmentsList = JSON.parse(attas)
-    attachmentsList.map((item,index)=>{
-      item.key = index
-    })
-    switch(record.legalPersonMaritalStatus){
-      case 'UNMARRIED': record.legalPersonMaritalStatus = '未婚'
-        break;
-      case 'MARRIED': record.legalPersonMaritalStatus = '已婚'
-        break;
-      case 'DIVORCE': record.legalPersonMaritalStatus = '离异'
-        break;
-      case 'WIDOWED': record.legalPersonMaritalStatus = '丧偶'
-        break;
-      default :record.legalPersonMaritalStatus = '未知'
-    }
-    switch(record.companyLicenseType){
-      case 'UNITY': record.companyLicenseType = '企业的统一社会信用代码'
-        break;
-      case 'GENERAL': record.companyLicenseType = '传统工商注册类型'
-        break;
-      default :record.companyLicenseType = '未知'
-    }
-
-    switch(record.legalPersonLicenseType){
-      case 'IDENTITY_CARD': record.legalPersonLicenseType = '身份证'
-        break;
-      default :record.legalPersonLicenseType = '其他'
-    }
-
-    switch(record.legalPersonMateLicenseType){
-      case 'IDENTITY_CARD': record.legalPersonMateLicenseType = '身份证'
-        break;
-      default :record.legalPersonMateLicenseType = '其他'
-    }
-    this.setState({
-      initDate:record,
-      creditApplyNo:record.creditApplyNo,
-      attachmentsList,
-    })
-    if(record.status){
-      this.setState({
-        checkStatus:true
-      })
-    }*/
-
-
-
-    //this.onRecord(record)
   }
 
   filemodal = ()=>{
@@ -237,7 +190,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,tableList,attachmentsList,attaType,checkStatus } = this.state
+    const { fileName,tableList,attachmentsList,auth,checkStatus } = this.state;
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -355,8 +308,9 @@ class CreditInfo extends PureComponent {
     );
     const action = (
       <Fragment>
-        {/*<Button type="primary" onClick={()=>this.lookAdvice()}>查看审批意见</Button>*/}
-        <Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>
+        {
+          auth?<Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>:<Button type="primary" disabled>无权限</Button>
+        }
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         <Button type="primary" onClick={this.onLook}>查看结果</Button>
         <Button type="primary" onClick={this.backClick}>返回</Button>
@@ -472,7 +426,6 @@ class CreditInfo extends PureComponent {
         }
         action={action}
         content={description}
-        /*extraContent={}*/
         onTabChange={this.onOperationTabChange}
       >
         <Modal

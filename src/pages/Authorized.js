@@ -15,36 +15,26 @@ const IndexPage = ({ children, location }) => {
     return <Redirect to='/user/login' />;
   }
 
-  let indexpage = "/credit/list";
-  if(userinfo.roleList && userinfo.roleList.length){
-    indexpage = userinfo.roleList[0].indexpage;
-  }
-
   console.log('location:',location)
   if (location.pathname === '/') {
     let indexPage = '/credit/list'; // 默认管理员统计页面
     // 查看角色是否配置 index, 并且设置 index 页面
-/*    getAuthority().forEach(item => {
+    getAuthority().forEach(item => {
       console.log('item:00000:',item);
-      //const role = roles[item];
-      // if (role && role.index) {
-      //   indexPage = role.index;
-      // }
-      if(item === 'pm'){
-        indexPage =  '/credit'
-      }
-    });*/
-    if(getAuthority().length){
-      if(!indexpage){
-        indexPage = '/credit/list';
+      if(item === 'admin'){
+        indexPage =  '/organ/list'
+      }else if(item === 'creditQuery'){
+        indexPage =  '/credit/list'
+      }else if(item === 'creditAudit'){
+        indexPage =  '/credit/list'
+      }else if(item === 'loanQuery'){
+        indexPage =  '/loan/list'
+      }else if(item === 'loanAudit'){
+        indexPage =  '/loan/list'
       }else{
-        indexPage = indexpage;
+        indexPage =  '/organ/list'
       }
-    }
-    return <Redirect to={indexPage} />;
-  }
-  else if(location.pathname === '/account/center'){
-    let indexPage = '/organ'; // 默认管理员统计页面
+    });
     return <Redirect to={indexPage} />;
   }
   return children;
