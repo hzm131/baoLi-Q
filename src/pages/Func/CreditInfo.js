@@ -420,7 +420,7 @@ class CreditInfo extends PureComponent {
       visible:this.state.rejectVisible,
       record:this.state.initDate,
     }
-
+    console.log('attachmentsList',attachmentsList)
     const columns = [
       {
         title: '序号',

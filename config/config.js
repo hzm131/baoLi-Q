@@ -52,9 +52,7 @@ if (process.env.APP_TYPE === 'site') {
 
   ]);
 }
-console.log("环境",process.env.API_ENV);
 
-console.log("env",env);
 export default {
   // add for transfer to umi
   plugins,
