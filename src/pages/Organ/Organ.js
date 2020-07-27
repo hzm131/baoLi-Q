@@ -306,7 +306,9 @@ class Organ extends PureComponent {
             <Divider type="vertical" />
             <a href="#javascript:;"  onClick={(e)=>this.updateRoute(e,record)}>改密</a>
             <Divider type="vertical" />
-            <a href="#javascript:;"  onClick={(e)=>this.updateAuthority(e,record)}>权限</a>
+            {
+              record.isAdmin?<span style={{color:'#ccc'}}>权限</span>:<a href="#javascript:;"  onClick={(e)=>this.updateAuthority(e,record)}>权限</a>
+            }
           </Fragment>
         },
       },
