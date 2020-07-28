@@ -372,7 +372,11 @@ class Credit extends PureComponent {
         dataIndex: 'legalPersonMateName',
         key: 'legalPersonMateName',
       },
-
+      {
+        title: '审批人',
+        dataIndex: 'userName',
+        key: 'userName',
+      },
       {
         title: '操作',
         fixed:'right',

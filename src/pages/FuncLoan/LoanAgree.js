@@ -117,6 +117,11 @@ class LoanAgree extends PureComponent {
         key: 'failReasonMessage',
       },
       {
+        title: '审批人',
+        dataIndex: 'userName',
+        key: 'userName',
+      },
+      {
         title: '结果',
         dataIndex: 'resBody',
         key: 'resBody',
