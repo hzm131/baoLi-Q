@@ -401,6 +401,11 @@ class Loan extends PureComponent {
         key: 'userName',
       },
       {
+        title: '审批时间',
+        dataIndex: 'userDate',
+        key: 'userDate',
+      },
+      {
         title: '操作',
         fixed:'right',
         dataIndex: 'operation',
