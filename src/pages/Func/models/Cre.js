@@ -4,7 +4,8 @@ import {
   reject,
   findList,
   lookTable,
-  queryId
+  queryId,
+  fetchUcum
 } from '@/services/Cre';
 
 export default {
@@ -70,6 +71,22 @@ export default {
     *addcre({ payload,callback }, { call, put }) {
       const response = yield call(addcre, payload);
       if (callback) callback(response);
+    },
+    *fetchUcum({ payload,callback }, { call, put }) {
+      const response = yield call(fetchUcum, payload);
+      let obj = {};
+      if(response.resData){
+        response.resData.map(item=>{
+          item.key = item.id;
+        })
+        obj = {
+          list: response.resData,
+          pagination:{
+            total: response.total
+          }
+        };
+      }
+      if(callback) callback(obj)
     },
     *reject({ payload,callback }, { call, put }) {
       const response = yield call(reject, payload);

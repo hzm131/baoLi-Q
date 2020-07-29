@@ -53,7 +53,6 @@ class Auth extends PureComponent {
       form,
     } = this.props;
     const { record } = data;
-    console.log('---record',record)
     const { BStatus,targetKeys } = this.state;
     if(BStatus){
       return

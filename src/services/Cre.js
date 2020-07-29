@@ -55,6 +55,13 @@ export async function queryId(params) {
     body: str,
   });
 }
+export async function fetchUcum(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/queryUser`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 

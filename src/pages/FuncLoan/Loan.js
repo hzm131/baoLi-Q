@@ -8,15 +8,17 @@ import {
   Card,
   Row,
   Col,
-  DatePicker, Icon,
+  DatePicker,
+  Icon, Popconfirm, Checkbox,
 } from 'antd';
 import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from '../System/UserAdmin.less';
 import NormalTable from '@/components/NormalTable';
+import ModelTable from '../tool/ModelTable/ModelTable';
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 import './tableBg.less'
-
 
 @connect(({ loan, loading }) => ({
   loan,
@@ -53,10 +55,13 @@ class Loan extends PureComponent {
   //查询
   findList = (e) => {
     const { dispatch, form } = this.props;
+    const { SelectValue,selectedRowKeys } = this.state
     e.preventDefault();
     form.validateFieldsAndScroll((err,values)=>{
-      const { loanApplyNo,loanNo,customerId,loanProductCode,productReceiveTime,orderCreateTime,logisticsNumber,orderPaymentTime } = values;
-      if(loanApplyNo || loanNo || customerId || loanProductCode || productReceiveTime || orderCreateTime || logisticsNumber || orderPaymentTime) {
+      const { loanApplyNo,loanNo,customerId,loanProductCode,productReceiveTime,
+        orderCreateTime,logisticsNumber,orderPaymentTime,userDate,userName } = values;
+      if(loanApplyNo || loanNo || customerId || loanProductCode || productReceiveTime ||
+        orderCreateTime || logisticsNumber || orderPaymentTime ||userDate ||userName) {
         let conditions = [];
         let codeObj = {};
         let nameObj = {};
@@ -66,6 +71,9 @@ class Loan extends PureComponent {
         let orderCreateTimeObj = {};
         let logisticsNumberObj = {};
         let orderPaymentTimeObj = {};
+        let usernameObj = {};
+        let startObj = {};
+        let endObj = {};
 
         if (loanApplyNo) {
           codeObj = {
@@ -131,6 +139,29 @@ class Loan extends PureComponent {
           };
           conditions.push(orderPaymentTimeObj)
         }
+        if(userDate && userDate.length){
+          startObj = {
+            code:'user_date',
+            exp:'>=',
+            value:userDate[0].format('YYYY-MM-DD')
+          };
+          conditions.push(startObj)
+
+          endObj = {
+            code:'user_date',
+            exp:'<=',
+            value:userDate[1].format('YYYY-MM-DD')
+          };
+          conditions.push(endObj)
+        }
+        if(userName){
+          usernameObj = {
+            code: 'user_id',
+            exp: '=',
+            value: selectedRowKeys[0]
+          };
+          conditions.push(usernameObj)
+        }
         this.setState({conditions})
         const obj = {
           pageIndex:0,
@@ -163,6 +194,11 @@ class Loan extends PureComponent {
     form.resetFields();
     this.setState({
       conditions:[],
+      TableData:[],
+      SelectValue:[],
+      selectedRowKeys:[],
+      conditionsUser:[],
+      page:{},
     })
     //清空后获取列表
     dispatch({
@@ -182,8 +218,177 @@ class Loan extends PureComponent {
   renderForm() {
     const {
       form: { getFieldDecorator },
+      dispatch
     } = this.props;
     const { expandForm } = this.state;
+    const on = {
+      onIconClick:()=>{
+        const { dispatch } = this.props;
+        dispatch({
+          type:'loan/fetchUcum',
+          payload:{
+            reqData:{
+              pageIndex:0,
+              pageSize:10
+            }
+          },
+          callback:(res)=>{
+            if(res){
+              this.setState({
+                TableData:res,
+              })
+            }
+          }
+        })
+      },
+      onOk:(selectedRowKeys,selectedRows,onChange)=>{
+        if(!selectedRowKeys || !selectedRows){
+          return
+        }
+        const nameList = selectedRows.map(item =>{
+          return item.userName
+        });
+        onChange(nameList)
+        this.setState({
+          SelectValue:nameList,
+          selectedRowKeys:selectedRowKeys,
+        })
+      },
+      handleTableChange:(obj)=>{
+        const { dispatch } = this.props;
+        const { conditionsUser } = this.state;
+        const param = {
+          ...obj
+        };
+        this.setState({
+          page:param
+        });
+        if(conditionsUser.length){
+          dispatch({
+            type:'loan/fetchUcum',
+            payload:{
+              conditions:conditionsUser,
+              ...obj,
+            },
+            callback:(res)=>{
+              this.setState({
+                TableData:res,
+              })
+            }
+          });
+          return
+        }
+        dispatch({
+          type:'loan/fetchUcum',
+          payload:param,
+          callback:(res)=>{
+            this.setState({
+              TableData:res,
+            })
+          }
+        })
+      }, //分页
+      handleSearch:(values)=>{
+        const { userName } = values;
+        if(userName){
+          let conditions = [];
+          let nameObj = {};
+
+          if(userName){
+            nameObj = {
+              code:'user_name',
+              exp:'like',
+              value:userName
+            };
+            conditions.push(nameObj)
+          }
+          this.setState({
+            conditionsUser:conditions,
+          });
+          const obj = {
+            conditions,
+          };
+          dispatch({
+            type:'loan/fetchUcum',
+            payload:obj,
+            callback:(res)=>{
+              this.setState({
+                TableData:res,
+              })
+            }
+          })
+        }
+      }, //查询时触发
+      handleReset:()=>{
+        const { page } = this.state;
+        this.setState({
+          conditionsUser:[]
+        });
+        dispatch({
+          type:'loan/fetchUcum',
+          payload:{
+            ...page
+          },
+          callback:(res)=>{
+            this.setState({
+              TableData:res,
+            })
+          }
+        })
+      }, //清空时触发
+      onButtonEmpty:()=>{
+        this.setState({
+          SelectValue:[],
+          selectedRowKeys:[],
+        })
+      }
+    };
+    const onData = {
+      TableData:this.state.TableData,
+      SelectValue:this.state.SelectValue,
+      selectedRowKeys:this.state.selectedRowKeys,
+      columns :[
+        {
+          title: '用户名',
+          dataIndex: 'userName',
+          key: 'userName',
+        },
+        {
+          title: '管理员',
+          dataIndex: 'isAdmin',
+          key: 'isAdmin',
+          render: (text, record) =>{
+            return <Popconfirm title="确定修改吗?" onConfirm={() => this.updateIsAdmin(record)}>
+              <Checkbox checked={text}/>
+            </Popconfirm>
+          }
+        },
+        {
+          title: '权限',
+          dataIndex: 'authority2',
+          key: 'authority2',
+        },
+        {
+          title: '注册时间',
+          dataIndex: 'createTime',
+          key: 'createTime',
+        },
+        {
+          title: '修改时间',
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+        },
+        {
+          title: '',
+          dataIndex: 'caozuo',
+        }
+      ],
+      fetchList:[
+        {label:'用户名',code:'userName',placeholder:'请输入用户名'},
+      ],
+      title:'人员管理',
+      placeholder:'请选择人员',
+    };
     return (
       <Form onSubmit={this.findList} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
@@ -251,6 +456,21 @@ class Loan extends PureComponent {
             <Col md={8} sm={16}>
               <FormItem label='物流单号'>
                 {getFieldDecorator('logisticsNumber')(<Input placeholder='请输入物流单号'/>)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+            <Col md={8} sm={16}>
+              <FormItem label='审批人员'>
+                {getFieldDecorator('userName')(<ModelTable
+                  data={onData}
+                  on={on}
+                />)}
+              </FormItem>
+            </Col>
+            <Col md={8} sm={16}>
+              <FormItem label='审批时间'>
+                {getFieldDecorator('userDate')(<RangePicker  style={{width:'100%',}}/>)}
               </FormItem>
             </Col>
           </Row>
@@ -396,7 +616,7 @@ class Loan extends PureComponent {
         key: 'rate',
       },
       {
-        title: '审批人',
+        title: '审批人员',
         dataIndex: 'userName',
         key: 'userName',
       },

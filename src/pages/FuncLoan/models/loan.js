@@ -6,6 +6,7 @@ import {
   queryId
 } from '@/services/loan';
 import {
+  fetchUcum,
   findList,
 } from '@/services/Cre';
 
@@ -67,6 +68,22 @@ export default {
       }
 
       if (callback) callback(obj);
+    },
+    *fetchUcum({ payload,callback }, { call, put }) {
+      const response = yield call(fetchUcum, payload);
+      let obj = {};
+      if(response.resData){
+        response.resData.map(item=>{
+          item.key = item.id;
+        })
+        obj = {
+          list: response.resData,
+          pagination:{
+            total: response.total
+          }
+        };
+      }
+      if(callback) callback(obj)
     },
     *add({ payload,callback }, { call, put }) {
       const response = yield call(addBL, payload);

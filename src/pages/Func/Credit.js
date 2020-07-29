@@ -5,18 +5,20 @@ import {
   Input,
   Select,
   Button,
+  DatePicker,
   Card,
   Row,
   Col,
-  Icon
+  Icon, Popconfirm, Checkbox,
 } from 'antd';
 import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from '../System/UserAdmin.less';
+import ModelTable from '../tool/ModelTable/ModelTable';
 import NormalTable from '@/components/NormalTable';
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 import './tableBg.less'
-
 
 @connect(({ Cre, loading }) => ({
   Cre,
@@ -29,10 +31,16 @@ class Credit extends PureComponent {
     updateVisible:false,
     viewVisible:false,
     updata:{},
+    conditions:[],
     record:{},
     rowId:null,
     superId:null,
     expandForm:false,
+    TableData:[],
+    SelectValue:[],
+    selectedRowKeys:[],
+    conditionsUser:[],
+    page:{},
   }
 
   componentDidMount() {
@@ -49,9 +57,12 @@ class Credit extends PureComponent {
   findList = (e) => {
     const { dispatch, form } = this.props;
     e.preventDefault();
+    const { SelectValue,selectedRowKeys } = this.state
     form.validateFieldsAndScroll((err,values)=>{
-      const { productCode,creditApplyNo,customerId,companyName,legalPersonName,legalPersonPhoneNo } = values;
-      if(productCode || creditApplyNo || customerId || companyName||legalPersonName||legalPersonPhoneNo) {
+      const { productCode,creditApplyNo,customerId,companyName,legalPersonName,
+        legalPersonPhoneNo,userDate,userName} = values;
+      if(productCode || creditApplyNo || customerId || companyName||legalPersonName||
+        legalPersonPhoneNo ||userDate ||userName) {
         let conditions = [];
         let codeObj = {};
         let nameObj = {};
@@ -59,6 +70,9 @@ class Credit extends PureComponent {
         let companyNameObj = {};
         let legalPersonNameObj = {};
         let legalPersonPhoneNoObj = {};
+        let usernameObj = {};
+        let startObj = {};
+        let endObj = {};
 
         if (productCode) {
           codeObj = {
@@ -108,6 +122,29 @@ class Credit extends PureComponent {
           };
           conditions.push(legalPersonPhoneNoObj)
         }
+        if(userDate && userDate.length){
+          startObj = {
+            code:'user_date',
+            exp:'>=',
+            value:userDate[0].format('YYYY-MM-DD')
+          };
+          conditions.push(startObj)
+
+          endObj = {
+            code:'user_date',
+            exp:'<=',
+            value:userDate[1].format('YYYY-MM-DD')
+          };
+          conditions.push(endObj)
+        }
+        if(userName){
+          usernameObj = {
+            code: 'user_id',
+            exp: '=',
+            value: selectedRowKeys[0]
+          };
+          conditions.push(usernameObj)
+        }
         this.setState({conditions})
         console.log("conditions",conditions)
         const obj = {
@@ -142,8 +179,178 @@ class Credit extends PureComponent {
   renderForm() {
     const {
       form: { getFieldDecorator },
+      dispatch,
     } = this.props;
     const { expandForm } = this.state;
+    const on = {
+      onIconClick:()=>{
+        const { dispatch } = this.props;
+        dispatch({
+          type:'Cre/fetchUcum',
+          payload:{
+            reqData:{
+              pageIndex:0,
+              pageSize:10
+            }
+          },
+          callback:(res)=>{
+            if(res){
+              this.setState({
+                TableData:res,
+              })
+            }
+          }
+        })
+      },
+      onOk:(selectedRowKeys,selectedRows,onChange)=>{
+        if(!selectedRowKeys || !selectedRows){
+          return
+        }
+        console.log('--',selectedRows)
+        const nameList = selectedRows.map(item =>{
+          return item.userName
+        });
+        onChange(nameList)
+        this.setState({
+          SelectValue:nameList,
+          selectedRowKeys:selectedRowKeys,
+        })
+      },
+      handleTableChange:(obj)=>{
+        const { dispatch } = this.props;
+        const { conditionsUser } = this.state;
+        const param = {
+          ...obj
+        };
+        this.setState({
+          page:param
+        });
+        if(conditionsUser.length){
+          dispatch({
+            type:'Cre/fetchUcum',
+            payload:{
+              conditions:conditionsUser,
+              ...obj,
+            },
+            callback:(res)=>{
+              this.setState({
+                TableData:res,
+              })
+            }
+          });
+          return
+        }
+        dispatch({
+          type:'Cre/fetchUcum',
+          payload:param,
+          callback:(res)=>{
+            this.setState({
+              TableData:res,
+            })
+          }
+        })
+      }, //分页
+      handleSearch:(values)=>{
+        const { userName } = values;
+        if(userName){
+          let conditions = [];
+          let nameObj = {};
+
+          if(userName){
+            nameObj = {
+              code:'user_name',
+              exp:'like',
+              value:userName
+            };
+            conditions.push(nameObj)
+          }
+          this.setState({
+            conditionsUser:conditions,
+          });
+          const obj = {
+            conditions,
+          };
+          dispatch({
+            type:'Cre/fetchUcum',
+            payload:obj,
+            callback:(res)=>{
+              this.setState({
+                TableData:res,
+              })
+            }
+          })
+        }
+      }, //查询时触发
+      handleReset:()=>{
+        const { page } = this.state;
+        this.setState({
+          conditionsUser:[]
+        });
+        dispatch({
+          type:'Cre/fetchUcum',
+          payload:{
+            ...page
+          },
+          callback:(res)=>{
+            this.setState({
+              TableData:res,
+            })
+          }
+        })
+      }, //清空时触发
+      onButtonEmpty:()=>{
+        this.setState({
+          SelectValue:[],
+          selectedRowKeys:[],
+        })
+      }
+    };
+    const onData = {
+      TableData:this.state.TableData,
+      SelectValue:this.state.SelectValue,
+      selectedRowKeys:this.state.selectedRowKeys,
+      columns :[
+        {
+          title: '用户名',
+          dataIndex: 'userName',
+          key: 'userName',
+        },
+        {
+          title: '管理员',
+          dataIndex: 'isAdmin',
+          key: 'isAdmin',
+          render: (text, record) =>{
+            return <Popconfirm title="确定修改吗?" onConfirm={() => this.updateIsAdmin(record)}>
+              <Checkbox checked={text}/>
+            </Popconfirm>
+          }
+        },
+        {
+          title: '权限',
+          dataIndex: 'authority2',
+          key: 'authority2',
+        },
+        {
+          title: '注册时间',
+          dataIndex: 'createTime',
+          key: 'createTime',
+        },
+        {
+          title: '修改时间',
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+        },
+        {
+          title: '',
+          dataIndex: 'caozuo',
+        }
+      ],
+      fetchList:[
+        {label:'用户名',code:'userName',placeholder:'请输入用户名'},
+      ],
+      title:'人员管理',
+      placeholder:'请选择人员',
+    };
     return (
       <Form onSubmit={this.findList} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
@@ -202,6 +409,21 @@ class Credit extends PureComponent {
               </FormItem>
             </Col>
           </Row>
+          <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+            <Col md={8} sm={16}>
+              <FormItem label='审批人员'>
+                {getFieldDecorator('userName')(<ModelTable
+                  data={onData}
+                  on={on}
+                />)}
+              </FormItem>
+            </Col>
+            <Col md={8} sm={16}>
+              <FormItem label='审批时间'>
+                {getFieldDecorator('userDate')(<RangePicker  style={{width:'100%',}}/>)}
+              </FormItem>
+            </Col>
+          </Row>
         </div>:''}
       </Form>
     );
@@ -252,6 +474,11 @@ class Credit extends PureComponent {
     form.resetFields();
     this.setState({
       conditions:[],
+      TableData:[],
+      SelectValue:[],
+      selectedRowKeys:[],
+      conditionsUser:[],
+      page:{},
     })
     //清空后获取列表
     dispatch({
@@ -373,7 +600,7 @@ class Credit extends PureComponent {
         key: 'legalPersonMateName',
       },
       {
-        title: '审批人',
+        title: '审批人员',
         dataIndex: 'userName',
         key: 'userName',
       },
