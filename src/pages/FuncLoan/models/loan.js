@@ -75,6 +75,29 @@ export default {
       if(response.resData){
         response.resData.map(item=>{
           item.key = item.id;
+          if(item.isAdmin === 1){
+            item.authority2 = "全部权限"
+          }else if(item.authority){
+            const a = item.authority.split(",");
+            const b = [];
+            a.map(item =>{
+              switch (item) {
+                case 'creditQuery':
+                  b.push("授信查看");
+                  break;
+                case 'loanQuery':
+                  b.push("支用查看");
+                  break;
+                case 'creditAudit':
+                  b.push("授信审核");
+                  break;
+                case 'loanAudit':
+                  b.push("支用审核");
+                  break;
+              }
+            });
+            item.authority2 = b.join(',');
+          }
         })
         obj = {
           list: response.resData,
