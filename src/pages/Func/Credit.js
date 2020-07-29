@@ -320,9 +320,7 @@ class Credit extends PureComponent {
           dataIndex: 'isAdmin',
           key: 'isAdmin',
           render: (text, record) =>{
-            return <Popconfirm title="确定修改吗?" onConfirm={() => this.updateIsAdmin(record)}>
-              <Checkbox checked={text}/>
-            </Popconfirm>
+            return <Checkbox checked={text}/>
           }
         },
         {
@@ -342,6 +340,7 @@ class Credit extends PureComponent {
         },
         {
           title: '',
+          width:1,
           dataIndex: 'caozuo',
         }
       ],
