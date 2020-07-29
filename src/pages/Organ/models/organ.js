@@ -29,7 +29,7 @@ export default {
         response.resData.map(item=>{
           item.key = item.id;
           if(item.isAdmin === 1){
-            item.authority = "全部权限"
+            item.authority2 = "全部权限"
           }else if(item.authority){
             const a = item.authority.split(",");
             const b = [];

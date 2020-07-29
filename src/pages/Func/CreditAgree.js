@@ -183,6 +183,16 @@ class CreditAgree extends PureComponent {
         key: 'amountRation',
       },
       {
+        title: '审批人',
+        dataIndex: 'userName',
+        key: 'userName',
+      },
+      {
+        title: '审批时间',
+        dataIndex: 'userDate',
+        key: 'userDate',
+      },
+      {
         title: '结果',
         dataIndex: 'resBody',
         key: 'resBody',
