@@ -78,10 +78,14 @@ class CreditInfo extends PureComponent {
         if(res.errMsg === "成功" && res.resData && res.resData.length){
           const  record  = res.resData[0];
           const { attas,type } = record;
-          const attachmentsList = JSON.parse(attas)
-          attachmentsList.map((item,index)=>{
-            item.key = index
-          })
+          let  attachmentsList = [];
+          if(attas && attas.length){
+            attachmentsList = JSON.parse(attas)
+            attachmentsList.map((item,index)=>{
+              item.key = index
+            })
+          }
+
           switch(record.legalPersonMaritalStatus){
             case 'UNMARRIED': record.legalPersonMaritalStatus = '未婚'
               break;
