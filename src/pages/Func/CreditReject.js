@@ -251,12 +251,9 @@ class CreditReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='阿里客户'>
               {getFieldDecorator('customerId',{
-                rules: [{
-                  required: dataStatus,
-                  message:'阿里客户'
-                }]
+                initialValue:record.customerId
               })(
-                <Input placeholder="请输入阿里客户" disabled={!dataStatus}/>
+                <Input placeholder="请输入阿里客户" disabled/>
               )}
             </Form.Item>
           </Col>
