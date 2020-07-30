@@ -51,7 +51,8 @@ class CreditInfo extends PureComponent {
     attachmentsList:[],
     attaType:['jpg','png','jpeg'],
     checkStatus:false,
-    auth:false
+    auth:false,
+    type:0
   };
 
   backClick = ()=>{
@@ -76,7 +77,7 @@ class CreditInfo extends PureComponent {
       callback:(res)=>{
         if(res.errMsg === "成功" && res.resData && res.resData.length){
           const  record  = res.resData[0];
-          const { attas } = record;
+          const { attas,type } = record;
           const attachmentsList = JSON.parse(attas)
           attachmentsList.map((item,index)=>{
             item.key = index
@@ -115,6 +116,7 @@ class CreditInfo extends PureComponent {
             initDate:record,
             creditApplyNo:record.creditApplyNo,
             attachmentsList,
+            type
           })
           if(record.status){
             this.setState({
@@ -190,7 +192,7 @@ class CreditInfo extends PureComponent {
       dispatch,
       form: { getFieldDecorator },
     } = this.props;
-    const { fileName,tableList,attachmentsList,auth,checkStatus } = this.state;
+    const { type,tableList,attachmentsList,auth,checkStatus } = this.state;
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -309,7 +311,7 @@ class CreditInfo extends PureComponent {
     const action = (
       <Fragment>
         {
-          auth?<Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>:<Button type="primary" disabled>无权限</Button>
+          type === 1?auth?<Button type="primary" onClick={this.reject} disabled={checkStatus}>审核</Button>:<Button type="primary" disabled>无权限</Button>:<Button type="primary" disabled>数据有误</Button>
         }
         <Button type="primary" onClick={this.filemodal}>查看附件</Button>
         <Button type="primary" onClick={this.onLook}>查看结果</Button>

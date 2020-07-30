@@ -630,15 +630,10 @@ class Loan extends PureComponent {
         dataIndex: 'operation',
         render: (text, record) =>
         {
-          if(record.type === 1){
-            return <Fragment>
-              <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
-            </Fragment>
-          }else{
-            return <span style={{color:'#ccc'}}>查看</span>
-          }
+          return <Fragment>
+            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+          </Fragment>
         }
-
       },
     ];
     return (
