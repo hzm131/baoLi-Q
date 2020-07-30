@@ -179,8 +179,8 @@ class CreditAgree extends PureComponent {
       },
       {
         title: '线上年回款比例(%)',
-        dataIndex: 'amountRation',
-        key: 'amountRation',
+        dataIndex: 'amountRatio',
+        key: 'amountRatio',
       },
       {
         title: '审批人',

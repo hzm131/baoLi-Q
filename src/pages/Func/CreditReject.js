@@ -135,10 +135,10 @@ class CreditReject extends PureComponent {
     const { visible,record } = data;
     const { onSave,onCancel } = on;
 
-    let amountRation = null;
+    let amountRatio = null;
 
     if(record && record.platformPaymentCollectionAmountWithCoreCompany1Year && record.platformTotalSettlementAmountWithCoreCompany1Year ){
-      amountRation = record.platformPaymentCollectionAmountWithCoreCompany1Year / record.platformTotalSettlementAmountWithCoreCompany1Year * 100
+      amountRatio = record.platformPaymentCollectionAmountWithCoreCompany1Year / record.platformTotalSettlementAmountWithCoreCompany1Year * 100
     }
 
     return (
@@ -288,8 +288,8 @@ class CreditReject extends PureComponent {
         <Row gutter={16}>
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='线上年回款比例(%)'>
-              {getFieldDecorator('amountRation',{
-                initialValue:amountRation
+              {getFieldDecorator('amountRatio',{
+                initialValue:amountRatio
               })(
                 <Input placeholder="线上年回款比例" type={Number} disabled/>
               )}
