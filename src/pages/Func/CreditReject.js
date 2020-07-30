@@ -63,6 +63,7 @@ class CreditReject extends PureComponent {
           extendInfo:JSON.stringify(en),
           creditId:record.id,
           channel:'SHNF',
+          amountRatio:values.amountRatio?values.amountRatio.toString():""
         }
       };
       this.setState({
