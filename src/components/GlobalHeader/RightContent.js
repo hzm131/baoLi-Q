@@ -495,7 +495,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
     return (
       <div className={className}>
-        <HeaderSearch
+        {/*<HeaderSearch
           className={`${styles.action} ${styles.search}`}
           placeholder={formatMessage({ id: 'component.globalHeader.search' })}
           dataSource={[
@@ -509,7 +509,7 @@ export default class GlobalHeaderRight extends PureComponent {
           onPressEnter={value => {
             console.log('enter', value); // eslint-disable-line
           }}
-        />
+        />*/}
 
         {personState?<NoticeIcon
           className={styles.action}
@@ -616,7 +616,7 @@ export default class GlobalHeaderRight extends PureComponent {
         {this.state.userInfo.userName ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
-              <Avatar size="small" className={styles.avatar}   alt="avatar" />
+              {/*<Avatar size="small" className={styles.avatar}   alt="avatar" />*/}
               <span className={styles.name}>{this.state.userInfo.userName}</span>
             </span>
           </HeaderDropdown>
@@ -624,8 +624,6 @@ export default class GlobalHeaderRight extends PureComponent {
           <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
         )}
         <SelectLang className={styles.action} />
-
-
         <CreateForm  {...parentMethods} modalVisible={modalVisible}  ax={this.props}/>
 
         {/*<Phone on={onPhone} data={phoneData}/>*/}
