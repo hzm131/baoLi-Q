@@ -879,7 +879,7 @@ export async function resultVote(params) {
 
 export async function updatePassword(params) {
   const str = JSON.stringify(params);
-  return request(`${baseUrl}/rest/sm/user/changepwd`,{
+  return request(`${baseUrl}/setPassWord`,{
     method:'POST',
     body: str
   });

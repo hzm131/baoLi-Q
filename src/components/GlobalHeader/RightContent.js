@@ -33,28 +33,29 @@ const CreateForm = Form.create()(props => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
 
-      if(fieldsValue.newpwd === fieldsValue.newpwd2){
-
+      if(fieldsValue.passWord === fieldsValue.passWord2){
         const obj = {
           reqData:{
-            oldpwd:fieldsValue.oldpwd,
-            newpwd:fieldsValue.newpwd
+            passWord:fieldsValue.passWord
           }
         };
         ax.dispatch({
           type:'upuser/update',
           payload: obj,
           callback:(res)=>{
-            // 这里
-            message.success('成功',1,()=>{
-              form.resetFields();
-              handleModalVisible();
-            });
+            if(res.errCode === 200){
+              message.success('修改成功',1.2,()=>{
+                form.resetFields();
+                handleModalVisible();
+              });
+            }else{
+              message.success(`${res.errMsg}`);
+            }
           }
         });
-        return
+      }else{
+        message.error("密码不一致")
       }
-      message.error("两次密码不一致")
     });
   };
   return (
@@ -65,20 +66,15 @@ const CreateForm = Form.create()(props => {
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label='旧密码'>
-        {form.getFieldDecorator('oldpwd', {
-          rules: [{ required: true, message: '请输入用户编码！' }],
-        })(<Input placeholder={formatMessage({ id: 'validation.inputvalue' })}/>)}
-      </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label='新密码'>
-        {form.getFieldDecorator('newpwd', {
-          rules: [{ required: true, message: '请输入用户名称！' }],
-        })(<Input autoComplete='new-password' placeholder={formatMessage({ id: 'validation.inputvalue' })} type='password'/>)}
+        {form.getFieldDecorator('passWord', {
+          rules: [{ required: 'true' }],
+        })(<Input autoComplete='new-password' placeholder={"请输入密码"} type='password'/>)}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label='确认密码'>
-        {form.getFieldDecorator('newpwd2', {
-          rules: [{ required: true, message: '请输入用户名称！' }],
-        })(<Input placeholder={formatMessage({ id: 'validation.inputvalue' })} type='password'/>)}
+        {form.getFieldDecorator('passWord2', {
+          rules: [{ required: 'true' }],
+        })(<Input placeholder={"请再次输入密码"} type='password'/>)}
       </FormItem>
     </Modal>
   );
@@ -423,15 +419,15 @@ export default class GlobalHeaderRight extends PureComponent {
 
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        {/*<Menu.Item onClick={() => this.handleModalVisible(true)}  key='user'>
+        <Menu.Item onClick={() => this.handleModalVisible(true)}  key='user'>
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>
-        <Menu.Item key="PhoneOutlined" onClick={ this.phoneModalVisible} >
+        {/*<Menu.Item key="PhoneOutlined" onClick={ this.phoneModalVisible} >
           <Icon type="phone" />
           <FormattedMessage id="menu.account.phone" defaultMessage="account settings" />
-        </Menu.Item>*/}
-        {/*<Menu.Item key="triggerError">
+        </Menu.Item>
+        <Menu.Item key="triggerError">
           <Icon type="close-circle" />
           <FormattedMessage id="menu.account.trigger" defaultMessage="Trigger Error" />
         </Menu.Item>
@@ -630,9 +626,9 @@ export default class GlobalHeaderRight extends PureComponent {
         <SelectLang className={styles.action} />
 
 
-      {/*  <CreateForm  {...parentMethods} modalVisible={modalVisible}  ax={this.props}/>
+        <CreateForm  {...parentMethods} modalVisible={modalVisible}  ax={this.props}/>
 
-        <Phone on={onPhone} data={phoneData}/>*/}
+        {/*<Phone on={onPhone} data={phoneData}/>*/}
 
       </div>
     );
