@@ -3,7 +3,8 @@ import {
   fetchBL,
   reject,
   lookLoan,
-  queryId
+  queryId,
+  findmore
 } from '@/services/loan';
 import {
   fetchUcum,
@@ -47,9 +48,16 @@ export default {
       const response = yield call(queryId, payload);
       if (callback) callback(response);
     },
+    *findmore({ payload,callback }, { call, put }) {
+      const response = yield call(findmore, payload);
+      let obj = {}
+      if(response && response.resData){
+        obj = response.resData[0]
+      }
+      if (callback) callback(obj);
+    },
     *lookLoan({ payload,callback }, { call, put }) {
       const response = yield call(lookLoan, payload);
-      console.log('-----response',response)
       let { pageIndex = 0 } = payload;
       let obj = [];
       if(response.resData){

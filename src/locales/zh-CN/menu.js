@@ -7,6 +7,8 @@ export default {
   'menu.system': '系统管理',
   'menu.系统管理': '系统管理',
   'menu.organ': '机构管理',
+  'menu.information': '资料附件',
+  'menu.information.InformationList': '资料附件列表',
   'menu.organ.organList': '机构列表',
   'menu.loan': '支用管理',
   'menu.loan.loanList': '支用列表',

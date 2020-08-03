@@ -41,6 +41,13 @@ export async function queryId(params) {
     body: str,
   });
 }
+export async function findmore(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getCredit`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 

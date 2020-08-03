@@ -93,6 +93,25 @@ const routesConfig = [
           },
         ]
       },
+      //资料附件
+      {
+        path: '/information',
+        icon: 'profile',
+        name: 'information',
+        hideChildrenInMenu: true,
+        routes:[
+          {
+            path: '/information',
+            redirect: '/information/list',
+          },
+          {
+            path: '/information/list',
+            name: 'InformationList',
+            component: './Information/Information',
+          },
+
+        ]
+      },
     ],
   },
 

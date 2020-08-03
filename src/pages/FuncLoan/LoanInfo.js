@@ -7,7 +7,7 @@ import {
   Button,
   Tooltip,
   Modal,
-  message,
+  message, Card,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import router from 'umi/router';
@@ -36,10 +36,12 @@ class CreditInfo extends PureComponent {
     agreeVisible:false,
     rejectVisible:false,
     fileName:{},
+    detailMore:{},
     loanApplyNo:'',
     attaType:['jpg','png','jpeg'],
     checkStatus:false,
     auth:false,
+    lookMore:false,
     type:0
   };
 
@@ -149,6 +151,36 @@ class CreditInfo extends PureComponent {
 
   }
 
+  lookInfor = ()=>{
+    const { dispatch } = this.props
+    const { initDate } = this.state
+    dispatch({
+      type:'loan/findmore',
+      payload:{
+        conditions:[{
+          code:"customer_id",
+          exp:'=',
+          value:initDate.customerId
+        }]
+      },
+      callback:(res)=>{
+        this.setState({
+          detailMore:res
+        })
+        console.log('详情结果',res)
+      }
+    })
+    this.setState({
+      lookMore:true
+    })
+  }
+
+  lookCancel = ()=>{
+    this.setState({
+      lookMore:false
+    })
+  }
+
   render() {
     const {
       loading,
@@ -156,7 +188,7 @@ class CreditInfo extends PureComponent {
       form: { getFieldDecorator },
     } = this.props;
     const { auth,type,attaType,initDate,tableList,attachmentsList,checkStatus } = this.state
-
+    console.log('--initDate',initDate)
     const description = (
       <DescriptionList >
        {/* <Description term="产品编号">
@@ -164,70 +196,16 @@ class CreditInfo extends PureComponent {
             <p style={{width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>{this.state.initDate?this.state.initDate.productCode:''}</p>
           </Tooltip>
         </Description>*/}
-        <Description term="贷款申请编号">
-          <Tooltip title={this.state.initDate?this.state.initDate.loanApplyNo:''}>
-            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.loanApplyNo:''}
-            </p>
-          </Tooltip>
-        </Description>
-        <Description term="贷款合同编号">
-          <Tooltip title={this.state.initDate?this.state.initDate.loanNo:''}>
-            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.loanNo:''}
-            </p>
-          </Tooltip>
-        </Description>
-        <Description term="阿里客户"><b>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
         <Description term="公司名称">
           <Tooltip title={this.state.initDate?this.state.initDate.companyName:''}>
-          <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-            {this.state.initDate?this.state.initDate.companyName:''}
-          </p>
-        </Tooltip>
-        </Description>
-
-        <Description term="贷款产品编号">
-          <Tooltip title={this.state.initDate?this.state.initDate.loanProductCode:''}>
             <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.loanProductCode:''}
+              {this.state.initDate?this.state.initDate.companyName:''}
             </p>
           </Tooltip>
         </Description>
-
-        <Description term="交易货品名称">
-          <Tooltip title={this.state.initDate?this.state.initDate.saleProductName:''}>
-            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.saleProductName:''}
-            </p>
-          </Tooltip>
-        </Description>
-
-        <Description term="收货时间"><b>{this.state.initDate?this.state.initDate.productReceiveTime:''}</b></Description>
-
-        <Description term="订单生成时间"><b>{this.state.initDate?this.state.initDate.orderCreateTime:''}</b></Description>
-        <Description term="结算单金额(单位:元)"><b>{this.state.initDate?this.state.initDate.statementAmount:''}</b></Description>
-        <Description term="订单付款日期"><b>{this.state.initDate?this.state.initDate.orderPaymentTime:''}</b></Description>
-
-        <Description term="物流单号">
-          <Tooltip title={this.state.initDate?this.state.initDate.logisticsNumber:''}>
-            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.logisticsNumber:''}
-            </p>
-          </Tooltip>
-        </Description>
-        <Description term="结算单付款日期"><b>{this.state.initDate?this.state.initDate.statementPaymentTime:''}</b></Description>
-        <Description term="申请放款时间"><b>{this.state.initDate?this.state.initDate.loanApplyTime:''}</b></Description>
-
-        <Description term="申请放款金额(单位:元)"><b>{this.state.initDate?this.state.initDate.loanAmount:''}</b></Description>
-        <Description term="法人配偶证件号码">
-          <Tooltip title={this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}>
-            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}
-            </p>
-          </Tooltip>
-        </Description>
-        <Description term="执行年化费率"><b>{this.state.initDate?this.state.initDate.rate:''}</b></Description>
+        <Description style={{cursor:'pointer',}}
+          term="阿里客户" onClick={this.lookInfor}>
+          <b style={{color:'#3855e8'}}>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
       </DescriptionList>
     );
@@ -341,11 +319,9 @@ class CreditInfo extends PureComponent {
       }
     ];
 
-
-
     return (
       <PageHeaderWrapper
-        title='详情'
+        title='公司基本信息'
         logo={
           <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
         }
@@ -354,7 +330,95 @@ class CreditInfo extends PureComponent {
         /*extraContent={}*/
         onTabChange={this.onOperationTabChange}
       >
+        <Card title={'单证信息'} >
+          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
+              <span style={{}}>贷款产品编号：</span><b>
+              <Tooltip title={this.state.initDate?this.state.initDate.loanProductCode:''}>
+                <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
+                  {this.state.initDate?this.state.initDate.loanProductCode:''}
+                </p>
+              </Tooltip>
+            </b>
+            </p>
+            <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
+              <span style={{}}>交易货品名称：</span><b>
+              <Tooltip title={this.state.initDate?this.state.initDate.saleProductName:''}>
+                <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
+                  {this.state.initDate?this.state.initDate.saleProductName:''}
+                </p>
+              </Tooltip>
+            </b>
+            </p>
+            <p style={{width:'33.33333333%'}}>
+              收货时间：<b>{this.state.initDate?this.state.initDate.productReceiveTime:''}</b>
+            </p>
 
+          </div>
+          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <p style={{width:'33.33333333%'}}>
+              订单生成时间：<b>{this.state.initDate?this.state.initDate.orderCreateTime:''}</b>
+            </p>
+            <p style={{width:'33.33333333%'}}>
+              结算单金额(单位:元)：<b>{this.state.initDate?this.state.initDate.statementAmount:''}</b>
+            </p>
+            <p style={{width:'33.33333333%'}}>
+              订单付款日期：<b>{this.state.initDate?this.state.initDate.orderPaymentTime:''}</b>
+            </p>
+          </div>
+          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <p style={{width:'33.33333333%'}}>
+              结算单付款日期：<b>{this.state.initDate?this.state.initDate.statementPaymentTime:''}</b>
+            </p>
+            <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
+              <span style={{}}>物流单号：</span><b>
+              <Tooltip title={this.state.initDate?this.state.initDate.logisticsNumber:''}>
+                <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
+                  {this.state.initDate?this.state.initDate.logisticsNumber:''}
+                </p>
+              </Tooltip>
+            </b>
+            </p>
+            <p style={{width:'33.33333333%'}}></p>
+          </div>
+        </Card>
+        <Card title={'支用申请信息'} style={{marginTop:'25px'}}>
+          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
+              <span style={{}}>贷款申请编号：</span><b>
+              <Tooltip title={this.state.initDate?this.state.initDate.loanApplyNo:''}>
+                <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
+                  {this.state.initDate?this.state.initDate.loanApplyNo:''}
+                </p>
+              </Tooltip>
+            </b>
+            </p>
+            <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
+              <span style={{}}>贷款合同编号：</span><b>
+              <Tooltip title={this.state.initDate?this.state.initDate.loanNo:''}>
+                <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
+                  {this.state.initDate?this.state.initDate.loanNo:''}
+                </p>
+              </Tooltip>
+            </b>
+            </p>
+            <p style={{width:'33.33333333%'}}>
+              申请放款时间：<b>{this.state.initDate?this.state.initDate.loanApplyTime:''}</b>
+            </p>
+
+          </div>
+          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <p style={{width:'33.33333333%'}}>
+              申请放款金额(单位:元)：<b>{this.state.initDate?this.state.initDate.loanAmount:''}</b>
+            </p>
+            <p style={{width:'33.33333333%'}}>
+              执行年化费率：<b>{this.state.initDate?this.state.initDate.rate:''}</b>
+            </p>
+            <p style={{width:'33.33333333%'}}>
+
+            </p>
+          </div>
+        </Card>
         <Modal
           title="附件"
           visible={this.state.fileShow}
@@ -368,6 +432,48 @@ class CreditInfo extends PureComponent {
             loading={loading}
             pagination={false}
           />
+        </Modal>
+        <Modal
+          title="详情"
+          visible={this.state.lookMore}
+          onCancel={this.lookCancel}
+          width={"80%"}
+          footer={null}
+        >
+          <Card bordered={false} style={{margin:0,padding:0}}>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+              <p style={{width:'50%'}}>
+                公司证件类型：<b>{this.state.detailMore?this.state.detailMore.companyLicenseType:''}</b>
+              </p>
+              <p style={{width:'50%'}}>
+                企业身份标识号码：<b>{this.state.detailMore?this.state.detailMore.companyLicenseNo:''}</b>
+              </p>
+            </div>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+              <p style={{width:'50%'}}>
+                对公账户户名：<b>{this.state.detailMore?this.state.detailMore.publicAccountsName:''}</b>
+              </p>
+              <p style={{width:'50%'}}>
+                对公账户银行名字：<b>{this.state.detailMore?this.state.detailMore.publicAccountsBank:''}</b>
+              </p>
+            </div>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+              <p style={{width:'50%'}}>
+                对公账户开户支行：<b>{this.state.detailMore?this.state.detailMore.publicAccountsBranchBank:''}</b>
+              </p>
+              <p style={{width:'50%'}}>
+                对公账户账号：<b>{this.state.detailMore?this.state.detailMore.publicAccountsNo:''}</b>
+              </p>
+            </div>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+              <p style={{width:'50%'}}>
+                联系人姓名：<b>{this.state.detailMore?this.state.detailMore.contactPersonName:''}</b>
+              </p>
+              <p style={{width:'50%'}}>
+                联系人手机号码：<b>{this.state.detailMore?this.state.detailMore.contactPersonPhoneNo:''}</b>
+              </p>
+            </div>
+          </Card>
         </Modal>
         <LoanAgree on={OnAddAgree} data={OnAgreeData} />
         <LoanReject on={OnAddReject} data={OnRejectData} />
