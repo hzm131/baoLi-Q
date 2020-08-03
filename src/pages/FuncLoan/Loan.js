@@ -237,6 +237,7 @@ class Loan extends PureComponent {
               this.setState({
                 TableData:res,
               })
+
             }
           }
         })
