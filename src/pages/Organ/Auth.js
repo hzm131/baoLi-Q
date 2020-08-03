@@ -29,6 +29,9 @@ class Auth extends PureComponent {
     },{
       key:'loanAudit',
       title:'支用审核'
+    },{
+      key:'dataSync',
+      title:'文件同步'
     }],
     targetKeys: [],
   };

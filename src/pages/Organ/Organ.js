@@ -300,9 +300,12 @@ class Organ extends PureComponent {
         width:170,
         render: (text, record) => {
           return <Fragment>
-            <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDelete(record)}>
-              <a href="#javascript:;">删除</a>
-            </Popconfirm>
+            {
+              record.userName === 'admin' && record.isAdmin === 1?<span style={{color:'#ccc'}}>删除</span>:<Popconfirm title="确定删除吗?" onConfirm={() => this.handleDelete(record)}>
+                <a href="#javascript:;">删除</a>
+              </Popconfirm>
+            }
+
             <Divider type="vertical" />
             <a href="#javascript:;"  onClick={(e)=>this.updateRoute(e,record)}>改密</a>
             <Divider type="vertical" />

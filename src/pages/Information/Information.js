@@ -190,9 +190,9 @@ class Information extends PureComponent {
         render: (text, record) =>
         {
           return <Select placeholder={'文件下载'} style={{width:'200px'}}>
-            <Option value={0}><a href={`${env}/static/checking/${record.name}/quota_full.csv`}>额度文件同步</a> </Option>
-            <Option value={1}><a href={`${env}/static/checking/${record.name}/repayment_plan_update.csv`}>还款计划同步</a> </Option>
-            <Option value={2}><a href={`${env}/static/checking/${record.name}/repayment_detail_update.csv`}>还款记录同步</a></Option>
+            <Option value={0}><a href={`${env}/static/checking/${record.name}/quota_full.csv`}>额度文件下载</a> </Option>
+            <Option value={1}><a href={`${env}/static/checking/${record.name}/repayment_plan_update.csv`}>还款计划文件下载</a> </Option>
+            <Option value={2}><a href={`${env}/static/checking/${record.name}/repayment_detail_update.csv`}>还款记录文件下载</a></Option>
           </Select>
         }
       },

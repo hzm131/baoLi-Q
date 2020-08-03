@@ -375,6 +375,7 @@ class CreditInfo extends PureComponent {
         content={description}
         onTabChange={this.onOperationTabChange}
       >
+
         <Card title={'法人相关信息'} >
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>

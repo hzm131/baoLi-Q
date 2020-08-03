@@ -102,6 +102,9 @@ export default {
                 case 'loanAudit':
                   b.push("支用审核");
                   break;
+                case 'dataSync':
+                  b.push("文件同步");
+                  break;
               }
             });
             item.authority2 = b.join(',');

@@ -31,6 +31,8 @@ const IndexPage = ({ children, location }) => {
         indexPage =  '/loan/list'
       }else if(item === 'loanAudit'){
         indexPage =  '/loan/list'
+      }else if(item === 'dataSync'){
+        indexPage =  '/information/list'
       }else{
         indexPage =  '/organ/list'
       }

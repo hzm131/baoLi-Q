@@ -98,6 +98,7 @@ const routesConfig = [
         path: '/information',
         icon: 'profile',
         name: 'information',
+        authority: ['admin','dataSync'],
         hideChildrenInMenu: true,
         routes:[
           {
@@ -107,6 +108,7 @@ const routesConfig = [
           {
             path: '/information/list',
             name: 'InformationList',
+            authority: ['admin','dataSync'],
             component: './Information/Information',
           },
 
