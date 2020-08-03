@@ -320,9 +320,7 @@ class Credit extends PureComponent {
           dataIndex: 'isAdmin',
           key: 'isAdmin',
           render: (text, record) =>{
-            return <Popconfirm title="确定修改吗?" onConfirm={() => this.updateIsAdmin(record)}>
-              <Checkbox checked={text}/>
-            </Popconfirm>
+            return <Checkbox checked={text}/>
           }
         },
         {
@@ -342,6 +340,7 @@ class Credit extends PureComponent {
         },
         {
           title: '',
+          width:1,
           dataIndex: 'caozuo',
         }
       ],
@@ -615,13 +614,9 @@ class Credit extends PureComponent {
         dataIndex: 'operation',
         render: (text,record) =>
         {
-          if(record.type === 1){
-            return <Fragment>
-              <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
-            </Fragment>
-          }else{
-            return <span style={{color:'#ccc'}}>查看</span>
-          }
+          return <Fragment>
+            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+          </Fragment>
         }
       },
     ];
