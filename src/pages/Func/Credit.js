@@ -534,7 +534,7 @@ class Credit extends PureComponent {
         key: 'companyName',
       },
       {
-        title: '枚举类型',
+        title: '公司证件类型',
         dataIndex: 'companyLicenseType',
         key: 'companyLicenseType',
         render:((text,record)=>{
