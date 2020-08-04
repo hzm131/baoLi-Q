@@ -82,7 +82,7 @@ class LoanAgree extends PureComponent {
         })
       },
       {
-        title: '事件发生时间',
+        title: '实际放款时间',
         dataIndex: 'eventTime',
         key: 'eventTime',
       },
