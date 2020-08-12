@@ -364,7 +364,7 @@ class CreditInfo extends PureComponent {
         title: '附件名称',
         dataIndex:'name',
         render: (text, record) => (
-          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>        ),
+          <a target="_blank" href={`${env}/static/file/${initDate.pathDate}/${text}`} download>{text}</a>        ),
       },
       {
         title: '',
@@ -387,14 +387,14 @@ class CreditInfo extends PureComponent {
         <Card title={'法人相关信息'} >
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              法人姓名：<b>{this.state.initDate?this.state.initDate.legalPersonName:''}</b>
+              法人姓名：<b>{this.state.initDate.legalPersonName?this.state.initDate.legalPersonName:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              法人证件类型：<b>{this.state.initDate?this.state.initDate.legalPersonLicenseType:''}</b>
+              法人证件类型：<b>{this.state.initDate.legalPersonLicenseType?this.state.initDate.legalPersonLicenseType:''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>法人证件号码：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.legalPersonLicenseNo:''}>
+              <Tooltip title={this.state.initDate.legalPersonLicenseNo?this.state.initDate.legalPersonLicenseNo:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
                   {this.state.initDate?this.state.initDate.legalPersonLicenseNo:''}
                 </p>
@@ -404,22 +404,22 @@ class CreditInfo extends PureComponent {
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              法人手机号：<b>{this.state.initDate?this.state.initDate.legalPersonPhoneNo:''}</b>
+              法人手机号：<b>{this.state.initDate.legalPersonPhoneNo?this.state.initDate.legalPersonPhoneNo:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              法人婚姻状态：<b>{this.state.initDate?this.state.initDate.legalPersonMaritalStatus:''}</b>
+              法人婚姻状态：<b>{this.state.initDate.legalPersonMaritalStatus?this.state.initDate.legalPersonMaritalStatus:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              法人配偶姓名：<b>{this.state.initDate?this.state.initDate.legalPersonMateName:''}</b>
+              法人配偶姓名：<b>{this.state.initDate.legalPersonMateName?this.state.initDate.legalPersonMateName:''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              法人配偶证件类型：<b>{this.state.initDate?this.state.initDate.legalPersonMateLicenseType:''}</b>
+              法人配偶证件类型：<b>{this.state.initDate.legalPersonMateLicenseType?this.state.initDate.legalPersonMateLicenseType:''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>法人配偶证件号码：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}>
+              <Tooltip title={this.state.initDate.legalPersonMateLicenseNo?this.state.initDate.legalPersonMateLicenseNo:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
                   {this.state.initDate?this.state.initDate.legalPersonMateLicenseNo:''}
                 </p>
@@ -432,52 +432,48 @@ class CreditInfo extends PureComponent {
         <Card title={'公司经营信息'} style={{marginTop:'25px'}}>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              平台注册时间：<b>{this.state.initDate?this.state.initDate.platformRegisteredTime:''}</b>
+              平台注册时间：<b>{this.state.initDate.platformRegisteredTime?this.state.initDate.platformRegisteredTime:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              年交易金额：<b>{this.state.initDate?this.state.initDate.platformTransactionAmount1Year:''}</b>
+              年交易金额：<b>{this.state.initDate.platformTransactionAmount1Year?Number(this.state.initDate.platformTransactionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              平台累计回款金额(单位:元)：<b>{this.state.initDate?this.state.initDate.platformTotalPaymentCollectionAmount1Year:''}</b>
+              平台累计回款金额(单位:元)：<b>{this.state.initDate.platformTotalPaymentCollectionAmount1Year?Number(this.state.initDate.platformTotalPaymentCollectionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              平台年订单金额(单位:元)：<b>{this.state.initDate?this.state.initDate.platformOrderAmount1Year:''}</b>
+              平台年订单金额(单位:元)：<b>{this.state.initDate.platformOrderAmount1Year?Number(this.state.initDate.platformOrderAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              平台年结算单笔数：<b>{this.state.initDate?this.state.initDate.platformSettlementNumber1Year:''}</b>
+              平台年结算单笔数：<b>{this.state.initDate.platformSettlementNumber1Year?Number(this.state.initDate.platformSettlementNumber1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
-              <span>与核心企业的平台年累计结算单金额(单位:元)：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}>
-                <p style={{fontWeight:'900',width:'50px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year:''}
-                </p>
-              </Tooltip>
+              <span>与核企平台年累计结算单金额(单位:元)：</span><b>
+              {this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year?Number(this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}
             </b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              平台年结算单金额(单位:元)：<b>{this.state.initDate?this.state.initDate.platformSettlementAmount1Year:''}</b>
+              平台年结算单金额(单位:元)：<b>{this.state.initDate.platformSettlementAmount1Year?Number(this.state.initDate.platformSettlementAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>与核企（准入买家）的年回款金额：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}>
+              <Tooltip title={this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year?Number(this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}>
                 <p style={{fontWeight:'900',width:'100px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year:''}
+                  {this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year?Number(this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}
                 </p>
               </Tooltip>
             </b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              与核企（准入买家）的年结算单笔数：<b>{this.state.initDate?this.state.initDate.platformSettlementNumberWithCoreCompany1Year:''}</b>
+              与核企（准入买家）的年结算单笔数：<b>{this.state.initDate.platformSettlementNumberWithCoreCompany1Year?Number(this.state.initDate.platformSettlementNumberWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              线上年回款比例：<b>{this.state.amountRatio?this.state.amountRatio:''}%</b>
+              线上年回款比例：<b>{this.state.amountRatio?this.state.amountRatio.toFixed(2):''}%</b>
             </p>
             <p style={{width:'33.33333333%'}}>
 
@@ -490,11 +486,11 @@ class CreditInfo extends PureComponent {
         <Card title={'授信申请信息'} style={{marginTop:'25px'}}>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              产品编号：<b>{this.state.initDate?this.state.initDate.productCode:''}</b>
+              产品编号：<b>{this.state.initDate.productCode?this.state.initDate.productCode:''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>授信申请单号：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.creditApplyNo:''}>
+              <Tooltip title={this.state.initDate.creditApplyNo?this.state.initDate.creditApplyNo:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
                   {this.state.initDate?this.state.initDate.creditApplyNo:''}
                 </p>
@@ -502,12 +498,13 @@ class CreditInfo extends PureComponent {
             </b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              建议额度(单位:元)：<b>{this.state.initDate?this.state.initDate.adviceQuota:''}</b>
+
+              建议额度(单位:元)：<b>{this.state.initDate.adviceQuota?Number(this.state.initDate.adviceQuota).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              建议单笔最高额度(单位:元)：<b>{this.state.initDate?this.state.initDate.loanLimitQuota:''}</b>
+              建议单笔最高额度(单位:元)：<b>{this.state.initDate.loanLimitQuota?Number(this.state.initDate.loanLimitQuota).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
 

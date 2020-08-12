@@ -24,7 +24,7 @@ const { Description } = DescriptionList;
   loading: loading.models.loan,
 }))
 @Form.create()
-class CreditInfo extends PureComponent {
+class LoanInfo extends PureComponent {
   state = {
     fileList:[],
     tableList:[],
@@ -191,7 +191,7 @@ class CreditInfo extends PureComponent {
     console.log('--initDate',initDate)
     const description = (
       <DescriptionList >
-       {/* <Description term="产品编号">
+        {/* <Description term="产品编号">
           <Tooltip title={this.state.initDate?this.state.initDate.productCode:''}>
             <p style={{width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>{this.state.initDate?this.state.initDate.productCode:''}</p>
           </Tooltip>
@@ -204,7 +204,7 @@ class CreditInfo extends PureComponent {
           </Tooltip>
         </Description>
         <Description style={{cursor:'pointer',}}
-          term="阿里客户" onClick={this.lookInfor}>
+                     term="阿里客户" onClick={this.lookInfor}>
           <b style={{color:'#3855e8'}}>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
 
       </DescriptionList>
@@ -318,7 +318,9 @@ class CreditInfo extends PureComponent {
         title: '附件名称',
         dataIndex:'name',
         render: (text, record) => (
-          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>),
+
+          <a target="_blank" href={`${env}/static/file/${initDate.pathDate}/${text}`} download>{text}</a>        )
+
       },
       {
         title: '',
@@ -343,47 +345,47 @@ class CreditInfo extends PureComponent {
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>贷款产品编号：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.loanProductCode:''}>
+              <Tooltip title={this.state.initDate.loanProductCode?this.state.initDate.loanProductCode:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.loanProductCode:''}
+                  {this.state.initDate.loanProductCode?this.state.initDate.loanProductCode:''}
                 </p>
               </Tooltip>
             </b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>交易货品名称：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.saleProductName:''}>
+              <Tooltip title={this.state.initDate.saleProductName?this.state.initDate.saleProductName:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.saleProductName:''}
+                  {this.state.initDate.saleProductName?this.state.initDate.saleProductName:''}
                 </p>
               </Tooltip>
             </b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              收货时间：<b>{this.state.initDate?this.state.initDate.productReceiveTime:''}</b>
+              收货时间：<b>{this.state.initDate.productReceiveTime?this.state.initDate.productReceiveTime:''}</b>
             </p>
 
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              订单生成时间：<b>{this.state.initDate?this.state.initDate.orderCreateTime:''}</b>
+              订单生成时间：<b>{this.state.initDate.orderCreateTime?this.state.initDate.orderCreateTime:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              结算单金额(单位:元)：<b>{this.state.initDate?this.state.initDate.statementAmount:''}</b>
+              结算单金额(单位:元)：<b>{this.state.initDate.statementAmount?Number(this.state.initDate.statementAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              订单付款日期：<b>{this.state.initDate?this.state.initDate.orderPaymentTime:''}</b>
+              订单付款日期：<b>{this.state.initDate.orderPaymentTime?this.state.initDate.orderPaymentTime:''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              结算单付款日期：<b>{this.state.initDate?this.state.initDate.statementPaymentTime:''}</b>
+              结算单付款日期：<b>{this.state.initDate.statementPaymentTime?this.state.initDate.statementPaymentTime:''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>物流单号：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.logisticsNumber:''}>
+              <Tooltip title={this.state.initDate.logisticsNumber?this.state.initDate.logisticsNumber:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.logisticsNumber:''}
+                  {this.state.initDate.logisticsNumber?this.state.initDate.logisticsNumber:''}
                 </p>
               </Tooltip>
             </b>
@@ -397,31 +399,31 @@ class CreditInfo extends PureComponent {
               <span style={{}}>贷款申请编号：</span><b>
               <Tooltip title={this.state.initDate?this.state.initDate.loanApplyNo:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.loanApplyNo:''}
+                  {this.state.initDate.loanApplyNo?this.state.initDate.loanApplyNo:''}
                 </p>
               </Tooltip>
             </b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>贷款合同编号：</span><b>
-              <Tooltip title={this.state.initDate?this.state.initDate.loanNo:''}>
+              <Tooltip title={this.state.initDate.loanNo?this.state.initDate.loanNo:''}>
                 <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
-                  {this.state.initDate?this.state.initDate.loanNo:''}
+                  {this.state.initDate.loanNo?this.state.initDate.loanNo:''}
                 </p>
               </Tooltip>
             </b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              申请放款时间：<b>{this.state.initDate?this.state.initDate.loanApplyTime:''}</b>
+              申请放款时间：<b>{this.state.initDate.loanApplyTime?this.state.initDate.loanApplyTime:''}</b>
             </p>
 
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              申请放款金额(单位:元)：<b>{this.state.initDate?this.state.initDate.loanAmount:''}</b>
+              申请放款金额(单位:元)：<b>{this.state.initDate.loanAmount?Number(this.state.initDate.loanAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              执行年化费率：<b>{this.state.initDate?this.state.initDate.rate:''}</b>
+              执行年化费率：<b>{this.state.initDate.rate?this.state.initDate.rate:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
 
@@ -491,4 +493,4 @@ class CreditInfo extends PureComponent {
   }
 }
 
-export default CreditInfo;
+export default LoanInfo;

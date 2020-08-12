@@ -179,11 +179,11 @@ class CreditReject extends PureComponent {
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-            <Form.Item label="事件发生时间">
+            <Form.Item label="实际放款时间">
               {getFieldDecorator('eventTime',{
                 rules: [{
                   required: true,
-                  message:'事件发生时间'
+                  message:'实际放款时间'
                 }]
               })( <DatePicker showTime style={{width:'100%'}} />)}
             </Form.Item>
@@ -287,7 +287,7 @@ class CreditReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='线上年回款比例(%)'>
               {getFieldDecorator('amountRatio',{
-                initialValue:amountRatio
+                initialValue:amountRatio?amountRatio.toFixed(2):null
               })(
                 <Input placeholder="线上年回款比例" type={Number} disabled/>
               )}
