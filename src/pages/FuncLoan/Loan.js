@@ -16,9 +16,12 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from '../System/UserAdmin.less';
 import NormalTable from '@/components/NormalTable';
 import ModelTable from '../tool/ModelTable/ModelTable';
+import './tableBg.less'
+import ExportJsonExcel from 'js-export-excel';
+
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
-import './tableBg.less'
+
 
 @connect(({ loan, loading }) => ({
   loan,
@@ -39,6 +42,123 @@ class Loan extends PureComponent {
       pageSize:10
     },
     expandForm:false,
+    selectedKeys:[],
+    selectedRows:[],
+    resColumns : [
+      {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
+        title: '贷款申请编号',
+        dataIndex: 'loanApplyNo',
+        key: 'loanApplyNo',
+      },
+      {
+        title: '贷款合同编号',
+        dataIndex: 'loanNo',
+        key: 'loanNo',
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'SUCCESS'){
+            return '放款成功'
+          }else if(text === 'FAILED'){
+            return '放款失败'
+          }
+        })
+      },
+      {
+        title: '阿里客户',
+        dataIndex: 'customerId',
+        key: 'customerId',
+      },
+      {
+        title: '公司名称',
+        dataIndex: 'companyName',
+        key: 'companyName',
+      },
+      {
+        title: '贷款产品编号',
+        dataIndex: 'loanProductCode',
+        key: 'loanProductCode',
+      },
+      {
+        title: '交易货品名称',
+        dataIndex: 'saleProductName',
+        key: 'saleProductName',
+      },
+      {
+        title: '收货时间',
+        dataIndex: 'productReceiveTime',
+        key: 'productReceiveTime',
+      },
+      {
+        title: '订单生成时间',
+        dataIndex: 'orderCreateTime',
+        key: 'orderCreateTime',
+      },
+      {
+        title: '结算单金额(单位:元)',
+        dataIndex: 'statementAmount',
+        key: 'statementAmount',
+      },
+      {
+        title: '订单付款日期',
+        dataIndex: 'orderPaymentTime',
+        key: 'orderPaymentTime',
+      },
+      {
+        title: '物流单号',
+        dataIndex: 'logisticsNumber',
+        key: 'logisticsNumber',
+      },
+      {
+        title: '结算单付款日期',
+        dataIndex: 'statementPaymentTime',
+        key: 'statementPaymentTime',
+      },
+      {
+        title: '申请放款时间',
+        dataIndex: 'loanApplyTime',
+        key: 'loanApplyTime',
+      },
+      {
+        title: '申请放款金额(单位:元)',
+        dataIndex: 'loanAmount',
+        key: 'loanAmount',
+      },
+      {
+        title: '执行年化费率',
+        dataIndex: 'rate',
+        key: 'rate',
+      },
+      {
+        title: '审批人员',
+        dataIndex: 'userName',
+        key: 'userName',
+      },
+      {
+        title: '审批时间',
+        dataIndex: 'userDate',
+        key: 'userDate',
+      },
+      {
+        title: '操作',
+        fixed:'right',
+        dataIndex: 'operation',
+        render: (text, record) =>
+        {
+          return <Fragment>
+            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+          </Fragment>
+        }
+      },
+    ]
   }
 
   componentDidMount() {
@@ -220,7 +340,7 @@ class Loan extends PureComponent {
       form: { getFieldDecorator },
       dispatch
     } = this.props;
-    const { expandForm } = this.state;
+    const { expandForm,selectedRows } = this.state;
     const on = {
       onIconClick:()=>{
         const { dispatch } = this.props;
@@ -475,8 +595,64 @@ class Loan extends PureComponent {
             </Col>
           </Row>
         </div>:''}
+        <div style={{margin:'12px 0',display:'flex'}}>
+          <Button type='primary' disabled={!selectedRows.length}  onClick={this.daoChu}>
+            导出
+          </Button>
+        </div>
       </Form>
     );
+  }
+
+  daoChu = ()=>{
+    const { selectedRows,resColumns } = this.state;
+
+    selectedRows.map(item =>{
+      if(item.status){
+        switch (item.status) {
+          case 'SUCCESS':
+            item.status = '放款成功';
+            break;
+          case 'FAILED':
+            item.status = '放款失败'
+            break;
+        }
+      }
+    })
+
+    let option={};
+    let dataTable = [];
+    let arr = []; //保存key
+    selectedRows.map((item)=>{
+      let obj = {}
+      resColumns.map(ite => {
+        const title = ite.title;
+        const dataIndex = ite.dataIndex;
+        for(let key in item){
+          if(key === dataIndex){
+            obj[title] = item[key]
+          }
+        }
+      });
+      dataTable.push(obj);
+    });
+    if(dataTable.length){
+      for(let key in dataTable[0]){
+        arr.push(key)
+      }
+    }
+    option.fileName = '支用管理';
+    option.datas=[
+      {
+        sheetData:dataTable,
+        sheetName:'sheet',
+        sheetFilter:arr,
+        sheetHeader:arr,
+      }
+    ];
+
+    const toExcel = new ExportJsonExcel(option);
+    toExcel.saveExcel();
   }
 
   setRowClassName = (record) => {
@@ -516,6 +692,10 @@ class Loan extends PureComponent {
     e.preventDefault()
     router.push(`/loan/loanInfo/${record.id}`)
   }
+
+  onSelectChange = (selectedRowKeys,selectedRows) => {
+    this.setState({ selectedKeys:selectedRowKeys,selectedRows });
+  };
 
   render() {
     const {
@@ -637,6 +817,13 @@ class Loan extends PureComponent {
         }
       },
     ];
+
+    const { selectedKeys } = this.state;
+
+    const rowSelection = {
+      selectedRowKeys:selectedKeys,
+      onChange: this.onSelectChange,
+    };
     return (
       <PageHeaderWrapper>
         <Card>
@@ -660,6 +847,7 @@ class Loan extends PureComponent {
                 }}
                 rowClassName={this.setRowClassName}
                 onChange={this.handleStandardTableChange}
+                rowSelection = {rowSelection}
               />
             </div>
 

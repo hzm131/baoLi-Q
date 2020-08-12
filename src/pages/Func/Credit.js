@@ -16,9 +16,12 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from '../System/UserAdmin.less';
 import ModelTable from '../tool/ModelTable/ModelTable';
 import NormalTable from '@/components/NormalTable';
+import ExportJsonExcel from 'js-export-excel';
+import './tableBg.less'
+
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
-import './tableBg.less'
+
 
 @connect(({ Cre, loading }) => ({
   Cre,
@@ -41,6 +44,126 @@ class Credit extends PureComponent {
     selectedRowKeys:[],
     conditionsUser:[],
     page:{},
+    selectedKeys:[],
+    selectedRows:[],
+    resColumns : [
+      {
+        title: '接收时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+      },
+      {
+        title: '产品编号',
+        dataIndex: 'productCode',
+        key: 'productCode',
+      },
+      {
+        title: '授信申请单号',
+        dataIndex: 'creditApplyNo',
+        key: 'creditApplyNo',
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'QUALIFIED'){
+            return '授信成功'
+          }else if(text === 'REJECTED'){
+            return '授信拒绝'
+          }
+        })
+      },
+      {
+        title: '阿里客户',
+        dataIndex: 'customerId',
+        key: 'customerId',
+      },
+      {
+        title: '公司名称',
+        dataIndex: 'companyName',
+        key: 'companyName',
+      },
+      {
+        title: '公司证件类型',
+        dataIndex: 'companyLicenseType',
+        key: 'companyLicenseType',
+      },
+      {
+        title: '法人姓名',
+        dataIndex: 'legalPersonName',
+        key: 'legalPersonName',
+      },
+      {
+        title: '企业身份标识号码',
+        dataIndex: 'companyLicenseNo',
+        key: 'companyLicenseNo',
+      },
+      {
+        title: '法人证件类型',
+        dataIndex: 'legalPersonLicenseType',
+        key: 'legalPersonLicenseType',
+        render:((text,record)=>{
+          if(text === 'IDENTITY_CARD'){
+            return '身份证'
+          }else {
+            return '其他'
+          }
+        })
+      },
+      {
+        title: '法人证件号码',
+        dataIndex: 'legalPersonLicenseNo',
+        key: 'legalPersonLicenseNo',
+      },
+      {
+        title: '法人手机号',
+        dataIndex: 'legalPersonPhoneNo',
+        key: 'legalPersonPhoneNo',
+      },
+      {
+        title: '法人婚姻状态',
+        dataIndex: 'legalPersonMaritalStatus',
+        key: 'legalPersonMaritalStatus',
+        render:((text,record)=>{
+          if(text === 'UNMARRIED'){
+            return '未婚'
+          }else if(text === 'MARRIED'){
+            return '已婚'
+          }else if(text === 'DIVORCE'){
+            return '离异'
+          }else if(text === 'WIDOWED'){
+            return '丧偶'
+          }
+        })
+      },
+      {
+        title: '法人配偶姓名',
+        dataIndex: 'legalPersonMateName',
+        key: 'legalPersonMateName',
+      },
+      {
+        title: '审批人员',
+        dataIndex: 'userName',
+        key: 'userName',
+      },
+      {
+        title: '审批时间',
+        dataIndex: 'userDate',
+        key: 'userDate',
+      },
+      {
+        title: '操作',
+        fixed:'right',
+        dataIndex: 'operation',
+        render: (text,record) =>
+        {
+          return <Fragment>
+            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
+          </Fragment>
+        }
+      },
+    ]
   }
 
   componentDidMount() {
@@ -181,7 +304,7 @@ class Credit extends PureComponent {
       form: { getFieldDecorator },
       dispatch,
     } = this.props;
-    const { expandForm } = this.state;
+    const { expandForm,selectedRows } = this.state;
     const on = {
       onIconClick:()=>{
         const { dispatch } = this.props;
@@ -424,8 +547,94 @@ class Credit extends PureComponent {
             </Col>
           </Row>
         </div>:''}
+        <div style={{margin:'12px 0',display:'flex'}}>
+          <Button type='primary' disabled={!selectedRows.length}  onClick={this.daoChu}>
+            导出
+          </Button>
+        </div>
       </Form>
     );
+  }
+
+  daoChu = ()=>{
+    const { selectedRows,resColumns } = this.state;
+
+    selectedRows.map(item =>{
+      if(item.status){
+        switch (item.status) {
+          case 'QUALIFIED':
+            item.status = '授信成功';
+            break;
+          case 'REJECTED':
+            item.status = '授信拒绝'
+            break;
+        }
+      }
+
+      if(item.legalPersonLicenseType){
+        if(item.legalPersonLicenseType === 'IDENTITY_CARD'){
+          item.legalPersonLicenseType = '身份证'
+        }else {
+          item.legalPersonLicenseType = '其他'
+        }
+      }
+
+      if(item.companyLicenseType){
+        if(item.companyLicenseType === 'UNITY'){
+          item.companyLicenseType = '企业的统一社会信用代码'
+        }
+        if(item.companyLicenseType === 'GENERAL'){
+          item.companyLicenseType = '传统工商注册类型'
+        }
+      }
+
+      if(item.legalPersonMaritalStatus){
+        if(item.legalPersonMaritalStatus === 'UNMARRIED'){
+          item.legalPersonMaritalStatus = '未婚'
+        }else if(item.legalPersonMaritalStatus === 'MARRIED'){
+          item.legalPersonMaritalStatus = '已婚'
+        }else if(item.legalPersonMaritalStatus === 'DIVORCE'){
+          item.legalPersonMaritalStatus = '离异'
+        }else if(item.legalPersonMaritalStatus === 'WIDOWED'){
+          item.legalPersonMaritalStatus = '丧偶'
+        }
+      }
+
+    })
+
+    let option={};
+    let dataTable = [];
+    let arr = []; //保存key
+    selectedRows.map((item)=>{
+      let obj = {}
+      resColumns.map(ite => {
+        const title = ite.title;
+        const dataIndex = ite.dataIndex;
+        for(let key in item){
+          if(key === dataIndex){
+            obj[title] = item[key]
+          }
+        }
+      });
+      dataTable.push(obj);
+    });
+    if(dataTable.length){
+      for(let key in dataTable[0]){
+        arr.push(key)
+      }
+    }
+    option.fileName = '授信管理';
+    option.datas=[
+      {
+        sheetData:dataTable,
+        sheetName:'sheet',
+        sheetFilter:arr,
+        sheetHeader:arr,
+      }
+    ];
+
+    const toExcel = new ExportJsonExcel(option);
+    toExcel.saveExcel();
   }
 
   setRowClassName = (record) => {
@@ -489,6 +698,10 @@ class Credit extends PureComponent {
     })
   }
 
+
+  onSelectChange = (selectedRowKeys,selectedRows) => {
+    this.setState({ selectedKeys:selectedRowKeys,selectedRows });
+  };
 
   render() {
     const {
@@ -614,6 +827,13 @@ class Credit extends PureComponent {
       },
     ];
 
+    const { selectedKeys } = this.state;
+
+    const rowSelection = {
+      selectedRowKeys:selectedKeys,
+      onChange: this.onSelectChange,
+    };
+
     return (
       <PageHeaderWrapper>
         <Card>
@@ -637,6 +857,7 @@ class Credit extends PureComponent {
                 }}
                 rowClassName={this.setRowClassName}
                 onChange={this.handleStandardTableChange}
+                rowSelection = {rowSelection}
               />
             </div>
 
