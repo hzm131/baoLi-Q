@@ -89,6 +89,34 @@ export default {
         })
         return item;
       })
+      resArr.map((item,index)=>{
+        if(index === 0){
+          if(!item.institutionLoanNo){
+            item.institutionLoanNo = ""
+          }
+          if(!item.eventTime){
+            item.eventTime = ""
+          }
+          if(!item.channel){
+            item.channel = ""
+          }
+          if(!item.loanAmount2){
+            item.loanAmount2 = ""
+          }
+          if(!item.fee){
+            item.fee = ""
+          }
+          if(!item.failReasonCode){
+            item.failReasonCode = ""
+          }
+          if(!item.failReasonMessage){
+            item.failReasonMessage = ""
+          }
+          if(!item.resBody){
+            item.resBody = ""
+          }
+        }
+      })
       if(callback) callback(resArr)
     },
     *queryId({ payload,callback }, { call, put }) {
