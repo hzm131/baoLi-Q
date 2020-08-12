@@ -6,7 +6,7 @@ const { Option } = Select;
 class NormalTable extends PureComponent {
   constructor(props) {
     super(props);
-    let { columns,len = 130 } = props;
+    let { columns,len = 180 } = props;
     let coplyColumns = [];
     if(columns.length){
       columns = columns.map((item,index) =>{

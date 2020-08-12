@@ -805,6 +805,11 @@ class Credit extends PureComponent {
         key: 'legalPersonMateName',
       },
       {
+        title: '法人配偶证件号',
+        dataIndex: 'legalPersonMateLicenseNo',
+        key: 'legalPersonMateLicenseNo',
+      },
+      {
         title: '审批人员',
         dataIndex: 'userName',
         key: 'userName',
