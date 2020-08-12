@@ -13,7 +13,7 @@ import {
   TreeSelect,
 } from 'antd';
 
-
+import moneyToNumValue from '@/pages/tool/stringToMoney';
 const { TextArea } = Input;
 const { Option } = Select;
 const { TreeNode } = TreeSelect;
@@ -47,7 +47,7 @@ class CreditReject extends PureComponent {
       }
       const en = {
         customerId:values.customerId,
-        loanLimitQuota:values.loanLimitQuota
+        loanLimitQuota:values.loanLimitQuota?moneyToNumValue(values.loanLimitQuota):null
       }
 
       const obj = {
@@ -56,16 +56,18 @@ class CreditReject extends PureComponent {
           endDate:values.endDate?(values.endDate).format('YYYY-MM-DD HH:mm:ss'):null,
           startDate:values.startDate?(values.startDate).format('YYYY-MM-DD HH:mm:ss'):null,
           eventTime:values.eventTime?(values.eventTime).format('YYYY-MM-DD HH:mm:ss'):null,
-          quotaAmount:values.quotaAmount?(Number(values.quotaAmount).toFixed(2)).toString():null,
+          quotaAmount:values.quotaAmount?moneyToNumValue(values.quotaAmount):null,
           failReasonCode:values.code?values.code:null,
           failReasonMessage:values.message?values.message:null,
           creditTermUnit:values.creditTermUnit && values.creditTermUnit.length?values.creditTermUnit:null,
           extendInfo:JSON.stringify(en),
           creditId:record.id,
           channel:'SHNF',
-          amountRatio:values.amountRatio?values.amountRatio.toString():""
+          amountRatio:values.amountRatio?values.amountRatio.toString():"",
+          loanLimitQuota:values.loanLimitQuota?moneyToNumValue(values.loanLimitQuota):null
         }
       };
+
       this.setState({
         BStatus:true
       })
@@ -119,6 +121,48 @@ class CreditReject extends PureComponent {
       })
       this.setState({
         dataStatus:true
+      })
+    }
+  }
+
+  onFocusQuotaAmount = ()=>{
+    const { form } = this.props;
+    form.setFieldsValue({
+      quotaAmount:null
+    })
+  }
+
+  onBlurQuotaAmount = ()=>{
+    const { form } = this.props;
+    const quotaAmount = form.getFieldValue("quotaAmount");
+    if(isNaN(Number(quotaAmount)) || quotaAmount === null){
+      form.setFieldsValue({
+        quotaAmount:null
+      })
+    }else{
+      form.setFieldsValue({
+        quotaAmount:Number(quotaAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,')
+      })
+    }
+  }
+
+  onFocusLoanLimitQuota = ()=>{
+    const { form } = this.props;
+    form.setFieldsValue({
+      loanLimitQuota:null
+    })
+  }
+
+  onBlurLoanLimitQuota = ()=>{
+    const { form } = this.props;
+    const loanLimitQuota = form.getFieldValue("loanLimitQuota");
+    if(isNaN(Number(loanLimitQuota)) || loanLimitQuota === null){
+      form.setFieldsValue({
+        loanLimitQuota:null
+      })
+    }else{
+      form.setFieldsValue({
+        loanLimitQuota:Number(loanLimitQuota).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,')
       })
     }
   }
@@ -210,7 +254,7 @@ class CreditReject extends PureComponent {
                   required: dataStatus,
                   message:'授信额度金额'
                 }]
-              })( <Input placeholder="请输入授信额度金额" disabled={!dataStatus}/>)}
+              })( <Input placeholder="请输入授信额度金额" onFocus={this.onFocusQuotaAmount} onBlur={this.onBlurQuotaAmount} disabled={!dataStatus}/>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
@@ -265,7 +309,7 @@ class CreditReject extends PureComponent {
                   message:'单笔支用限额'
                 }]
               })(
-                <Input placeholder="请输入单笔支用限额" disabled={!dataStatus}/>
+                <Input placeholder="请输入单笔支用限额" onFocus={this.onFocusLoanLimitQuota} onBlur={this.onBlurLoanLimitQuota} disabled={!dataStatus}/>
               )}
             </Form.Item>
           </Col>

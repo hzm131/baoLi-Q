@@ -792,7 +792,7 @@ class Credit extends PureComponent {
             return '未婚'
           }else if(text === 'MARRIED'){
             return '已婚'
-          }else if(text === 'DIVORCE'){
+          }else if(text === 'DIVORCED'){
             return '离异'
           }else if(text === 'WIDOWED'){
             return '丧偶'

@@ -16,7 +16,7 @@ import {
 import moment from 'moment';
 import  { getDaysBetween }  from '@/pages/tool/DateTimeTool'
 import  { getFloat }  from '@/pages/tool/FormatNumber'
-
+import moneyToNumValue from '@/pages/tool/stringToMoney';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -50,7 +50,7 @@ class LoanReject extends PureComponent {
       }
 
       const en = {
-        fee:values.fee?Number(values.fee).toFixed(2):null
+        fee:values.fee?Number(moneyToNumValue(values.fee)):null
       }
       const obj = {
         reqData:{
@@ -58,13 +58,15 @@ class LoanReject extends PureComponent {
           eventTime:(values.eventTime).format('YYYY-MM-DD HH:mm:ss'),
           failReasonCode:values.code?values.code:null,
           failReasonMessage:values.message?values.message:null,
-          loanAmount:(Number(values.loanAmount).toFixed(2)).toString(),
+          loanAmount:values.loanAmount?moneyToNumValue(values.loanAmount):null,
           extendInfo:values.fee?JSON.stringify(en):null,
           loanId:record.id,
           channel:'SHNF',
         }
 
       };
+      console.log("obj",obj)
+      return;
       this.setState({
         BStatus:true
       })
@@ -109,24 +111,17 @@ class LoanReject extends PureComponent {
     const eventTime = date.format("YYYY-MM-DD");
     const statementPaymentTime = form.getFieldValue("statementPaymentTime").format("YYYY-MM-DD");
     const day = getDaysBetween(eventTime, statementPaymentTime); //相差天数
-    const loanAmountApple = form.getFieldValue("loanAmountApple"); //申请放款金额
+    let loanAmountApple = form.getFieldValue("loanAmountApple"); //申请放款金额
+    loanAmountApple = moneyToNumValue(loanAmountApple.toString());
     const rate = form.getFieldValue("rate"); //年收益
-    /*const dr = Number(rate || 0) / 360; //日利率
-    const dd = getFloat(dr, 8); //日利率四舍五入
-    console.log(Number(loanAmountApple) * dd * day);
-    const jieguo = Number(loanAmountApple || 0) * dd * day;
-    const fee = getFloat(jieguo, 2);
-    const loanAmount = Number(loanAmountApple) - fee;
-    form.setFieldsValue({
-      fee:fee.toFixed(2),
-      loanAmount:loanAmount.toFixed(2)
-    })*/
     const jieguo = (Number(loanAmountApple || 0) * Number(rate || 0) * day) / 360;
     const fee = getFloat(jieguo, 2);
     const loanAmount = Number(loanAmountApple) - fee;
+
     form.setFieldsValue({
-      fee:fee.toFixed(2),
-      loanAmount:loanAmount.toFixed(2)
+      fee:fee.toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'),
+      loanAmount:loanAmount.toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'),
+      loanAmountApple:Number(loanAmountApple).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,')
     })
   }
 
@@ -223,7 +218,7 @@ class LoanReject extends PureComponent {
               {getFieldDecorator('rate',{
                 rules: [{
                   required: true,
-                  message:'放款金额'
+                  message:'执行年化费率'
                 }],
                 initialValue:record.rate
               })( <Input placeholder={'带入执行年化费率'} disabled/>)}
@@ -232,7 +227,7 @@ class LoanReject extends PureComponent {
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label='申请放款金额'>
               {getFieldDecorator('loanAmountApple',{
-                initialValue:record.loanAmount
+                initialValue: record.loanAmount?Number(record.loanAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):null
               })(
                 <Input placeholder="请输入申请放款金额" disabled/>
               )}
@@ -243,7 +238,7 @@ class LoanReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label="服务费用">
               {getFieldDecorator('fee',{
-              })(<Input placeholder="请输入服务费用" type={'number'} disabled/>)}
+              })(<Input placeholder="请输入服务费用" disabled/>)}
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>

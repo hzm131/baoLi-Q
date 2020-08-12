@@ -92,7 +92,7 @@ class CreditInfo extends PureComponent {
               break;
             case 'MARRIED': record.legalPersonMaritalStatus = '已婚'
               break;
-            case 'DIVORCE': record.legalPersonMaritalStatus = '离异'
+            case 'DIVORCED': record.legalPersonMaritalStatus = '离异'
               break;
             case 'WIDOWED': record.legalPersonMaritalStatus = '丧偶'
               break;
