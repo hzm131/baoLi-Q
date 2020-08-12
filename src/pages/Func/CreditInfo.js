@@ -356,7 +356,7 @@ class CreditInfo extends PureComponent {
         title: '附件名称',
         dataIndex:'name',
         render: (text, record) => (
-          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>        ),
+          <a target="_blank" href={`${env}/static/file/${initDate.pathDate}/${text}`} download>{text}</a>        ),
       },
       {
         title: '',
