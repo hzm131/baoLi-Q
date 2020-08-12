@@ -446,7 +446,7 @@ class CreditInfo extends PureComponent {
               平台年订单金额(单位:元)：<b>{this.state.initDate.platformOrderAmount1Year?Number(this.state.initDate.platformOrderAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              平台年结算单笔数：<b>{this.state.initDate.platformSettlementNumber1Year?Number(this.state.initDate.platformSettlementNumber1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
+              平台年结算单笔数：<b>{this.state.initDate.platformSettlementNumber1Year?this.state.initDate.platformSettlementNumber1Year:''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span>与核企平台年累计结算单金额(单位:元)：</span><b>
@@ -468,7 +468,7 @@ class CreditInfo extends PureComponent {
             </b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              与核企（准入买家）的年结算单笔数：<b>{this.state.initDate.platformSettlementNumberWithCoreCompany1Year?Number(this.state.initDate.platformSettlementNumberWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
+              与核企（准入买家）的年结算单笔数：<b>{this.state.initDate.platformSettlementNumberWithCoreCompany1Year?this.state.initDate.platformSettlementNumberWithCoreCompany1Year:''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
