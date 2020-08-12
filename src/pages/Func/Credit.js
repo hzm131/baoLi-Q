@@ -143,6 +143,16 @@ class Credit extends PureComponent {
         key: 'legalPersonMateName',
       },
       {
+        title: '法人配偶证件号',
+        dataIndex: 'legalPersonMateLicenseNo',
+        key: 'legalPersonMateLicenseNo',
+      },
+      {
+        title: '建议单笔最高额度(单位:元)',
+        dataIndex: 'loanLimitQuota',
+        key: 'loanLimitQuota',
+      },
+      {
         title: '审批人员',
         dataIndex: 'userName',
         key: 'userName',
@@ -152,16 +162,71 @@ class Credit extends PureComponent {
         dataIndex: 'userDate',
         key: 'userDate',
       },
+
       {
-        title: '操作',
-        fixed:'right',
-        dataIndex: 'operation',
-        render: (text,record) =>
-        {
-          return <Fragment>
-            <a href="#javascript:;" onClick={(e) => this.handleLook(e,record)}>查看</a>
-          </Fragment>
-        }
+        title: '机构授信编号',
+        dataIndex: 'institutionCreditNo',
+        key: 'institutionCreditNo',
+      },
+      {
+        title: '实际授信时间',
+        dataIndex: 'eventTime',
+        key: 'eventTime',
+      },
+      {
+        title: '对接渠道',
+        dataIndex: 'channel',
+        key: 'channel',
+      },
+      {
+        title: '授信额度金额(单位：元)',
+        dataIndex: 'quotaAmount',
+        key: 'quotaAmount',
+      },
+      {
+        title: '授信期限',
+        dataIndex: 'creditTerm',
+        key: 'creditTerm',
+      },
+      {
+        title: '授信期限单位',
+        dataIndex: 'creditTermUnit',
+        key: 'creditTermUnit',
+      },
+      {
+        title: '授信有效期开始日',
+        dataIndex: 'startDate',
+        key: 'startDate',
+      },
+      {
+        title: '授信有效期结束日',
+        dataIndex: 'endDate',
+        key: 'endDate',
+      },
+      {
+        title: '单笔支用限额（单位：元）',
+        dataIndex: 'loanLimitQuota2',
+        key: 'loanLimitQuota2',
+      },
+      {
+        title: '拒绝原因码',
+        dataIndex: 'failReasonCode',
+        key: 'failReasonCode',
+      },
+      {
+        title: '拒绝原因描述',
+        dataIndex: 'failReasonMessage',
+        key: 'failReasonMessage',
+      },
+      {
+        title: '线上年回款比例(%)',
+        dataIndex: 'amountRatio',
+        key: 'amountRatio',
+      },
+      {
+        title: '结果',
+        dataIndex: 'resBody',
+        key: 'resBody',
       },
     ]
   }
@@ -547,7 +612,7 @@ class Credit extends PureComponent {
             </Col>
           </Row>
         </div>:''}
-        <div style={{margin:'12px 0',display:'flex'}}>
+        <div style={{margin:'8px 0',display:'flex'}}>
           <Button type='primary' disabled={!selectedRows.length}  onClick={this.daoChu}>
             导出
           </Button>
@@ -558,8 +623,10 @@ class Credit extends PureComponent {
 
   daoChu = ()=>{
     const { selectedRows,resColumns } = this.state;
-
-    selectedRows.map(item =>{
+    const { dispatch } = this.props;
+    const str = JSON.stringify(selectedRows);
+    const arrs = JSON.parse(str);
+    arrs.map(item =>{
       if(item.status){
         switch (item.status) {
           case 'QUALIFIED':
@@ -602,39 +669,52 @@ class Credit extends PureComponent {
 
     })
 
-    let option={};
-    let dataTable = [];
-    let arr = []; //保存key
-    selectedRows.map((item)=>{
-      let obj = {}
-      resColumns.map(ite => {
-        const title = ite.title;
-        const dataIndex = ite.dataIndex;
-        for(let key in item){
-          if(key === dataIndex){
-            obj[title] = item[key]
+    dispatch({
+      type:"Cre/queryListRes",
+      payload:{
+        arr:arrs
+      },
+      callback:(res)=>{
+        if(!res.length){
+          return message.error("暂无数据导出")
+        }
+        let option={};
+        let dataTable = [];
+        let arr = []; //保存key
+        res.map((item)=>{
+          let obj = {}
+          resColumns.map(ite => {
+            const title = ite.title;
+            const dataIndex = ite.dataIndex;
+            for(let key in item){
+              if(key === dataIndex){
+                obj[title] = item[key]
+              }
+            }
+          });
+          dataTable.push(obj);
+        });
+        if(dataTable.length){
+          for(let key in dataTable[0]){
+            arr.push(key)
           }
         }
-      });
-      dataTable.push(obj);
-    });
-    if(dataTable.length){
-      for(let key in dataTable[0]){
-        arr.push(key)
-      }
-    }
-    option.fileName = '授信管理';
-    option.datas=[
-      {
-        sheetData:dataTable,
-        sheetName:'sheet',
-        sheetFilter:arr,
-        sheetHeader:arr,
-      }
-    ];
+        option.fileName = '授信管理';
+        option.datas=[
+          {
+            sheetData:dataTable,
+            sheetName:'sheet',
+            sheetFilter:arr,
+            sheetHeader:arr,
+          }
+        ];
 
-    const toExcel = new ExportJsonExcel(option);
-    toExcel.saveExcel();
+        const toExcel = new ExportJsonExcel(option);
+        toExcel.saveExcel();
+      }
+    })
+
+
   }
 
   setRowClassName = (record) => {

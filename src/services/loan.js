@@ -31,6 +31,13 @@ export async function lookLoan(params) {
     body: str,
   });
 }
+export async function queryLoanRes(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getLoanResult`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 

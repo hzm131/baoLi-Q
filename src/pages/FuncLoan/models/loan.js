@@ -4,7 +4,8 @@ import {
   reject,
   lookLoan,
   queryId,
-  findmore
+  findmore,
+  queryLoanRes
 } from '@/services/loan';
 import {
   fetchUcum,
@@ -44,6 +45,52 @@ export default {
         payload: obj,
       });
     },
+    *queryListRes({ payload,callback }, { call, put }) {
+      const { arr } = payload;
+      let Array = [];
+      for(let i = 0;i<arr.length;i++){
+        const response = yield call(queryLoanRes, {conditions:[{
+          code:'loan_id',
+            exp:"=",
+            value:arr[i].id
+          }]});
+        if(response.resData.length){
+          for(let i = 0;i<response.resData.length;i++){
+            const resBody = response.resData[i].resBody;
+            const resBodyObj = JSON.parse(resBody);
+            if('alibaba_finance_loanresult_notify_response' in resBodyObj){
+              response.resData[i].loanAmount2 = response.resData[i].loanAmount;
+              delete response.resData[i].loanAmount;
+              delete response.resData[i].status;
+              delete response.resData[i].createTime;
+              delete response.resData[i].userName;
+              delete response.resData[i].userDate;
+              delete response.resData[i].loanApplyId;
+              response.resData[i].fee = null;
+              const extendInfo = JSON.parse(response.resData[i].extendInfo);
+              if('fee' in extendInfo){
+                response.resData[i].fee = extendInfo.fee
+              }
+              Array.push(response.resData[i]);
+              break
+            }
+          }
+        }
+      }
+      const resArr = arr.map(item =>{
+        Array.map(it =>{
+          if(item.id === it.loanId){
+            delete it.id;
+            item = {
+              ...item,
+              ...it
+            }
+          }
+        })
+        return item;
+      })
+      if(callback) callback(resArr)
+    },
     *queryId({ payload,callback }, { call, put }) {
       const response = yield call(queryId, payload);
       if (callback) callback(response);
@@ -74,7 +121,6 @@ export default {
           }
         };
       }
-
       if (callback) callback(obj);
     },
     *fetchUcum({ payload,callback }, { call, put }) {

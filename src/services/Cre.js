@@ -47,6 +47,14 @@ export async function lookTable(params) {
   });
 }
 
+export async function queryCreditRes(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getCreditResult`,{
+    method:'POST',
+    body: str,
+  });
+}
+
 
 export async function queryId(params) {
   const str = JSON.stringify(params);

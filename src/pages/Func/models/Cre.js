@@ -5,8 +5,10 @@ import {
   findList,
   lookTable,
   queryId,
-  fetchUcum
+  fetchUcum,
+  queryCreditRes
 } from '@/services/Cre';
+
 
 export default {
   namespace: 'Cre',
@@ -47,6 +49,94 @@ export default {
         payload: obj,
       });
     },
+    *queryListRes({ payload,callback }, { call, put }) {
+      const { arr } = payload;
+      let Array = [];
+      for(let i = 0;i<arr.length;i++){
+        const response = yield call(queryCreditRes, {conditions:[{
+            code:'credit_id',
+            exp:"=",
+            value:arr[i].id
+          }]});
+        console.log("response",response)
+        if(response.resData.length){
+          for(let i = 0;i<response.resData.length;i++){
+            const resBody = response.resData[i].resBody;
+            const resBodyObj = JSON.parse(resBody);
+            if('alibaba_finance_loanresult_notify_response' in resBodyObj){
+              console.log("进来")
+              response.resData[i].loanLimitQuota2 = response.resData[i].loanLimitQuota;
+              delete response.resData[i].loanLimitQuota;
+              delete response.resData[i].status;
+              delete response.resData[i].createTime;
+              delete response.resData[i].userName;
+              delete response.resData[i].userDate;
+              delete response.resData[i].creditApplyNo;
+              delete response.resData[i].customerId;
+              Array.push(response.resData[i]);
+              break
+            }
+          }
+        }
+      }
+      const resArr = arr.map(item =>{
+        Array.map(it =>{
+          if(item.id === it.creditId){
+            delete it.id;
+            item = {
+              ...item,
+              ...it
+            }
+          }
+        })
+        return item;
+      })
+      resArr.map((item,index)=>{
+        if(index === 0){
+          console.log("item",item)
+          if(!item.institutionCreditNo){
+            item.institutionCreditNo = ""
+          }
+          if(!item.eventTime){
+            item.eventTime = ""
+          }
+          if(!item.channel){
+            item.channel = ""
+          }
+          if(!item.quotaAmount){
+            item.quotaAmount = ""
+          }
+          if(!item.creditTerm){
+            item.creditTerm = ""
+          }
+          if(!item.creditTermUnit){
+            item.creditTermUnit = ""
+          }
+          if(!item.startDate){
+            item.startDate = ""
+          }
+          if(!item.endDate){
+            item.endDate = ""
+          }
+          if(!item.loanLimitQuota){
+            item.loanLimitQuota = ""
+          }
+          if(!item.failReasonCode){
+            item.failReasonCode = ""
+          }
+          if(!item.failReasonMessage){
+            item.failReasonMessage = ""
+          }
+          if(!item.amountRatio){
+            item.amountRatio = ""
+          }
+          if(!item.resBody){
+            item.resBody = ""
+          }
+        }
+      })
+      if(callback) callback(resArr)
+    },
     *queryId({ payload,callback }, { call, put }) {
       const response = yield call(queryId, payload);
       if(callback) callback(response)
@@ -58,6 +148,9 @@ export default {
       if(response.resData){
         response.resData.map(item=>{
           item.key = item.id
+          if(!item.extendInfo){
+            item.extendInfo = ""
+          }
           let obj = JSON.parse(item.extendInfo);
           item.customerId = obj.customerId?obj.customerId:null
           item.loanLimitQuota = obj.loanLimitQuota?obj.loanLimitQuota:null
