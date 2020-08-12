@@ -118,7 +118,7 @@ class CreditAgree extends PureComponent {
         })
       },
       {
-        title: '实际放款时间',
+        title: '实际授信时间',
         dataIndex: 'eventTime',
         key: 'eventTime',
       },
