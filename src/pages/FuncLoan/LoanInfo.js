@@ -301,6 +301,14 @@ class CreditInfo extends PureComponent {
               return '配偶担保协议';
             case 'QCBL_LOAN_CONFIRMATION_AGREEMENT':
               return '放款确认书';
+            case 'COMPANY_LICENSE':
+              return '公司证件';
+            case 'MARRIAGE_CERTIFICATE':
+              return '结婚证';
+            case 'PERSON_ID_CARD_FRONT':
+              return '身份证正面';
+            case 'PERSON_ID_CARD_BACK':
+              return '身份证反面';
             default :
               return text;
           }
@@ -310,7 +318,7 @@ class CreditInfo extends PureComponent {
         title: '附件名称',
         dataIndex:'name',
         render: (text, record) => (
-          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>        ),
+          <a target="_blank" href={`${env}/static/file/${text}`} download>{text}</a>),
       },
       {
         title: '',

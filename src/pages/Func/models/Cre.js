@@ -26,7 +26,12 @@ export default {
       if(response.resData){
         response.resData.map(item=>{
           item.key = item.id
-         // item.fee = JSON.parse(item.extendInfo).fee
+          if(item.companyLicenseType === 'UNITY'){
+            item.companyLicenseType = '企业的统一社会信用代码'
+          }
+          if(item.companyLicenseType === 'GENERAL'){
+            item.companyLicenseType = '传统工商注册类型'
+          }
         })
          obj = {
           list: response.resData,

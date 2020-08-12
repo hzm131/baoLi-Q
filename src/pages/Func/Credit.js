@@ -537,13 +537,6 @@ class Credit extends PureComponent {
         title: '公司证件类型',
         dataIndex: 'companyLicenseType',
         key: 'companyLicenseType',
-        render:((text,record)=>{
-          if(text === 'UNITY'){
-            return '企业的统一社会信用代码'
-          }else if(text === 'GENERAL'){
-            return '传统工商注册类型'
-          }
-        })
       },
       {
         title: '法人姓名',
