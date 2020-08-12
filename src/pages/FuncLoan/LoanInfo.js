@@ -361,7 +361,7 @@ class CreditInfo extends PureComponent {
               订单生成时间：<b>{this.state.initDate?this.state.initDate.orderCreateTime:''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              结算单金额(单位:元)：<b>{this.state.initDate?this.state.initDate.statementAmount:''}</b>
+              结算单金额(单位:元)：<b>{this.state.initDate.statementAmount?Number(this.state.initDate.statementAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
               订单付款日期：<b>{this.state.initDate?this.state.initDate.orderPaymentTime:''}</b>
@@ -410,7 +410,7 @@ class CreditInfo extends PureComponent {
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              申请放款金额(单位:元)：<b>{this.state.initDate?this.state.initDate.loanAmount:''}</b>
+              申请放款金额(单位:元)：<b>{this.state.initDate.loanAmount?Number(this.state.initDate.loanAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
               执行年化费率：<b>{this.state.initDate?this.state.initDate.rate:''}</b>

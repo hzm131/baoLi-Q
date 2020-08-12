@@ -287,7 +287,7 @@ class CreditReject extends PureComponent {
           <Col lg={6} md={12} sm={24}>
             <Form.Item label='线上年回款比例(%)'>
               {getFieldDecorator('amountRatio',{
-                initialValue:amountRatio
+                initialValue:amountRatio?amountRatio.toFixed(2):null
               })(
                 <Input placeholder="线上年回款比例" type={Number} disabled/>
               )}
