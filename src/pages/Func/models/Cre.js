@@ -118,8 +118,8 @@ export default {
           if(!item.endDate){
             item.endDate = ""
           }
-          if(!item.loanLimitQuota){
-            item.loanLimitQuota = ""
+          if(!item.loanLimitQuota2){
+            item.loanLimitQuota2 = " "
           }
           if(!item.failReasonCode){
             item.failReasonCode = ""

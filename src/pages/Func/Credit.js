@@ -63,18 +63,6 @@ class Credit extends PureComponent {
         key: 'creditApplyNo',
       },
       {
-        title: '状态',
-        dataIndex: 'status',
-        key: 'status',
-        render:((text,record)=>{
-          if(text === 'QUALIFIED'){
-            return '授信成功'
-          }else if(text === 'REJECTED'){
-            return '授信拒绝'
-          }
-        })
-      },
-      {
         title: '阿里客户',
         dataIndex: 'customerId',
         key: 'customerId',
@@ -90,9 +78,14 @@ class Credit extends PureComponent {
         key: 'companyLicenseType',
       },
       {
-        title: '法人姓名',
-        dataIndex: 'legalPersonName',
-        key: 'legalPersonName',
+        title: '联系人姓名',
+        dataIndex: 'contactPersonName',
+        key: 'contactPersonName',
+      },
+      {
+        title: '联系人手机号码',
+        dataIndex: 'contactPersonPhoneNo',
+        key: 'contactPersonPhoneNo',
       },
       {
         title: '企业身份标识号码',
@@ -110,6 +103,11 @@ class Credit extends PureComponent {
             return '其他'
           }
         })
+      },
+      {
+        title: '法人姓名',
+        dataIndex: 'legalPersonName',
+        key: 'legalPersonName',
       },
       {
         title: '法人证件号码',
@@ -148,9 +146,95 @@ class Credit extends PureComponent {
         key: 'legalPersonMateLicenseNo',
       },
       {
+        title: '法人配偶证件类型',
+        dataIndex: 'legalPersonMateLicenseType',
+        key: 'legalPersonMateLicenseType',
+      },
+      {
+        title: '对公账户户名',
+        dataIndex: 'publicAccountsName',
+        key: 'publicAccountsName',
+      },
+      {
+        title: '对公账户账号',
+        dataIndex: 'publicAccountsNo',
+        key: 'publicAccountsNo',
+      },
+      {
+        title: '对公账户银行名字',
+        dataIndex: 'publicAccountsBank',
+        key: 'publicAccountsBank',
+      },
+      {
+        title: '对公账户开户支行',
+        dataIndex: 'publicAccountsBranchBank',
+        key: 'publicAccountsBranchBank',
+      },
+      {
         title: '建议单笔最高额度(单位:元)',
         dataIndex: 'loanLimitQuota',
         key: 'loanLimitQuota',
+      },
+      {
+        title: '平台注册时间',
+        dataIndex: 'platformRegisteredTime',
+        key: 'platformRegisteredTime',
+      },
+      {
+        title: '年交易金额',
+        dataIndex: 'platformTransactionAmount1Year',
+        key: 'platformTransactionAmount1Year',
+      },
+      {
+        title: '平台累计回款金额(单位:元)',
+        dataIndex: 'platformTotalPaymentCollectionAmount1Year',
+        key: 'platformTotalPaymentCollectionAmount1Year',
+      },
+      {
+        title: '平台年订单金额(单位:元)',
+        dataIndex: 'platformOrderAmount1Year',
+        key: 'platformOrderAmount1Year',
+      },
+      {
+        title: '平台年结算单笔数',
+        dataIndex: 'platformSettlementNumber1Year',
+        key: 'platformSettlementNumber1Year',
+      },
+      {
+        title: '与核企平台年累计结算单金额(单位:元)',
+        dataIndex: 'platformTotalSettlementAmountWithCoreCompany1Year',
+        key: 'platformTotalSettlementAmountWithCoreCompany1Year',
+      },
+      {
+        title: '平台年结算单金额(单位:元)',
+        dataIndex: 'platformSettlementAmount1Year',
+        key: 'platformSettlementAmount1Year',
+      },
+      {
+        title: '与核企（准入买家）的年回款金额',
+        dataIndex: 'platformPaymentCollectionAmountWithCoreCompany1Year',
+        key: 'platformPaymentCollectionAmountWithCoreCompany1Year',
+      },
+      {
+        title: '与核企（准入买家）的年结算单笔数',
+        dataIndex: 'platformSettlementNumberWithCoreCompany1Year',
+        key: 'platformSettlementNumberWithCoreCompany1Year',
+      },
+      {
+        title: '线上年回款比例(%)',
+        dataIndex: 'amountRatio',
+        key: 'amountRatio',
+      },
+      {
+        title: '建议额度(单位:元)',
+        dataIndex: 'adviceQuota',
+        key: 'adviceQuota',
+      },
+      //查看结果
+      {
+        title: '机构授信编号',
+        dataIndex: 'institutionCreditNo',
+        key: 'institutionCreditNo',
       },
       {
         title: '审批人员',
@@ -162,21 +246,17 @@ class Credit extends PureComponent {
         dataIndex: 'userDate',
         key: 'userDate',
       },
-
       {
-        title: '机构授信编号',
-        dataIndex: 'institutionCreditNo',
-        key: 'institutionCreditNo',
-      },
-      {
-        title: '实际授信时间',
-        dataIndex: 'eventTime',
-        key: 'eventTime',
-      },
-      {
-        title: '对接渠道',
-        dataIndex: 'channel',
-        key: 'channel',
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render:((text,record)=>{
+          if(text === 'QUALIFIED'){
+            return '授信成功'
+          }else if(text === 'REJECTED'){
+            return '授信拒绝'
+          }
+        })
       },
       {
         title: '授信额度金额(单位：元)',
@@ -184,50 +264,10 @@ class Credit extends PureComponent {
         key: 'quotaAmount',
       },
       {
-        title: '授信期限',
-        dataIndex: 'creditTerm',
-        key: 'creditTerm',
-      },
-      {
-        title: '授信期限单位',
-        dataIndex: 'creditTermUnit',
-        key: 'creditTermUnit',
-      },
-      {
-        title: '授信有效期开始日',
-        dataIndex: 'startDate',
-        key: 'startDate',
-      },
-      {
-        title: '授信有效期结束日',
-        dataIndex: 'endDate',
-        key: 'endDate',
-      },
-      {
         title: '单笔支用限额（单位：元）',
         dataIndex: 'loanLimitQuota2',
         key: 'loanLimitQuota2',
-      },
-      {
-        title: '拒绝原因码',
-        dataIndex: 'failReasonCode',
-        key: 'failReasonCode',
-      },
-      {
-        title: '拒绝原因描述',
-        dataIndex: 'failReasonMessage',
-        key: 'failReasonMessage',
-      },
-      {
-        title: '线上年回款比例(%)',
-        dataIndex: 'amountRatio',
-        key: 'amountRatio',
-      },
-      {
-        title: '结果',
-        dataIndex: 'resBody',
-        key: 'resBody',
-      },
+      }
     ]
   }
 
@@ -667,6 +707,9 @@ class Credit extends PureComponent {
         }
       }
 
+      if(item.platformPaymentCollectionAmountWithCoreCompany1Year && item.platformTotalSettlementAmountWithCoreCompany1Year){
+        item.amountRatio = item.platformPaymentCollectionAmountWithCoreCompany1Year / item.platformTotalSettlementAmountWithCoreCompany1Year * 100
+      }
     })
 
     dispatch({
