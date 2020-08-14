@@ -87,19 +87,26 @@ export default {
         if(response.resData.length){
           for(let i = 0;i<response.resData.length;i++){
             const resBody = response.resData[i].resBody;
-            const resBodyObj = JSON.parse(resBody);
-            if('alibaba_finance_creditresult_notify_response' in resBodyObj){
-              console.log("进来")
-              response.resData[i].loanLimitQuota2 = response.resData[i].loanLimitQuota;
-              delete response.resData[i].loanLimitQuota;
-              delete response.resData[i].status;
-              delete response.resData[i].createTime;
-              delete response.resData[i].userName;
-              delete response.resData[i].userDate;
-              delete response.resData[i].creditApplyNo;
-              delete response.resData[i].customerId;
-              Array.push(response.resData[i]);
-              break
+            console.log('resBody',response.resData[i].resBody)
+            if(resBody){
+              const resBodyObj = JSON.parse(resBody);
+              if('alibaba_finance_creditresult_notify_response' in resBodyObj){
+                console.log("进来")
+                const extendInfo = response.resData[i].extendInfo;
+                if(extendInfo){
+                  const extendInfoObj = JSON.parse(extendInfo);
+                  const { loanLimitQuota } = extendInfoObj;
+                  response.resData[i].loanLimitQuota2 = loanLimitQuota;
+                }
+
+                delete response.resData[i].status;
+                delete response.resData[i].createTime;
+                delete response.resData[i].userName;
+                delete response.resData[i].userDate;
+                delete response.resData[i].creditApplyNo;
+                delete response.resData[i].customerId;
+                Array.push(response.resData[i]);
+              }
             }
           }
         }
