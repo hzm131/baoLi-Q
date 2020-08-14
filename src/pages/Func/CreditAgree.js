@@ -131,6 +131,13 @@ class CreditAgree extends PureComponent {
         title: '授信额度金额(单位：元)',
         dataIndex: 'quotaAmount',
         key: 'quotaAmount',
+        render:((text,record)=>{
+          if(text){
+            return Number(text).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,')
+          }else{
+            return null
+          }
+        })
       },
       {
         title: '授信期限',
@@ -156,6 +163,13 @@ class CreditAgree extends PureComponent {
         title: '单笔支用限额（单位：元）',
         dataIndex: 'loanLimitQuota',
         key: 'loanLimitQuota',
+        render:((text,record)=>{
+          if(text){
+            return Number(text).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,')
+          }else{
+            return null
+          }
+        })
       },
       {
         title: '阿里授信申请单号',
@@ -210,8 +224,9 @@ class CreditAgree extends PureComponent {
         width='80%'
         destroyOnClose
         centered
-        onOk={()=>this.onSave(onSave)}
+        //onOk={()=>this.onSave(onSave)}
         onCancel={()=>this.handleCancel(onCancel)}
+        footer={null}
       >
         <NormalTable
           columns={columns}
