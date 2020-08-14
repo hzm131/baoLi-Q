@@ -88,7 +88,7 @@ export default {
           for(let i = 0;i<response.resData.length;i++){
             const resBody = response.resData[i].resBody;
             const resBodyObj = JSON.parse(resBody);
-            if('alibaba_finance_loanresult_notify_response' in resBodyObj){
+            if('alibaba_finance_creditresult_notify_response' in resBodyObj){
               console.log("进来")
               response.resData[i].loanLimitQuota2 = response.resData[i].loanLimitQuota;
               delete response.resData[i].loanLimitQuota;
