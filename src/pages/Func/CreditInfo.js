@@ -351,6 +351,8 @@ class CreditInfo extends PureComponent {
               return '公司证件';
             case 'MARRIAGE_CERTIFICATE':
               return '结婚证';
+              case 'DIVORCE_CERTIFICATE':
+              return '离婚证';
             case 'PERSON_ID_CARD_FRONT':
               return '身份证正面';
             case 'PERSON_ID_CARD_BACK':

@@ -18,6 +18,8 @@ import ModelTable from '../tool/ModelTable/ModelTable';
 import NormalTable from '@/components/NormalTable';
 import ExportJsonExcel from 'js-export-excel';
 import './tableBg.less'
+import CreditAgree from '@/pages/Func/CreditAgree';
+import CreditLeagl from '@/pages/Func/CreditLeagl';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -25,7 +27,7 @@ const { RangePicker } = DatePicker;
 
 @connect(({ Cre, loading }) => ({
   Cre,
-  loading: loading.models.Cre,
+  loading: loading.effects['Cre/fetch']
 }))
 @Form.create()
 class Credit extends PureComponent {
@@ -268,7 +270,10 @@ class Credit extends PureComponent {
         dataIndex: 'loanLimitQuota2',
         key: 'loanLimitQuota2',
       }
-    ]
+    ],
+    leaglVisible:false,
+    leaglData:{},
+    leaglType:""
   }
 
   componentDidMount() {
@@ -826,11 +831,22 @@ class Credit extends PureComponent {
     this.setState({ selectedKeys:selectedRowKeys,selectedRows });
   };
 
+  onLegal = (e,record,type)=>{
+    e.preventDefault();
+    this.setState({
+      leaglVisible:true,
+      leaglData:record,
+      leaglType:type
+    })
+  }
+
   render() {
     const {
       form:{getFieldDecorator},
-      Cre:{fetchData}
+      Cre:{fetchData},
+      loading
     } = this.props;
+
     const columns = [
       {
         title: '接收时间',
@@ -900,6 +916,13 @@ class Credit extends PureComponent {
         title: '法人证件号码',
         dataIndex: 'legalPersonLicenseNo',
         key: 'legalPersonLicenseNo',
+        render:((text,record)=>{
+          if(record.lstatus === 1 ){
+            return <a href="#javascript:;" onClick={(e)=>this.onLegal(e,record,'法人证件号码')}>{text}</a>
+          }else{
+            return <span>{text}</span>
+          }
+        })
       },
       {
         title: '法人手机号',
@@ -931,6 +954,13 @@ class Credit extends PureComponent {
         title: '法人配偶证件号',
         dataIndex: 'legalPersonMateLicenseNo',
         key: 'legalPersonMateLicenseNo',
+        render:((text,record)=>{
+          if(record.mstatus === 1 ){
+            return <a href="#javascript:;" onClick={(e)=>this.onLegal(e,record,'法人配偶证件号')}>{text}</a>
+          }else{
+            return <span>{text}</span>
+          }
+        })
       },
       {
         title: '审批人员',
@@ -955,12 +985,33 @@ class Credit extends PureComponent {
       },
     ];
 
-    const { selectedKeys } = this.state;
+    const { selectedKeys,leaglData,leaglType } = this.state;
 
     const rowSelection = {
       selectedRowKeys:selectedKeys,
       onChange: this.onSelectChange,
     };
+
+    const OnLeagl = {
+      onSave:(clear)=>{
+        clear();
+        this.setState({
+          leaglVisible:false
+        })
+      },
+      onCancel:(clear)=>{
+        clear();
+        this.setState({
+          leaglVisible:false
+        })
+      }
+    }
+    const OnLeaglData = {
+      visible:this.state.leaglVisible,
+      record:leaglData,
+      type:leaglType
+    }
+
 
     return (
       <PageHeaderWrapper>
@@ -969,6 +1020,7 @@ class Credit extends PureComponent {
             <div className={styles.userAdminForm} >{this.renderForm()}</div>
             <div style={{marginTop:'20px'}}>
               <NormalTable
+                loading={loading}
                 columns={columns}
                 data={fetchData}
                 onRow={(record )=>{
@@ -991,6 +1043,7 @@ class Credit extends PureComponent {
 
           </div>
         </Card>
+        <CreditLeagl on={OnLeagl} data={OnLeaglData} />
       </PageHeaderWrapper>
     );
   }

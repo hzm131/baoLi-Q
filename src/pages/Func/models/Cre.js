@@ -6,6 +6,7 @@ import {
   lookTable,
   queryId,
   fetchUcum,
+  findLeagl,
   queryCreditRes
 } from '@/services/Cre';
 
@@ -48,6 +49,30 @@ export default {
         type: 'save',
         payload: obj,
       });
+    },
+    *findLeagl({ payload,callback }, { call, put }) {
+      const response = yield call(findLeagl, payload);
+      let { pageIndex = 0 } = payload;
+      let obj = {};
+      if(response.resData){
+        response.resData.map(item=>{
+          item.key = item.id
+          if(item.companyLicenseType === 'UNITY'){
+            item.companyLicenseType = '企业的统一社会信用代码'
+          }
+          if(item.companyLicenseType === 'GENERAL'){
+            item.companyLicenseType = '传统工商注册类型'
+          }
+        })
+        obj = {
+          list: response.resData,
+          pagination:{
+            total: response.total,
+            current:pageIndex + 1
+          }
+        };
+      }
+      if(callback) callback(obj)
     },
     *queryListRes({ payload,callback }, { call, put }) {
       const { arr } = payload;

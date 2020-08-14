@@ -70,6 +70,13 @@ export async function fetchUcum(params) {
     body: str,
   });
 }
+export async function findLeagl(params) {
+  const str = JSON.stringify(params);
+  return request(`${baseUrl}/getCreditLMStatus`,{
+    method:'POST',
+    body: str,
+  });
+}
 
 
 
