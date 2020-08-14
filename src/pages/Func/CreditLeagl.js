@@ -33,16 +33,17 @@ class CreditLeagl extends PureComponent {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.data.record !== this.props.data.record){
+      const { record:{legalPersonLicenseNo,legalPersonMateLicenseNo},type } = nextProps.data
       const { dispatch } = this.props;
       const conditions = [
         {
           code:'legal_person_license_no',
           exp:'=',
-          value:nextProps.data.record.legalPersonLicenseNo
+          value: type === "法人证件号码"? legalPersonLicenseNo: legalPersonMateLicenseNo
         },{
           code:'legal_person_mate_license_no',
           exp:'=',
-          value:nextProps.data.record.legalPersonMateLicenseNo
+          value: type === "法人证件号码"? legalPersonLicenseNo: legalPersonMateLicenseNo
         },
       ]
       dispatch({
