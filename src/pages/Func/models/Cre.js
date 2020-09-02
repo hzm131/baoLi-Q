@@ -186,6 +186,7 @@ export default {
           let obj = JSON.parse(item.extendInfo);
           item.customerId = obj.customerId?obj.customerId:null
           item.loanLimitQuota = obj.loanLimitQuota?obj.loanLimitQuota:null
+          item.quotaChangeReason = obj.quotaChangeReason?obj.quotaChangeReason:null
         })
         obj = {
           list: response.resData,

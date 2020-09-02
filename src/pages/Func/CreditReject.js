@@ -47,7 +47,11 @@ class CreditReject extends PureComponent {
       }
       const en = {
         customerId:values.customerId,
-        loanLimitQuota:values.loanLimitQuota?moneyToNumValue(values.loanLimitQuota):null
+        loanLimitQuota:values.loanLimitQuota?moneyToNumValue(values.loanLimitQuota):null,
+      }
+
+      if(values.quotaChangeReason){
+        en.quotaChangeReason = values.quotaChangeReason
       }
 
       const obj = {
@@ -108,7 +112,8 @@ class CreditReject extends PureComponent {
         startDate:null,
         endDate:null,
         customerId:null,
-        loanLimitQuota:null
+        loanLimitQuota:null,
+        quotaChangeReason:null
       })
       this.setState({
         dataStatus:false
@@ -314,6 +319,17 @@ class CreditReject extends PureComponent {
             </Form.Item>
           </Col>
           <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
+            <Form.Item label='额度修改原因'>
+              {getFieldDecorator('quotaChangeReason',{
+
+              })(
+                <Input placeholder="请输入额度修改原因"  disabled={!dataStatus}/>
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col lg={6} md={12} sm={24}>
             <Form.Item label='阿里授信申请单号'>
               {getFieldDecorator('creditApplyNo',{
                 initialValue:record.creditApplyNo,
@@ -326,9 +342,7 @@ class CreditReject extends PureComponent {
               )}
             </Form.Item>
           </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col lg={6} md={12} sm={24}>
+          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
             <Form.Item label='线上年回款比例(%)'>
               {getFieldDecorator('amountRatio',{
                 initialValue:amountRatio?amountRatio.toFixed(2):null
@@ -344,9 +358,6 @@ class CreditReject extends PureComponent {
                 <Input placeholder="拒绝原因码(字数限制:64位)" maxLength={64} disabled={dataStatus}/>
               )}
             </Form.Item>
-          </Col>
-          <Col xl={{ span: 6, offset: 3 }} lg={{ span: 8 }} md={{ span: 12 }} sm={24}>
-
           </Col>
         </Row>
         <Row gutter={16}>
