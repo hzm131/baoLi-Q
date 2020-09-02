@@ -172,6 +172,11 @@ class CreditAgree extends PureComponent {
         })
       },
       {
+        title: '额度修改原因',
+        dataIndex: 'quotaChangeReason',
+        key: 'quotaChangeReason',
+      },
+      {
         title: '阿里授信申请单号',
         dataIndex: 'creditApplyNo',
         key: 'creditApplyNo',
