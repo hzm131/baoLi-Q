@@ -66,7 +66,6 @@ class LoanReject extends PureComponent {
 
       };
       console.log("obj",obj)
-      return;
       this.setState({
         BStatus:true
       })
