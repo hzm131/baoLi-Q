@@ -197,16 +197,22 @@ class LoanInfo extends PureComponent {
           </Tooltip>
         </Description>*/}
         <Description term="公司名称">
-          <Tooltip title={this.state.initDate?this.state.initDate.companyName:''}>
+          <Tooltip title={initDate.companyName?initDate.companyName:''}>
             <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {this.state.initDate?this.state.initDate.companyName:''}
+              {initDate.companyName?initDate.companyName:''}
             </p>
           </Tooltip>
         </Description>
         <Description style={{cursor:'pointer',}}
                      term="阿里客户" onClick={this.lookInfor}>
-          <b style={{color:'#3855e8'}}>{this.state.initDate?this.state.initDate.customerId:''}</b></Description>
-
+          <b style={{color:'#3855e8'}}>{initDate.customerId?initDate.customerId:''}</b></Description>
+        <Description term="买家名称">
+          <Tooltip title={initDate.buyerName?initDate.buyerName:''}>
+            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
+              {initDate.buyerName?initDate.buyerName:''}
+            </p>
+          </Tooltip>
+        </Description>
       </DescriptionList>
     );
     const action = (

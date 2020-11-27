@@ -25,7 +25,7 @@ const { RangePicker } = DatePicker;
 
 @connect(({ loan, loading }) => ({
   loan,
-  loading: loading.models.loan,
+  loading: loading.effects['loan/fetch']
 }))
 @Form.create()
 class Loan extends PureComponent {
@@ -69,6 +69,11 @@ class Loan extends PureComponent {
         title: '阿里客户',
         dataIndex: 'customerId',
         key: 'customerId',
+      },
+      {
+        title: '买家名称',
+        dataIndex: 'buyerName',
+        key: 'buyerName',
       },
       {
         title: '公司名称',
@@ -741,7 +746,8 @@ class Loan extends PureComponent {
   render() {
     const {
       form:{getFieldDecorator},
-      loan:{fetchData}
+      loan:{fetchData},
+      loading
     } = this.props;
     const columns = [
       {
@@ -775,6 +781,11 @@ class Loan extends PureComponent {
         title: '阿里客户',
         dataIndex: 'customerId',
         key: 'customerId',
+      },
+      {
+        title: '买家名称',
+        dataIndex: 'buyerName',
+        key: 'buyerName',
       },
       {
         title: '公司名称',
@@ -886,6 +897,7 @@ class Loan extends PureComponent {
             <div className={styles.userAdminForm} >{this.renderForm()}</div>
             <div style={{marginTop:'20px'}}>
               <NormalTable
+                loading={loading}
                 columns={columns}
                 data={fetchData}
                 onRow={(record )=>{
