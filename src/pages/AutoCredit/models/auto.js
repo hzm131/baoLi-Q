@@ -1,5 +1,7 @@
 import {
-} from '@/services/Cre';
+  queryLargeAmount,
+  setAutoCredit
+} from '@/services/auto';
 
 
 export default {
@@ -13,8 +15,13 @@ export default {
 
   //effects方法用处理异步动作
   effects: {
-    *fetch({ payload,callback }, { call, put }) {
-
+    *queryLargeAmount({ payload,callback }, { call, put }) {
+      const response = yield call(queryLargeAmount, payload);
+      if (callback) callback(response);
+    },
+    *setAutoCredit({ payload,callback }, { call, put }) {
+      const response = yield call(setAutoCredit, payload);
+      if (callback) callback(response);
     },
   },
   //reducers方法处理同步

@@ -119,8 +119,6 @@ class CreditInfo extends PureComponent {
           }
 
           const amountRatio = Number(platformPaymentCollectionAmountWithCoreCompany1Year || 0) / Number(platformTotalSettlementAmountWithCoreCompany1Year || 0) * 100
-          console.log(platformPaymentCollectionAmountWithCoreCompany1Year)
-          console.log(platformTotalSettlementAmountWithCoreCompany1Year)
 
           this.setState({
             initDate: record,

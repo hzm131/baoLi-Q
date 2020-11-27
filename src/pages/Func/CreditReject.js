@@ -30,8 +30,6 @@ class CreditReject extends PureComponent {
 
   onSave = (onSave)=>{
     const {
-      form: { getFieldDecorator },
-      dispatch,
       data,
       form,
     } = this.props;
