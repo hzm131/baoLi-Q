@@ -32,6 +32,9 @@ class Auth extends PureComponent {
     },{
       key:'dataSync',
       title:'文件同步'
+    },{
+      key:'autoCredit',
+      title:'自动授信'
     }],
     targetKeys: [],
   };

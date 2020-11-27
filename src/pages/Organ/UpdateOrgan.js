@@ -1,17 +1,11 @@
 import React, { PureComponent, Fragment } from 'react';
-
 import {
-  Select,
   Row,
   Modal,
   Col,
-  DatePicker,
   Form,
   Input,
-  Checkbox
 } from 'antd';
-
-import moment from 'moment';
 
 @Form.create()
 class UpdateOrgan extends PureComponent {

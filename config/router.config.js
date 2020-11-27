@@ -35,7 +35,7 @@ const routesConfig = [
           },
           {
             path: '/organ/list',
-            name: 'organList',
+            name: 'list',
             component: './Organ/Organ',
             authority: ['admin'],
           }
@@ -55,7 +55,7 @@ const routesConfig = [
           },
           {
             path: '/credit/list',
-            name: 'creditList',
+            name: 'list',
             component: './Func/Credit',
             authority: ['admin','creditQuery','creditAudit'],
           },
@@ -81,7 +81,7 @@ const routesConfig = [
           },
           {
             path: '/loan/list',
-            name: 'loanList',
+            name: 'list',
             authority: ['admin','loanQuery','loanAudit'],
             component: './FuncLoan/Loan',
           },
@@ -107,11 +107,30 @@ const routesConfig = [
           },
           {
             path: '/information/list',
-            name: 'InformationList',
+            name: 'list',
             authority: ['admin','dataSync'],
             component: './Information/Information',
           },
-
+        ]
+      },
+      //自动授信
+      {
+        path: '/autoCredit',
+        icon: 'profile',
+        name: 'autoCredit',
+        authority: ['admin','autoCredit'],
+        hideChildrenInMenu: true,
+        routes:[
+          {
+            path: '/autoCredit',
+            redirect: '/autoCredit/list',
+          },
+          {
+            path: '/autoCredit/list',
+            name: 'list',
+            authority: ['admin','autoCredit'],
+            component: './AutoCredit/AutoCredit',
+          },
         ]
       },
     ],
