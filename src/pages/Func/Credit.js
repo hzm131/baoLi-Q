@@ -973,6 +973,14 @@ class Credit extends PureComponent {
         key: 'userDate',
       },
       {
+        title: '是否为自动审批',
+        dataIndex: 'isAuto',
+        key: 'isAuto',
+        render:(text)=>{
+          return <Checkbox checked={text}/>
+        }
+      },
+      {
         title: '操作',
         fixed:'right',
         dataIndex: 'operation',
