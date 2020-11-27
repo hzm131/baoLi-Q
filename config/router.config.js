@@ -24,7 +24,7 @@ const routesConfig = [
       //机构
       {
         path: '/organ',
-        icon: 'export',
+        icon: 'setting',
         name: 'organ',
         authority: ['admin'],
         hideChildrenInMenu: true,
@@ -44,7 +44,7 @@ const routesConfig = [
       //授信
       {
         path: '/credit',
-        icon: 'setting',
+        icon: 'credit-card',
         name: 'credit',
         authority: ['admin','creditQuery','creditAudit'],
         hideChildrenInMenu: true,
@@ -116,7 +116,7 @@ const routesConfig = [
       //自动授信
       {
         path: '/autoCredit',
-        icon: 'profile',
+        icon: 'desktop',
         name: 'autoCredit',
         authority: ['admin','autoCredit'],
         hideChildrenInMenu: true,
