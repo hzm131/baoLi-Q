@@ -186,6 +186,11 @@ class CreditInfo extends PureComponent {
       },
       callback: (res) => {
         if (res.list) {
+          res.list.map(item =>{
+            if(item.userId === 0){
+              item.userName = "自动审批"
+            }
+          })
           this.setState({
             tableList: res.list
           })

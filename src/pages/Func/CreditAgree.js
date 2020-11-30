@@ -63,35 +63,10 @@ class CreditAgree extends PureComponent {
       data,
       on
     } = this.props;
-    const { deleteFile,fileList } = this.state
+    const { fileList } = this.state
     const { visible,record } = data;
     console.log('---record',record)
-    const { onSave,onCancel } = on;
-    const props = {
-      onRemove: file => {
-        if(file.id){
-          this.setState({
-            deleteFile:[...this.state.deleteFile,file]
-          })
-        }
-        this.setState(state => {
-          const index = state.fileList.indexOf(file);
-          const newFileList = state.fileList.slice();
-          newFileList.splice(index, 1);
-          return {
-            fileList: newFileList,
-          };
-        });
-      },
-      beforeUpload: file => {
-        this.setState(state => ({
-          fileList: [...state.fileList, file],
-        }));
-        return false;
-      },
-      fileList,
-    };
-
+    const { onCancel } = on;
     const columns = [
       {
         title: '接收时间',

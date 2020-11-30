@@ -35,6 +35,9 @@ export default {
           if(item.companyLicenseType === 'GENERAL'){
             item.companyLicenseType = '传统工商注册类型'
           }
+          if(item.userId === 0){
+            item.userName = "自动审批"
+          }
         })
          obj = {
           list: response.resData,
