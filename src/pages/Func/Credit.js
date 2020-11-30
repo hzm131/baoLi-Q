@@ -973,7 +973,7 @@ class Credit extends PureComponent {
         key: 'userDate',
       },
       {
-        title: '是否为自动审批',
+        title: '是否为自动授信',
         dataIndex: 'isAuto',
         key: 'isAuto',
         render:(text)=>{
