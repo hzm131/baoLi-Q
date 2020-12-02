@@ -249,6 +249,11 @@ class Credit extends PureComponent {
         key: 'userDate',
       },
       {
+        title: '是否为自动授信',
+        dataIndex: 'isAuto',
+        key: 'isAuto',
+      },
+      {
         title: '状态',
         dataIndex: 'status',
         key: 'status',

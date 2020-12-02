@@ -12,7 +12,7 @@ import {
   Icon,
   Button,
   Upload,
-  TreeSelect,
+  TreeSelect, Checkbox,
 } from 'antd';
 import NormalTable from '@/components/NormalTable';
 
@@ -185,6 +185,14 @@ class CreditAgree extends PureComponent {
         title: '审批时间',
         dataIndex: 'userDate',
         key: 'userDate',
+      },
+      {
+        title: '是否为自动授信',
+        dataIndex: 'isAuto',
+        key: 'isAuto',
+        render:(text)=>{
+          return <Checkbox checked={text}/>
+        }
       },
       {
         title: '结果',
