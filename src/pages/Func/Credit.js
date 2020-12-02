@@ -712,6 +712,12 @@ class Credit extends PureComponent {
         }
       }
 
+      if(item.isAuto){
+        item.isAuto = '是'
+      }else{
+        item.isAuto = '否'
+      }
+
       if(item.platformPaymentCollectionAmountWithCoreCompany1Year && item.platformTotalSettlementAmountWithCoreCompany1Year){
         item.amountRatio = item.platformPaymentCollectionAmountWithCoreCompany1Year / item.platformTotalSettlementAmountWithCoreCompany1Year * 100
       }
