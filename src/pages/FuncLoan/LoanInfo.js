@@ -206,13 +206,6 @@ class LoanInfo extends PureComponent {
         <Description style={{cursor:'pointer',}}
                      term="阿里客户" onClick={this.lookInfor}>
           <b style={{color:'#3855e8'}}>{initDate.customerId?initDate.customerId:''}</b></Description>
-        <Description term="买家名称">
-          <Tooltip title={initDate.buyerName?initDate.buyerName:''}>
-            <p style={{fontWeight:'900',width:'150px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0}}>
-              {initDate.buyerName?initDate.buyerName:''}
-            </p>
-          </Tooltip>
-        </Description>
       </DescriptionList>
     );
     const action = (
@@ -380,12 +373,12 @@ class LoanInfo extends PureComponent {
               结算单金额(单位:元)：<b>{this.state.initDate.statementAmount?Number(this.state.initDate.statementAmount).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,'$&,'):''}</b>
             </p>
             <p style={{width:'33.33333333%'}}>
-              订单付款日期：<b>{this.state.initDate.orderPaymentTime?this.state.initDate.orderPaymentTime:''}</b>
+              订单付款日期(结算单到期日)：<b>{this.state.initDate.orderPaymentTime?this.state.initDate.orderPaymentTime:''}</b>
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
             <p style={{width:'33.33333333%'}}>
-              结算单付款日期：<b>{this.state.initDate.statementPaymentTime?this.state.initDate.statementPaymentTime:''}</b>
+              结算单付款日期(融资单据到期日)：<b>{this.state.initDate.statementPaymentTime?this.state.initDate.statementPaymentTime:''}</b>
             </p>
             <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
               <span style={{}}>物流单号：</span><b>
@@ -433,6 +426,19 @@ class LoanInfo extends PureComponent {
             </p>
             <p style={{width:'33.33333333%'}}>
 
+            </p>
+          </div>
+        </Card>
+        <Card title={'核企名称'} style={{marginTop:'25px'}}>
+          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <p style={{width:'33.33333333%',display:'flex',flexDirection:'row',}}>
+              <span>买家名称：</span><b>
+              <Tooltip title={this.state.initDate?this.state.initDate.loanApplyNo:''}>
+                <p style={{fontWeight:'900',width:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace: 'nowrap',padding:0,margin:0,}}>
+                  {this.state.initDate.buyerName?this.state.initDate.buyerName:''}
+                </p>
+              </Tooltip>
+            </b>
             </p>
           </div>
         </Card>

@@ -452,10 +452,10 @@ class CreditInfo extends PureComponent {
               平台注册时间：<b>{this.state.initDate.platformRegisteredTime ? this.state.initDate.platformRegisteredTime : ''}</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-              年交易金额：<b>{this.state.initDate.platformTransactionAmount1Year ? Number(this.state.initDate.platformTransactionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
+              平台年交易金额：<b>{this.state.initDate.platformTransactionAmount1Year ? Number(this.state.initDate.platformTransactionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-              平台累计回款金额(单位:元)：<b>{this.state.initDate.platformTotalPaymentCollectionAmount1Year ? Number(this.state.initDate.platformTotalPaymentCollectionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
+              平台年累计回款金额(单位:元)：<b>{this.state.initDate.platformTotalPaymentCollectionAmount1Year ? Number(this.state.initDate.platformTotalPaymentCollectionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
             </p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -490,10 +490,10 @@ class CreditInfo extends PureComponent {
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <p style={{ width: '33.33333333%' }}>
-              线上年回款比例：<b>{this.state.amountRatio ? this.state.amountRatio.toFixed(2) : ''}%</b>
+              平台最早交易时间：<b>{this.state.initDate.platformFirstTradeTime?this.state.initDate.platformFirstTradeTime:''}</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-
+              线上年回款比例：<b>{this.state.amountRatio ? this.state.amountRatio.toFixed(2) : ''}%</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
 

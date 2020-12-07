@@ -183,7 +183,7 @@ class Credit extends PureComponent {
         key: 'platformRegisteredTime',
       },
       {
-        title: '年交易金额',
+        title: '平台年交易金额',
         dataIndex: 'platformTransactionAmount1Year',
         key: 'platformTransactionAmount1Year',
       },
@@ -221,6 +221,11 @@ class Credit extends PureComponent {
         title: '与核企（准入买家）的年结算单笔数',
         dataIndex: 'platformSettlementNumberWithCoreCompany1Year',
         key: 'platformSettlementNumberWithCoreCompany1Year',
+      },
+      {
+        title: '平台最早交易时间',
+        dataIndex: 'platformFirstTradeTime',
+        key: 'platformFirstTradeTime',
       },
       {
         title: '线上年回款比例(%)',
