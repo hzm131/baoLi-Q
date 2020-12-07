@@ -202,7 +202,7 @@ class CreditAgree extends PureComponent {
       {
         title:'',
         dataIndex:'caozuo',
-        width:1
+        width:100
       },
     ];
     return (
