@@ -53,7 +53,8 @@ class CreditInfo extends PureComponent {
     checkStatus: false,
     auth: false,
     type: 0,
-    amountRatio: null
+    amountRatio: null,
+    onlineRatio: null,
   };
 
   backClick = () => {
@@ -78,7 +79,7 @@ class CreditInfo extends PureComponent {
       callback: (res) => {
         if (res.errMsg === "成功" && res.resData && res.resData.length) {
           const record = res.resData[0];
-          const { attas, type, platformPaymentCollectionAmountWithCoreCompany1Year, platformTotalSettlementAmountWithCoreCompany1Year } = record;
+          const { attas, type, platformPaymentCollectionAmountWithCoreCompany1Year, platformTotalSettlementAmountWithCoreCompany1Year,platformTransactionAmount1Year,platformSettlementAmount1Year } = record;
           let attachmentsList = [];
           if (attas && attas.length) {
             attachmentsList = JSON.parse(attas)
@@ -119,13 +120,15 @@ class CreditInfo extends PureComponent {
           }
 
           const amountRatio = Number(platformPaymentCollectionAmountWithCoreCompany1Year || 0) / Number(platformTotalSettlementAmountWithCoreCompany1Year || 0) * 100
+          const onlineRatio = Number(platformTransactionAmount1Year || 0) / Number(platformSettlementAmount1Year || 0) * 100
 
           this.setState({
             initDate: record,
             creditApplyNo: record.creditApplyNo,
             attachmentsList,
             type,
-            amountRatio
+            amountRatio,
+            onlineRatio
           })
           if (record.status) {
             this.setState({
@@ -452,37 +455,7 @@ class CreditInfo extends PureComponent {
               平台注册时间：<b>{this.state.initDate.platformRegisteredTime ? this.state.initDate.platformRegisteredTime : ''}</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-              平台年交易金额：<b>{this.state.initDate.platformTransactionAmount1Year ? Number(this.state.initDate.platformTransactionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
-            </p>
-            <p style={{ width: '33.33333333%' }}>
-              平台年累计回款金额(单位:元)：<b>{this.state.initDate.platformTotalPaymentCollectionAmount1Year ? Number(this.state.initDate.platformTotalPaymentCollectionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
-            </p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <p style={{ width: '33.33333333%' }}>
-              平台年订单金额(单位:元)：<b>{this.state.initDate.platformOrderAmount1Year ? Number(this.state.initDate.platformOrderAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
-            </p>
-            <p style={{ width: '33.33333333%' }}>
               平台年结算单笔数：<b>{this.state.initDate.platformSettlementNumber1Year ? this.state.initDate.platformSettlementNumber1Year : ''}</b>
-            </p>
-            <p style={{ width: '33.33333333%', display: 'flex', flexDirection: 'row', }}>
-              <span>与核企平台年累计结算单金额(单位:元)：</span><b>
-                {this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year ? Number(this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}
-              </b>
-            </p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <p style={{ width: '33.33333333%' }}>
-              平台年结算单金额(单位:元)：<b>{this.state.initDate.platformSettlementAmount1Year ? Number(this.state.initDate.platformSettlementAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
-            </p>
-            <p style={{ width: '33.33333333%', display: 'flex', flexDirection: 'row', }}>
-              <span style={{}}>与核企（准入买家）的年回款金额：</span><b>
-                <Tooltip title={this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year ? Number(this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}>
-                  <p style={{ fontWeight: '900', width: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: 0, margin: 0, }}>
-                    {this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year ? Number(this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}
-                  </p>
-                </Tooltip>
-              </b>
             </p>
             <p style={{ width: '33.33333333%' }}>
               与核企（准入买家）的年结算单笔数：<b>{this.state.initDate.platformSettlementNumberWithCoreCompany1Year ? this.state.initDate.platformSettlementNumberWithCoreCompany1Year : ''}</b>
@@ -493,10 +466,34 @@ class CreditInfo extends PureComponent {
               平台最早交易时间：<b>{this.state.initDate.platformFirstTradeTime?this.state.initDate.platformFirstTradeTime:''}</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-              线上年回款比例：<b>{this.state.amountRatio ? this.state.amountRatio.toFixed(2) : ''}%</b>
+              平台年结算单金额(单位:元)：<b>{this.state.initDate.platformSettlementAmount1Year ? Number(this.state.initDate.platformSettlementAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
+            </p>
+            <p style={{ width: '33.33333333%', display: 'flex', flexDirection: 'row', }}>
+              <span>与核企平台年累计结算单金额(单位:元)：</span><b>
+                {this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year ? Number(this.state.initDate.platformTotalSettlementAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}
+              </b>
+            </p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <p style={{ width: '33.33333333%' }}>
+              平台年订单金额(单位:元)：<b>{this.state.initDate.platformOrderAmount1Year ? Number(this.state.initDate.platformOrderAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
+            </p>
+            <p style={{ width: '33.33333333%', display: 'flex', flexDirection: 'row', }}>
+              平台年结算单回款金额：<b>{this.state.initDate.platformTransactionAmount1Year ? Number(this.state.initDate.platformTransactionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-
+              与核企（准入买家）的年回款金额：<b>{this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year ? Number(this.state.initDate.platformPaymentCollectionAmountWithCoreCompany1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
+            </p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <p style={{ width: '33.33333333%' }}>
+              平台年累计回款金额(单位:元)：<b>{this.state.initDate.platformTotalPaymentCollectionAmount1Year ? Number(this.state.initDate.platformTotalPaymentCollectionAmount1Year).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
+            </p>
+            <p style={{ width: '33.33333333%' }}>
+              平台线上年回款比例：<b>{this.state.onlineRatio ? this.state.onlineRatio.toFixed(2)+'%' : ''}</b>
+            </p>
+            <p style={{ width: '33.33333333%' }}>
+              与核企的线上年回款比例：<b>{this.state.amountRatio ? this.state.amountRatio.toFixed(2)+'%' : ''}</b>
             </p>
           </div>
         </Card>
@@ -515,7 +512,6 @@ class CreditInfo extends PureComponent {
               </b>
             </p>
             <p style={{ width: '33.33333333%' }}>
-
               建议额度(单位:元)：<b>{this.state.initDate.adviceQuota ? Number(this.state.initDate.adviceQuota).toFixed(2).replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,') : ''}</b>
             </p>
           </div>
